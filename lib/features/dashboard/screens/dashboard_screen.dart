@@ -168,9 +168,9 @@ class DashboardScreenState extends State<DashboardScreen> {
 
                             _screens = [
                               const HomeScreen(),
-                              // isParcel ? const AddressScreen(fromDashboard: true) : const FavouriteScreen(),
+                              isParcel ? const AddressScreen(fromDashboard: true) : const FavouriteScreen(),
                               const SizedBox(),
-                              // const OrderScreen(),
+                              const OrderScreen(),
                               const MenuScreen()
                             ];
                             return Container(
@@ -221,14 +221,12 @@ class DashboardScreenState extends State<DashboardScreen> {
                                           onTap: () => _setPage(0),
                                         ),
                                         BottomNavItemWidget(
-                                          title: isParcel ? 'address'.tr : 'favourite'.tr,
-                                          selectedIcon: isParcel ? Images.addressSelect : Images.favouriteSelect,
-                                          unSelectedIcon: isParcel ? Images.addressUnselect : Images.favouriteUnselect,
+                                          title:"العروض", selectedIcon: Images.percent, unSelectedIcon: Images.percent,
                                           isSelected: _pageIndex == 1, onTap: () => _setPage(1),
                                         ),
                                         Container(width: size.width * 0.2),
                                         BottomNavItemWidget(
-                                          title:" عروض", selectedIcon: Images.percent, unSelectedIcon: Images.percent,
+                                          title:"Orders".tr, selectedIcon: Images.percent, unSelectedIcon: Images.percent,
                                           isSelected: _pageIndex == 3, onTap: () => _setPage(3),
                                         ),
                                         BottomNavItemWidget(
