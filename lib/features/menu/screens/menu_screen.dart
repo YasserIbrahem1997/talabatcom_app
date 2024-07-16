@@ -149,15 +149,15 @@ class _MenuScreenState extends State<MenuScreen> {
                     margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                     child: Column(children: [
                       PortionWidget(
-                          icon: Images.profileIcon,
+                          icon: Images.userNew,
                           title: 'profile'.tr,
                           route: RouteHelper.getProfileRoute()),
                       PortionWidget(
-                          icon: Images.addressIcon,
+                          icon: Images.mapAddress,
                           title: 'my_address'.tr,
                           route: RouteHelper.getAddressRoute()),
                       PortionWidget(
-                          icon: Images.languageIcon,
+                          icon: Images.translate,
                           title: 'language'.tr,
                           hideDivider: true,
                           route: RouteHelper.getLanguageRoute('menu')),
@@ -195,7 +195,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                     child: Column(children: [
                       PortionWidget(
-                        icon: Images.couponIcon,
+                        icon: Images.couponNewIcon,
                         title: 'coupon'.tr,
                         route: RouteHelper.getCouponRoute(),
                         hideDivider: Get.find<SplashController>()
@@ -233,7 +233,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                   .customerWalletStatus ==
                               1)
                           ? PortionWidget(
-                              icon: Images.walletIcon,
+                              icon: Images.moneyPoint,
                               title: 'my_wallet'.tr,
                               hideDivider: true,
                               route: RouteHelper.getWalletRoute(),
@@ -299,7 +299,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                             .refEarningStatus ==
                                         1)
                                     ? PortionWidget(
-                                        icon: Images.referIcon,
+                                        icon: Images.referIconeNew,
                                         title: 'refer_and_earn'.tr,
                                         route:
                                             RouteHelper.getReferAndEarnRoute(),
@@ -323,7 +323,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                             .toggleDmRegistration! &&
                                         !ResponsiveHelper.isDesktop(context))
                                     ? PortionWidget(
-                                        icon: Images.dmIcon,
+                                        icon: Images.joinTeam,
                                         title: 'join_as_a_delivery_man'.tr,
                                         route: RouteHelper
                                             .getDeliverymanRegistrationRoute(),
@@ -342,7 +342,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                             .toggleStoreRegistration! &&
                                         !ResponsiveHelper.isDesktop(context))
                                     ? PortionWidget(
-                                        icon: Images.storeIcon,
+                                        icon: Images.storeIconNew,
                                         title: 'open_store'.tr,
                                         hideDivider: true,
                                         route: RouteHelper
@@ -384,24 +384,24 @@ class _MenuScreenState extends State<MenuScreen> {
                     margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                     child: Column(children: [
                       PortionWidget(
-                          icon: Images.chatIcon,
+                          icon: Images.chatNew,
                           title: 'live_chat'.tr,
                           route: RouteHelper.getConversationRoute()),
                       PortionWidget(
-                          icon: Images.helpIcon,
+                          icon: Images.helpIconNew,
                           title: 'help_and_support'.tr,
                           route: RouteHelper.getSupportRoute()),
                       PortionWidget(
-                          icon: Images.aboutIcon,
+                          icon: Images.aboutIconNew,
                           title: 'about_us'.tr,
                           route: RouteHelper.getHtmlRoute('about-us')),
                       PortionWidget(
-                          icon: Images.termsIcon,
+                          icon: Images.termsIconNew,
                           title: 'terms_conditions'.tr,
                           route:
                               RouteHelper.getHtmlRoute('terms-and-condition')),
                       PortionWidget(
-                          icon: Images.privacyIcon,
+                          icon: Images.privacyIconNew,
                           title: 'privacy_policy'.tr,
                           route: RouteHelper.getHtmlRoute('privacy-policy')),
                       (Get.find<SplashController>()
@@ -409,7 +409,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                   .refundPolicyStatus ==
                               1)
                           ? PortionWidget(
-                              icon: Images.refundIcon,
+                              icon: Images.refundIconNew,
                               title: 'refund_policy'.tr,
                               route: RouteHelper.getHtmlRoute('refund-policy'),
                               hideDivider: (Get.find<SplashController>()
@@ -424,6 +424,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                   : true,
                             )
                           : const SizedBox(),
+
                       (Get.find<SplashController>()
                                   .configModel!
                                   .cancellationPolicyStatus ==
@@ -453,37 +454,83 @@ class _MenuScreenState extends State<MenuScreen> {
                                   RouteHelper.getHtmlRoute('shipping-policy'),
                             )
                           : const SizedBox(),
+
+
                     ]),
                   )
                 ]),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: FlutterSocialButton(
-                          onTap: () {
-                            _launchURL(
-                                "https://www.facebook.com/talabatcomghareb?mibextid=ZbWKwL");
-                          },
-                          mini: true,
-                          buttonType: ButtonType.facebook,
-                        )),
-                    const SizedBox(width: 20),
-                    SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: FlutterSocialButton(
-                          onTap: () {
-                            _launchURL("https://wa.me/+201070812048");
-                          },
-                          mini: true,
-                          buttonType: ButtonType.whatsapp,
-                        ))
-                  ],
-                ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: Dimensions.paddingSizeDefault,
+                        right: Dimensions.paddingSizeDefault),
+                    child: Text(
+                      'connect_us'.tr,
+                      style: robotoMedium.copyWith(
+                          fontSize: Dimensions.fontSizeDefault,
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.5)),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusDefault),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey[Get.isDarkMode ? 800 : 200]!,
+                            spreadRadius: 1,
+                            blurRadius: 5)
+                      ],
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeLarge,
+                        vertical: Dimensions.paddingSizeDefault),
+                    margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                    child: Column(children: [
+
+                      InkWell(
+                        onTap: (){
+                          _launchURL(
+                              "https://www.facebook.com/talabatcomghareb?mibextid=ZbWKwL");
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+                          child: Column(children: [
+                            Row(children: [
+                              Image.asset(Images.facebookNew, height: 30, width: 30),
+                              const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                              Expanded(child: Text('facebook'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault))),
+
+                            ]),
+                          ]),
+                        ),
+                      ),
+                    const  Divider(),
+                      InkWell(
+                        onTap: (){
+                          _launchURL("https://wa.me/+201070812048");
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+                          child: Column(children: [
+                            Row(children: [
+                              Image.asset(Images.whatsappNew, height: 30, width: 30),
+                              const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                              Expanded(child: Text('whats_app'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault))),
+
+                            ]),
+                          ]),
+                        ),
+                      ),
+                    ]),
+                  )
+                ]),
+
                 const SizedBox(height: 20),
                 InkWell(
                   onTap: () async {

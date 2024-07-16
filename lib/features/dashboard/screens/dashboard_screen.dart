@@ -216,17 +216,17 @@ class DashboardScreenState extends State<DashboardScreen> {
                                       width: size.width, height: 80,
                                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                                         BottomNavItemWidget(
-                                          title: 'home'.tr, selectedIcon: Images.homeSelect,
-                                          unSelectedIcon: Images.homeUnselect, isSelected: _pageIndex == 0,
+                                          title: 'home'.tr, selectedIcon: Images.letterT,
+                                          unSelectedIcon: Images.letterT, isSelected: _pageIndex == 0,
                                           onTap: () => _setPage(0),
                                         ),
                                         BottomNavItemWidget(
-                                          title:"العروض", selectedIcon: Images.percent, unSelectedIcon: Images.percent,
+                                          title:"offers".tr, selectedIcon: Images.discount, unSelectedIcon: Images.discount,
                                           isSelected: _pageIndex == 1, onTap: () => _setPage(1),
                                         ),
                                         Container(width: size.width * 0.2),
                                         BottomNavItemWidget(
-                                          title:"Orders".tr, selectedIcon: Images.percent, unSelectedIcon: Images.percent,
+                                          title:"Orders".tr, selectedIcon: Images.orderSelect, unSelectedIcon: Images.orderUnselect,
                                           isSelected: _pageIndex == 3, onTap: () => _setPage(3),
                                         ),
                                         BottomNavItemWidget(

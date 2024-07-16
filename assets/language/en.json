@@ -1063,7 +1063,7 @@
   "order_is_on_the_way" : "Order is On the Way",
   "your_delivery_man_is_coming" : "Your delivery man is coming",
   "order_delivered" : "Order Delivered",
-
+  "offers" : "offers",
   "bringing_happiness_from_door_to_door" : "Serving you with peace of mind from Mersal",
   "ready_to_send_something_special" : "Ready to send something special?",
   "easiest_way_to_get_services" : "Easiest way to get services",
@@ -1177,6 +1177,7 @@
   "though_it_is_demo_text" : "Though it is a demo app, our system automatically reset after one hour and that's why you logged out.",
   "okay" : "Okay",
   "what_do_you_want_to_order" : "What do you want to order?",
+  "Discover_your_orders_now" : "Discover your orders now",
   "what_new_for_you" : "What's new for you?",
   "talabatcom_has_become_easier" : "talabatcom has become easier",
   "connect_us" : "connect us",

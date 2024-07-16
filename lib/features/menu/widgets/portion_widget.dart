@@ -18,7 +18,7 @@ class PortionWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
         child: Column(children: [
           Row(children: [
-            Image.asset(icon, height: 16, width: 16),
+            Image.asset(icon, height: 30, width: 30),
             const SizedBox(width: Dimensions.paddingSizeSmall),
 
             Expanded(child: Text(title, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault))),
