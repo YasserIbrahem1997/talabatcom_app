@@ -76,7 +76,7 @@ class Images {
   static const String sender = 'assets/image/sender.png';
   static const String wallet = 'assets/image/wallet.png';
   static const String loyal = 'assets/image/loyal.png';
-  static const String referImage = 'assets/image/refer_earn.png';
+  static const String referImage = 'assets/image/referrrrrr.png';
   static const String referCode = 'assets/image/refer_code.png';
   static const String giftBox1 = 'assets/image/gift_box1.gif';
   static const String giftBox = 'assets/image/giftbox.gif';

@@ -11,7 +11,7 @@ class _SplashOneState extends State<SplashOne> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 3), () {
       // Navigate to the existing SplashScreen after 3 seconds
       Get.offNamed('/splashScreen');
     });

@@ -44,7 +44,7 @@ class ModuleView extends StatelessWidget {
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2, // Only one item per row
                           mainAxisSpacing: Dimensions.paddingSizeSmall,
-                          crossAxisSpacing: Dimensions.paddingSizeSmall,
+                          crossAxisSpacing: Dimensions.paddingSizeExtraOverLarge,
                           childAspectRatio: 1, // Ensures the item is a square
                         ),
                         padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
@@ -72,22 +72,29 @@ class ModuleView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                      child: CustomImage(
-                        image: '${splashController.configModel!.baseUrls!.moduleImageUrl}/${splashController.moduleList![index].icon}',
-                        height: 80,
-                        width: 80,
+                    Expanded(
+                      flex:3,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                        child: CustomImage(
+                          image: '${splashController.configModel!.baseUrls!.moduleImageUrl}/${splashController.moduleList![index].icon}',
+                         fit: BoxFit.cover,
+                          height: MediaQuery.of(context).size.height/1,
+                          width: MediaQuery.of(context).size.height/1,
+                        ),
                       ),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
-                    Center(
-                      child: Text(
-                        splashController.moduleList![index].moduleName!,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          splashController.moduleList![index].moduleName!,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+                        ),
                       ),
                     ),
                   ],
