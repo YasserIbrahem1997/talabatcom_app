@@ -16,7 +16,6 @@ import 'package:talabatcom/util/images.dart';
 import 'package:talabatcom/common/widgets/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:talabatcom/util/styles.dart';
 
 class SplashScreen extends StatefulWidget {
   final NotificationBodyModel? body;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:get/get.dart';
 import 'package:talabatcom/features/home/controllers/home_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';

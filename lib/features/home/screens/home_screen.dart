@@ -119,8 +119,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
+  late TabController _tabController;
+  int _selectedIndex = 0; // State variable to keep track of the selected index
 
   @override
   void initState() {
@@ -142,12 +145,15 @@ class _HomeScreenState extends State<HomeScreen> {
           false,
           updateInAddress: true);
     }
+    _tabController =
+        TabController(length: 3, vsync: this); // Adjust the length as needed
   }
 
   @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();
+    _tabController.dispose();
   }
 
   void _showReferBottomSheet() {
@@ -211,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ResponsiveHelper.isDesktop(context) ? const WebMenuBar() : null,
           endDrawer: const MenuDrawer(),
           endDrawerEnableOpenDragGesture: false,
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           body: isParcel
               ? const ParcelCategoryScreen()
               : SafeArea(
@@ -287,13 +293,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 elevation: 0,
                                 automaticallyImplyLeading: false,
                                 surfaceTintColor:
-                                    Theme.of(context).colorScheme.background,
+                                    Theme.of(context).colorScheme.surface,
                                 backgroundColor:
                                     ResponsiveHelper.isDesktop(context)
                                         ? Colors.transparent
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .background,
+                                        : Theme.of(context).colorScheme.surface,
                                 title: Center(
                                     child: Container(
                                   width: Dimensions.webMaxWidth,
@@ -301,8 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Get.find<LocalizationController>().isLtr
                                           ? 60
                                           : 70,
-                                  color:
-                                      Theme.of(context).colorScheme.background,
+                                  color: Theme.of(context).colorScheme.surface,
                                   child: Row(children: [
                                     (splashController.module != null &&
                                             splashController
@@ -509,6 +512,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               SliverToBoxAdapter(
                                 child: Center(
                                     child: SizedBox(
+                                        child: !showMobileModule
+                                            ?ModuleViewTow(
+                                            splashController: splashController
+                                        )
+                                            : const Text(""))),
+                              ),
+                              SliverToBoxAdapter(
+                                child: Center(
+                                    child: SizedBox(
                                   width: Dimensions.webMaxWidth,
                                   child: !showMobileModule
                                       ? Column(
@@ -606,8 +618,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           .isDesktop(context)
                                                       ? 0
                                                       : 100),
-                                            ]
-                                  )
+                                            ])
                                       : ModuleView(
                                           splashController: splashController),
                                 )),
@@ -632,6 +643,36 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       });
     });
+  }
+
+  // Method to get the content based on selected index
+  Widget _getSelectedContent() {
+    switch (_selectedIndex) {
+      case 0:
+        return const GroceryHomeScreen();
+      case 1:
+        return const PharmacyHomeScreen();
+      case 2:
+        return const FoodHomeScreen();
+      case 3:
+        return const ShopHomeScreen();
+      case 4:
+        return const ShopHomeScreen();
+      case 5:
+        return const ShopHomeScreen();
+      case 6:
+        return const ShopHomeScreen();
+      case 7:
+        return const ShopHomeScreen();
+      case 8:
+        return const ShopHomeScreen();
+      case 9:
+        return const ShopHomeScreen();
+      case 10:
+        return const ShopHomeScreen();
+      default:
+        return const GroceryHomeScreen(); // Default content
+    }
   }
 }
 

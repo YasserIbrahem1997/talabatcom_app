@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SplashOne extends StatefulWidget {
+  const SplashOne({super.key});
+
   @override
   _SplashOneState createState() => _SplashOneState();
 }
@@ -11,7 +13,7 @@ class _SplashOneState extends State<SplashOne> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       // Navigate to the existing SplashScreen after 3 seconds
       Get.offNamed('/splashScreen');
     });

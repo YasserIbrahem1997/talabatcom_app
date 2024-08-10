@@ -422,7 +422,7 @@ class FoodCategoryView extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
     return Stack(children: [
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
         SizedBox(
           height: 150,
           child: categoryController.categoryList != null
@@ -545,11 +545,11 @@ class FoodCategoryView extends StatelessWidget {
                   ),
                 ),
               );
-            }, separatorBuilder: (BuildContext context, int index)  =>SizedBox(width: 10,),
+            }, separatorBuilder: (BuildContext context, int index)  =>const SizedBox(width: 10,),
           )
         : FoodCategoryShimmer(categoryController: categoryController),
         ),
-        SizedBox(height: 15,),
+        const SizedBox(height: 15,),
       ]),
     ]);
   }

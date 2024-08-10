@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
@@ -29,7 +28,6 @@ import 'package:talabatcom/common/widgets/footer_view.dart';
 import 'package:talabatcom/features/location/screens/pick_map_screen.dart';
 import 'package:talabatcom/features/location/widgets/landing_card_widget.dart';
 import 'package:talabatcom/features/location/widgets/registration_card_widget.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -303,8 +301,8 @@ class _WebLandingPageState extends State<WebLandingPage> {
                             style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault), textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: Dimensions.paddingSizeSmall),
-                          Expanded(child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
+                          const Expanded(child: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
                             padding: EdgeInsets.zero,
                             // child: Html(
                             //   data: splashController.moduleList![index].description ?? '', shrinkWrap: true,

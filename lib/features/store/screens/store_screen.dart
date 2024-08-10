@@ -105,7 +105,7 @@ class _StoreScreenState extends State<StoreScreen> {
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context) ? const WebMenuBar() : null,
       endDrawer: const MenuDrawer(),endDrawerEnableOpenDragGesture: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: GetBuilder<StoreController>(builder: (storeController) {
         return GetBuilder<CategoryController>(builder: (categoryController) {
           Store? store;
@@ -724,7 +724,7 @@ class _StoreScreenState extends State<StoreScreen> {
               SliverToBoxAdapter(child: Container(
                 width: Dimensions.webMaxWidth,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                 ),
                 child: PaginatedListView(
                   scrollController: scrollController,

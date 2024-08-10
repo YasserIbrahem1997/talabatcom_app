@@ -141,55 +141,52 @@ class StoreCardWithDistance extends StatelessWidget {
 
                   Expanded(
                     flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 3, horizontal: Dimensions.paddingSizeSmall),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-                            boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withOpacity(0.1), spreadRadius: 1, blurRadius: 3)],
-                          ),
-                          child: Row(children: [
-
-                            Image.asset(Images.distanceLine, height: 15, width: 15),
-                            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-                            Text(
-                              '${distance > 100 ? '100+' : distance.toStringAsFixed(2)} ${'km'.tr}',
-                              style: robotoBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall),
-                            ),
-                            const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-
-                            Text('from_you'.tr, style: robotoRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall)),
-                          ]),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: Dimensions.paddingSizeSmall),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
+                          boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withOpacity(0.1), spreadRadius: 1, blurRadius: 3)],
                         ),
+                        child: Row(children: [
 
-                        CustomButton(
-                          height: 30, width: fromAllStore? 70 : 65,
-                          radius: Dimensions.radiusSmall,
-                          onPressed: () {
-                            if(Get.find<SplashController>().moduleList != null) {
-                              for(ModuleModel module in Get.find<SplashController>().moduleList!) {
-                                if(module.id == store.moduleId) {
-                                  Get.find<SplashController>().setModule(module);
-                                  break;
-                                }
+                          Image.asset(Images.distanceLine, height: 15, width: 15),
+                          const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+
+                          Text(
+                            '${distance > 100 ? '100+' : distance.toStringAsFixed(2)} ${'km'.tr}',
+                            style: robotoBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall),
+                          ),
+                          const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+
+                          Text('from_you'.tr, style: robotoRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeExtraSmall)),
+                        ]),
+                      ),
+
+                      CustomButton(
+                        height: 30, width: fromAllStore? 60 : 50,
+                        radius: Dimensions.radiusSmall,
+                        onPressed: () {
+                          if(Get.find<SplashController>().moduleList != null) {
+                            for(ModuleModel module in Get.find<SplashController>().moduleList!) {
+                              if(module.id == store.moduleId) {
+                                Get.find<SplashController>().setModule(module);
+                                break;
                               }
                             }
-                            Get.toNamed(
-                              RouteHelper.getStoreRoute(id: store.id, page: 'store'),
-                              arguments: StoreScreen(store: store, fromModule: false),
-                            );
-                          },
-                          buttonText: 'visit'.tr,
-                          color: Theme.of(context).primaryColor,
-                          textColor: Theme.of(context).cardColor,
-                          fontSize: Dimensions.fontSizeSmall,
-                        ),
-                      ]),
-                    ),
+                          }
+                          Get.toNamed(
+                            RouteHelper.getStoreRoute(id: store.id, page: 'store'),
+                            arguments: StoreScreen(store: store, fromModule: false),
+                          );
+                        },
+                        buttonText: 'visit'.tr,
+                        color: Theme.of(context).primaryColor,
+                        textColor: Theme.of(context).cardColor,
+                        fontSize: Dimensions.fontSizeExtraSmall,
+                      ),
+                    ]),
                   ),
                 ]),
               ),

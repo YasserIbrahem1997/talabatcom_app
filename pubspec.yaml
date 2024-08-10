@@ -72,6 +72,7 @@ flutter:
   assets:
     - assets/image/
     - assets/language/
+    - assets/map_style.json
 
   fonts:
     - family: Rubik

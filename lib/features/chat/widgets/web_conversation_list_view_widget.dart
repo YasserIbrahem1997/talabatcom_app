@@ -142,7 +142,7 @@ class _WebConversationListViewWidgetState extends State<WebConversationListViewW
                         }
 
                       },
-                      highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.1),
+                      highlightColor: Theme.of(context).colorScheme.surface.withOpacity(0.1),
                       radius: Dimensions.radiusSmall,
                       child: Stack(children: [
                         Padding(

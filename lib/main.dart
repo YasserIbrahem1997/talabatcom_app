@@ -178,7 +178,7 @@ class _MyAppState extends State<MyApp> {
                       AppConstants.languages[0].countryCode),
             initialRoute: '/splashOne', // Updated initial route
             getPages: [
-              GetPage(name: '/splashOne', page: () => SplashOne()),
+              GetPage(name: '/splashOne', page: () => const SplashOne()),
               GetPage(name: '/splashScreen', page: () => SplashScreen(body: widget.body,)),
               ...RouteHelper.routes, // Existing routes
             ],
