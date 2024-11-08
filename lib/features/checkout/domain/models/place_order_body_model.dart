@@ -37,6 +37,7 @@ class PlaceOrderBodyModel {
   int? _isBuyNow;
   String? _guestEmail;
   double? _extraPackagingAmount;
+  String? _area;
 
   PlaceOrderBodyModel({
     required List<OnlineCart> cart,
@@ -73,6 +74,7 @@ class PlaceOrderBodyModel {
     required int isBuyNow,
     required String? guestEmail,
     required double? extraPackagingAmount,
+    required String? area,
   }) {
     _cart = cart;
     _couponDiscountAmount = couponDiscountAmount;
@@ -108,6 +110,7 @@ class PlaceOrderBodyModel {
     _isBuyNow = isBuyNow;
     _guestEmail = guestEmail;
     _extraPackagingAmount = extraPackagingAmount;
+    _area = area;
   }
 
   List<OnlineCart>? get cart => _cart;
@@ -142,6 +145,7 @@ class PlaceOrderBodyModel {
   int? get guestId => _guestId;
   int? get isBuyNow => _isBuyNow;
   String? get guestEmail => _guestEmail;
+  String? get area => _area;
   double? get extraPackagingAmount => _extraPackagingAmount;
 
   PlaceOrderBodyModel.fromJson(Map<String, dynamic> json) {
@@ -171,6 +175,7 @@ class PlaceOrderBodyModel {
     _contactPersonName = json['contact_person_name'];
     _contactPersonNumber = json['contact_person_number'];
     _addressType = json['address_type'];
+    _area = json['area'];
     _parcelCategoryId = json['parcel_category_id'];
     _chargePayer = json['charge_payer'];
     _streetNumber = json['road'];
@@ -214,6 +219,7 @@ class PlaceOrderBodyModel {
     data['discount_amount'] = _discountAmount.toString();
     data['tax_amount'] = _taxAmount.toString();
     data['address'] = _address ?? '';
+    data['area'] = _area ?? '';
     if (_receiverDetails != null) {
       data['receiver_details'] = jsonEncode(_receiverDetails!.toJson());
     }

@@ -44,19 +44,61 @@ class StoreCardWidget extends StatelessWidget {
             ),
             child: CustomInkWell(
               onTap: () {
-                if(store != null) {
-                  if(Get.find<SplashController>().moduleList != null) {
-                    for(ModuleModel module in Get.find<SplashController>().moduleList!) {
-                      if(module.id == store!.moduleId) {
-                        Get.find<SplashController>().setModule(module);
-                        break;
+                void _showAlertDialog(BuildContext context) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+
+                        content:  Text( "\n " + 'مطعم' +" "+ store!.name.toString() +" "+ "مغلق حاليا ,يمكنك اضافة المنتجات الي عربة التسوق وطلبها عند توفر المتجر عند الساعة: 8.00ص"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('الغاء '),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('متابعة'),
+                            onPressed: () {
+                              if(store != null) {
+                                if(Get.find<SplashController>().moduleList != null) {
+                                  for(ModuleModel module in Get.find<SplashController>().moduleList!) {
+                                    if(module.id == store!.moduleId) {
+                                      Get.find<SplashController>().setModule(module);
+                                      break;
+                                    }
+                                  }
+                                }
+                                Get.toNamed(
+                                  RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
+                                  arguments: StoreScreen(store: store, fromModule: false),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+                if(isAvailable){
+                  if(store != null) {
+                    if(Get.find<SplashController>().moduleList != null) {
+                      for(ModuleModel module in Get.find<SplashController>().moduleList!) {
+                        if(module.id == store!.moduleId) {
+                          Get.find<SplashController>().setModule(module);
+                          break;
+                        }
                       }
                     }
+                    Get.toNamed(
+                      RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
+                      arguments: StoreScreen(store: store, fromModule: false),
+                    );
                   }
-                  Get.toNamed(
-                    RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
-                    arguments: StoreScreen(store: store, fromModule: false),
-                  );
+                }else{
+                  _showAlertDialog(context);
                 }
               },
               radius: Dimensions.radiusDefault,

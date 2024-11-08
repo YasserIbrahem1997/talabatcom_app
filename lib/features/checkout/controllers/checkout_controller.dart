@@ -34,6 +34,7 @@ import 'package:universal_html/html.dart' as html;
 
 class CheckoutController extends GetxController implements GetxService {
   final CheckoutServiceInterface checkoutServiceInterface;
+
   CheckoutController({required this.checkoutServiceInterface});
 
   final TextEditingController couponController = TextEditingController();
@@ -46,143 +47,181 @@ class CheckoutController extends GetxController implements GetxService {
   final FocusNode houseNode = FocusNode();
   final FocusNode floorNode = FocusNode();
 
-  String? countryDialCode = Get.find<AuthController>().getUserCountryCode().isNotEmpty ? Get.find<AuthController>().getUserCountryCode()
-      : CountryCode.fromCountryCode(Get.find<SplashController>().configModel!.country!).dialCode ?? Get.find<LocalizationController>().locale.countryCode;
+  String? countryDialCode =
+      Get.find<AuthController>().getUserCountryCode().isNotEmpty
+          ? Get.find<AuthController>().getUserCountryCode()
+          : CountryCode.fromCountryCode(
+                      Get.find<SplashController>().configModel!.country!)
+                  .dialCode ??
+              Get.find<LocalizationController>().locale.countryCode;
 
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   AddressModel? _guestAddress;
+
   AddressModel? get guestAddress => _guestAddress;
 
   int? _mostDmTipAmount;
+
   int? get mostDmTipAmount => _mostDmTipAmount;
 
   String _preferableTime = '';
+
   String get preferableTime => _preferableTime;
 
   List<OfflineMethodModel>? _offlineMethodList;
+
   List<OfflineMethodModel>? get offlineMethodList => _offlineMethodList;
 
   bool _isPartialPay = false;
+
   bool get isPartialPay => _isPartialPay;
 
   double _tips = 0.0;
+
   double get tips => _tips;
 
   int _selectedTips = 0;
+
   int get selectedTips => _selectedTips;
 
   Store? _store;
+
   Store? get store => _store;
 
   int? _addressIndex = 0;
+
   int? get addressIndex => _addressIndex;
 
   XFile? _orderAttachment;
+
   XFile? get orderAttachment => _orderAttachment;
 
   Uint8List? _rawAttachment;
+
   Uint8List? get rawAttachment => _rawAttachment;
 
   bool _acceptTerms = true;
+
   bool get acceptTerms => _acceptTerms;
 
   int _paymentMethodIndex = -1;
+
   int get paymentMethodIndex => _paymentMethodIndex;
 
   int _selectedDateSlot = 0;
+
   int get selectedDateSlot => _selectedDateSlot;
 
   int _selectedTimeSlot = 0;
+
   int get selectedTimeSlot => _selectedTimeSlot;
 
   double? _distance;
+
   double? get distance => _distance;
 
   List<TimeSlotModel>? _timeSlots;
+
   List<TimeSlotModel>? get timeSlots => _timeSlots;
 
   List<TimeSlotModel>? _allTimeSlots;
+
   List<TimeSlotModel>? get allTimeSlots => _allTimeSlots;
 
   List<XFile> _pickedPrescriptions = [];
+
   List<XFile> get pickedPrescriptions => _pickedPrescriptions;
 
   double? _extraCharge;
+
   double? get extraCharge => _extraCharge;
 
   String? _orderType = 'delivery';
+
   String? get orderType => _orderType;
 
   double _viewTotalPrice = 0;
+
   double? get viewTotalPrice => _viewTotalPrice;
 
   int _selectedOfflineBankIndex = 0;
+
   int get selectedOfflineBankIndex => _selectedOfflineBankIndex;
 
   int _selectedInstruction = -1;
+
   int get selectedInstruction => _selectedInstruction;
 
   bool _isDmTipSave = false;
+
   bool get isDmTipSave => _isDmTipSave;
 
   String? _digitalPaymentName;
+
   String? get digitalPaymentName => _digitalPaymentName;
 
   bool _canShowTipsField = false;
+
   bool get canShowTipsField => _canShowTipsField;
 
   bool _isExpanded = false;
+
   bool get isExpanded => _isExpanded;
 
   bool _isExpand = false;
+
   bool get isExpand => _isExpand;
+  var selectedZoneId = 0.obs;
+  var zoneIds = <int>[].obs;
 
   Future<void> initCheckoutData(int? storeId) async {
     Get.find<CouponController>().removeCouponData(false);
     clearPrevData();
-    _store = await Get.find<StoreController>().getStoreDetails(Store(id: storeId), false);
+    _store = await Get.find<StoreController>()
+        .getStoreDetails(Store(id: storeId), false);
     initializeTimeSlot(_store!);
   }
 
-  void showTipsField(){
+  void showTipsField() {
     _canShowTipsField = !_canShowTipsField;
     update();
   }
 
-  Future<void> addTips(double tips)async {
+  Future<void> addTips(double tips) async {
     _tips = tips;
     update();
   }
 
-  void expandedUpdate(bool status){
+  void expandedUpdate(bool status) {
     _isExpanded = status;
     update();
   }
 
   void setPaymentMethod(int index, {bool isUpdate = true}) {
     _paymentMethodIndex = index;
-    if(isUpdate){
+    if (isUpdate) {
       update();
     }
   }
 
-  void changeDigitalPaymentName(String name){
+  void changeDigitalPaymentName(String name) {
     _digitalPaymentName = name;
     update();
   }
 
   void setOrderType(String? type, {bool notify = true}) {
     _orderType = type;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void changePartialPayment({bool isUpdate = true}){
+  void changePartialPayment({bool isUpdate = true}) {
     _isPartialPay = !_isPartialPay;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
@@ -192,26 +231,26 @@ class CheckoutController extends GetxController implements GetxService {
     update();
   }
 
-  void setGuestAddress(AddressModel? address, {bool isUpdate = true}){
+  void setGuestAddress(AddressModel? address, {bool isUpdate = true}) {
     _guestAddress = address;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  Future<void> getDmTipMostTapped()async {
+  Future<void> getDmTipMostTapped() async {
     _mostDmTipAmount = await checkoutServiceInterface.getDmTipMostTapped();
     update();
   }
 
-  void setPreferenceTimeForView(String time, {bool isUpdate = true}){
+  void setPreferenceTimeForView(String time, {bool isUpdate = true}) {
     _preferableTime = time;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  Future<void> getOfflineMethodList()async {
+  Future<void> getOfflineMethodList() async {
     _offlineMethodList = null;
     _offlineMethodList = await checkoutServiceInterface.getOfflineMethodList();
     update();
@@ -219,17 +258,17 @@ class CheckoutController extends GetxController implements GetxService {
 
   void updateTips(int index, {bool notify = true}) {
     _selectedTips = index;
-    if(_selectedTips == 0 || _selectedTips == 5) {
+    if (_selectedTips == 0 || _selectedTips == 5) {
       _tips = 0;
-    }else {
+    } else {
       _tips = double.parse(AppConstants.tips[index]);
     }
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void saveSharedPrefDmTipIndex(String i){
+  void saveSharedPrefDmTipIndex(String i) {
     checkoutServiceInterface.saveSharedPrefDmTipIndex(i);
   }
 
@@ -237,7 +276,7 @@ class CheckoutController extends GetxController implements GetxService {
     return checkoutServiceInterface.getSharedPrefDmTipIndex();
   }
 
-  void setTotalAmount(double amount){
+  void setTotalAmount(double amount) {
     _viewTotalPrice = amount;
   }
 
@@ -253,26 +292,41 @@ class CheckoutController extends GetxController implements GetxService {
   }
 
   Future<void> initializeTimeSlot(Store store) async {
-    _timeSlots = await checkoutServiceInterface.initializeTimeSlot(store, Get.find<SplashController>().configModel!.scheduleOrderSlotDuration!);
-    _allTimeSlots = await checkoutServiceInterface.initializeTimeSlot(store, Get.find<SplashController>().configModel!.scheduleOrderSlotDuration!);
+    _timeSlots = await checkoutServiceInterface.initializeTimeSlot(store,
+        Get.find<SplashController>().configModel!.scheduleOrderSlotDuration!);
+    _allTimeSlots = await checkoutServiceInterface.initializeTimeSlot(store,
+        Get.find<SplashController>().configModel!.scheduleOrderSlotDuration!);
 
-    _validateSlot(_allTimeSlots!, 0, store.orderPlaceToScheduleInterval, notify: false);
+    _validateSlot(_allTimeSlots!, 0, store.orderPlaceToScheduleInterval,
+        notify: false);
   }
 
-  void _validateSlot(List<TimeSlotModel> slots, int dateIndex, int? interval, {bool notify = true}) {
-    _timeSlots = checkoutServiceInterface.validateTimeSlot(slots, dateIndex, interval, Get.find<SplashController>().configModel!.moduleConfig!.module!.orderPlaceToScheduleInterval!);
+  void _validateSlot(List<TimeSlotModel> slots, int dateIndex, int? interval,
+      {bool notify = true}) {
+    _timeSlots = checkoutServiceInterface.validateTimeSlot(
+        slots,
+        dateIndex,
+        interval,
+        Get.find<SplashController>()
+            .configModel!
+            .moduleConfig!
+            .module!
+            .orderPlaceToScheduleInterval!);
 
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void pickPrescriptionImage({required bool isRemove, required bool isCamera}) async {
-    if(isRemove) {
+  void pickPrescriptionImage(
+      {required bool isRemove, required bool isCamera}) async {
+    if (isRemove) {
       _pickedPrescriptions = [];
-    }else {
-      XFile? xFile = await ImagePicker().pickImage(source: isCamera ? ImageSource.camera : ImageSource.gallery, imageQuality: 50);
-      if(xFile != null) {
+    } else {
+      XFile? xFile = await ImagePicker().pickImage(
+          source: isCamera ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50);
+      if (xFile != null) {
         _pickedPrescriptions.add(xFile);
       }
       update();
@@ -292,30 +346,50 @@ class CheckoutController extends GetxController implements GetxService {
     return Get.find<StoreController>().isStoreOpenNow(active, schedules);
   }
 
-  Future<double?> getDistanceInKM(LatLng originLatLng, LatLng destinationLatLng, {bool isDuration = false, bool fromDashboard = false}) async {
+  Future<double?> getDistanceInKM(LatLng originLatLng, LatLng destinationLatLng,
+      {bool isDuration = false, bool fromDashboard = false}) async {
     _distance = -1;
-    Response response = await checkoutServiceInterface.getDistanceInMeter(originLatLng, destinationLatLng);
+    Response response = await checkoutServiceInterface.getDistanceInMeter(
+        originLatLng, destinationLatLng);
     try {
       if (response.statusCode == 200 && response.body['status'] == 'OK') {
-        if(isDuration){
-          _distance = DistanceModel.fromJson(response.body).rows![0].elements![0].duration!.value! / 3600;
-        }else{
-          _distance = DistanceModel.fromJson(response.body).rows![0].elements![0].distance!.value! / 1000;
+        if (isDuration) {
+          _distance = DistanceModel.fromJson(response.body)
+                  .rows![0]
+                  .elements![0]
+                  .duration!
+                  .value! /
+              3600;
+        } else {
+          _distance = DistanceModel.fromJson(response.body)
+                  .rows![0]
+                  .elements![0]
+                  .distance!
+                  .value! /
+              1000;
         }
       } else {
-        if(!isDuration) {
+        if (!isDuration) {
           _distance = Geolocator.distanceBetween(
-            originLatLng.latitude, originLatLng.longitude, destinationLatLng.latitude, destinationLatLng.longitude,
-          ) / 1000;
+                originLatLng.latitude,
+                originLatLng.longitude,
+                destinationLatLng.latitude,
+                destinationLatLng.longitude,
+              ) /
+              1000;
         }
       }
     } catch (e) {
-      if(!isDuration) {
-        _distance = Geolocator.distanceBetween(originLatLng.latitude, originLatLng.longitude,
-            destinationLatLng.latitude, destinationLatLng.longitude) / 1000;
+      if (!isDuration) {
+        _distance = Geolocator.distanceBetween(
+                originLatLng.latitude,
+                originLatLng.longitude,
+                destinationLatLng.latitude,
+                destinationLatLng.longitude) /
+            1000;
       }
     }
-    if(!fromDashboard) {
+    if (!fromDashboard) {
       await _getExtraCharge(_distance);
     }
     update();
@@ -330,39 +404,48 @@ class CheckoutController extends GetxController implements GetxService {
 
   Future<bool> checkBalanceStatus(double totalPrice, double discount) async {
     totalPrice = (totalPrice - discount);
-    if(isPartialPay){
+    if (isPartialPay) {
       changePartialPayment();
     }
     setPaymentMethod(-1);
-    if((Get.find<ProfileController>().userInfoModel!.walletBalance! < totalPrice) && (Get.find<ProfileController>().userInfoModel!.walletBalance! != 0.0)){
-      Get.dialog(PartialPayDialogWidget(isPartialPay: true, totalPrice: totalPrice), useSafeArea: false,);
-    }else{
-      Get.dialog(PartialPayDialogWidget(isPartialPay: false, totalPrice: totalPrice), useSafeArea: false,);
+    if ((Get.find<ProfileController>().userInfoModel!.walletBalance! <
+            totalPrice) &&
+        (Get.find<ProfileController>().userInfoModel!.walletBalance! != 0.0)) {
+      Get.dialog(
+        PartialPayDialogWidget(isPartialPay: true, totalPrice: totalPrice),
+        useSafeArea: false,
+      );
+    } else {
+      Get.dialog(
+        PartialPayDialogWidget(isPartialPay: false, totalPrice: totalPrice),
+        useSafeArea: false,
+      );
     }
     update();
     return true;
   }
 
-  void selectOfflineBank(int index, {bool canUpdate = true}){
+  void selectOfflineBank(int index, {bool canUpdate = true}) {
     _selectedOfflineBankIndex = index;
-    if(canUpdate) {
+    if (canUpdate) {
       update();
     }
   }
 
   void pickImage() async {
-    _orderAttachment = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 50);
-    if(_orderAttachment != null) {
+    _orderAttachment = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
+    if (_orderAttachment != null) {
       _orderAttachment = await NetworkInfo.compressImage(_orderAttachment!);
       _rawAttachment = await _orderAttachment!.readAsBytes();
     }
     update();
   }
 
-  void setInstruction(int index){
-    if(_selectedInstruction == index){
+  void setInstruction(int index) {
+    if (_selectedInstruction == index) {
       _selectedInstruction = -1;
-    }else {
+    } else {
       _selectedInstruction = index;
     }
     update();
@@ -375,26 +458,44 @@ class CheckoutController extends GetxController implements GetxService {
 
   void stopLoader({bool canUpdate = true}) {
     _isLoading = false;
-    if(canUpdate) {
+    if (canUpdate) {
       update();
     }
   }
 
-  Future<String> placeOrder(PlaceOrderBodyModel placeOrderBody, int? zoneID, double amount, double? maximumCodOrderAmount, bool fromCart, bool isCashOnDeliveryActive, List<XFile>? orderAttachment, {bool isOfflinePay = false}) async {
+  Future<String> placeOrder(
+      PlaceOrderBodyModel placeOrderBody,
+      int? zoneID,
+      double amount,
+      double? maximumCodOrderAmount,
+      bool fromCart,
+      bool isCashOnDeliveryActive,
+      List<XFile>? orderAttachment,
+      {bool isOfflinePay = false}) async {
     List<MultipartBody>? multiParts = [];
-    for(XFile file in orderAttachment!) {
+    for (XFile file in orderAttachment!) {
       multiParts.add(MultipartBody('order_attachment[]', file));
     }
     _isLoading = true;
     update();
     String orderID = '';
-    Response response = await checkoutServiceInterface.placeOrder(placeOrderBody, multiParts);
+    Response response =
+        await checkoutServiceInterface.placeOrder(placeOrderBody, multiParts);
     _isLoading = false;
     if (response.statusCode == 200) {
       String? message = response.body['message'];
       orderID = response.body['order_id'].toString();
-      if(!isOfflinePay) {
-        callback(true, message, orderID, zoneID, amount, maximumCodOrderAmount, fromCart, isCashOnDeliveryActive, placeOrderBody.contactPersonNumber!);
+      if (!isOfflinePay) {
+        callback(
+            true,
+            message,
+            orderID,
+            zoneID,
+            amount,
+            maximumCodOrderAmount,
+            fromCart,
+            isCashOnDeliveryActive,
+            placeOrderBody.contactPersonNumber!);
       } else {
         Get.find<CartController>().getCartDataOnline();
       }
@@ -404,8 +505,17 @@ class CheckoutController extends GetxController implements GetxService {
         print('-------- Order placed successfully $orderID ----------');
       }
     } else {
-      if(!isOfflinePay) {
-        callback(false, response.statusText, '-1', zoneID, amount, maximumCodOrderAmount, fromCart, isCashOnDeliveryActive, placeOrderBody.contactPersonNumber);
+      if (!isOfflinePay) {
+        callback(
+            false,
+            response.statusText,
+            '-1',
+            zoneID,
+            amount,
+            maximumCodOrderAmount,
+            fromCart,
+            isCashOnDeliveryActive,
+            placeOrderBody.contactPersonNumber);
       } else {
         showCustomSnackBar(response.statusText);
       }
@@ -415,90 +525,142 @@ class CheckoutController extends GetxController implements GetxService {
     return orderID;
   }
 
-  Future<void> placePrescriptionOrder(int? storeId, int? zoneID, double? distance, String address, String longitude, String latitude, String note, List<XFile> orderAttachment,
-      String dmTips, String deliveryInstruction, double orderAmount, double maxCodAmount, bool fromCart, bool isCashOnDeliveryActive) async {
+  Future<void> placePrescriptionOrder(
+      int? storeId,
+      int? zoneID,
+      double? distance,
+      String address,
+      String longitude,
+      String latitude,
+      String note,
+      List<XFile> orderAttachment,
+      String dmTips,
+      String deliveryInstruction,
+      double orderAmount,
+      double maxCodAmount,
+      bool fromCart,
+      bool isCashOnDeliveryActive,String area,) async {
     List<MultipartBody> multiParts = [];
-    for(XFile file in orderAttachment) {
+    for (XFile file in orderAttachment) {
       multiParts.add(MultipartBody('order_attachment[]', file));
     }
     _isLoading = true;
     update();
-    Response response = await checkoutServiceInterface.placePrescriptionOrder(storeId, distance, address,longitude, latitude, note, multiParts, dmTips, deliveryInstruction);
+    Response response = await checkoutServiceInterface.placePrescriptionOrder(
+        storeId,
+        distance,
+        address,
+        longitude,
+        latitude,
+        note,
+        multiParts,
+        dmTips,
+        deliveryInstruction,
+      area,
+    );
     _isLoading = false;
     if (response.statusCode == 200) {
       String? message = response.body['message'];
       String orderID = response.body['order_id'].toString();
-      callback(true, message, orderID, zoneID, orderAmount, maxCodAmount, fromCart, isCashOnDeliveryActive, null);
+      callback(true, message, orderID, zoneID, orderAmount, maxCodAmount,
+          fromCart, isCashOnDeliveryActive, null);
       _orderAttachment = null;
       _rawAttachment = null;
       if (kDebugMode) {
         print('-------- Order placed successfully $orderID ----------');
       }
     } else {
-      callback(false, response.statusText, '-1', zoneID, orderAmount, maxCodAmount, fromCart, isCashOnDeliveryActive, null);
+      callback(false, response.statusText, '-1', zoneID, orderAmount,
+          maxCodAmount, fromCart, isCashOnDeliveryActive, null);
     }
     update();
   }
 
   void callback(
-      bool isSuccess, String? message, String orderID, int? zoneID, double amount,
-      double? maximumCodOrderAmount, bool fromCart, bool isCashOnDeliveryActive, String? contactNumber,
-      ) async {
-    if(isSuccess) {
-      if(fromCart) {
+    bool isSuccess,
+    String? message,
+    String orderID,
+    int? zoneID,
+    double amount,
+    double? maximumCodOrderAmount,
+    bool fromCart,
+    bool isCashOnDeliveryActive,
+    String? contactNumber,
+  ) async {
+    if (isSuccess) {
+      if (fromCart) {
         Get.find<CartController>().clearCartList();
       }
       setGuestAddress(null);
-      if(!Get.find<OrderController>().showBottomSheet){
+      if (!Get.find<OrderController>().showBottomSheet) {
         Get.find<OrderController>().showRunningOrders(canUpdate: false);
       }
-      if(isDmTipSave){
+      if (isDmTipSave) {
         saveSharedPrefDmTipIndex(selectedTips.toString());
       }
       stopLoader(canUpdate: false);
       HomeScreen.loadData(true);
-      if(paymentMethodIndex == 2) {
-        if(GetPlatform.isWeb) {
+      if (paymentMethodIndex == 2) {
+        if (GetPlatform.isWeb) {
           // Get.back();
           await Get.find<AuthController>().saveGuestNumber(contactNumber ?? '');
           String? hostname = html.window.location.hostname;
           String protocol = html.window.location.protocol;
           String selectedUrl;
-          selectedUrl = '${AppConstants.baseUrl}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<ProfileController>().userInfoModel?.id ?? AuthHelper.getGuestId()}'
+          selectedUrl =
+              '${AppConstants.baseUrl}/payment-mobile?order_id=$orderID&&customer_id=${Get.find<ProfileController>().userInfoModel?.id ?? AuthHelper.getGuestId()}'
               '&payment_method=$digitalPaymentName&payment_platform=web&&callback=$protocol//$hostname${RouteHelper.orderSuccess}?id=$orderID&status=';
 
-          html.window.open(selectedUrl,"_self");
-        } else{
+          html.window.open(selectedUrl, "_self");
+        } else {
           Get.offNamed(RouteHelper.getPaymentRoute(
-            orderID, Get.find<ProfileController>().userInfoModel?.id ?? 0, orderType, amount,
-            isCashOnDeliveryActive, digitalPaymentName, guestId: AuthHelper.getGuestId(),
+            orderID,
+            Get.find<ProfileController>().userInfoModel?.id ?? 0,
+            orderType,
+            amount,
+            isCashOnDeliveryActive,
+            digitalPaymentName,
+            guestId: AuthHelper.getGuestId(),
             contactNumber: contactNumber,
           ));
         }
       } else {
-        double total = ((amount / 100) * Get.find<SplashController>().configModel!.loyaltyPointItemPurchasePoint!);
-        if(AuthHelper.isLoggedIn()) {
+        double total = ((amount / 100) *
+            Get.find<SplashController>()
+                .configModel!
+                .loyaltyPointItemPurchasePoint!);
+        if (AuthHelper.isLoggedIn()) {
           Get.find<AuthController>().saveEarningPoint(total.toStringAsFixed(0));
         }
-        if (ResponsiveHelper.isDesktop(Get.context) && AuthHelper.isLoggedIn()){
+        if (ResponsiveHelper.isDesktop(Get.context) &&
+            AuthHelper.isLoggedIn()) {
           Get.offNamed(RouteHelper.getInitialRoute());
-          Future.delayed(const Duration(seconds: 2) , () => Get.dialog(Center(child: SizedBox(height: 350, width : 500, child: OrderSuccessfulDialog( orderID: orderID)))));
+          Future.delayed(
+              const Duration(seconds: 2),
+              () => Get.dialog(Center(
+                  child: SizedBox(
+                      height: 350,
+                      width: 500,
+                      child: OrderSuccessfulDialog(orderID: orderID)))));
         } else {
-          Get.offNamed(RouteHelper.getOrderSuccessRoute(orderID, contactNumber));
+          Get.offNamed(
+              RouteHelper.getOrderSuccessRoute(orderID, contactNumber));
         }
       }
       clearPrevData();
       Get.find<CouponController>().removeCouponData(false);
       updateTips(
-        getSharedPrefDmTipIndex().isNotEmpty ? int.parse(getSharedPrefDmTipIndex()) : 0,
+        getSharedPrefDmTipIndex().isNotEmpty
+            ? int.parse(getSharedPrefDmTipIndex())
+            : 0,
         notify: false,
       );
-    }else {
+    } else {
       showCustomSnackBar(message);
     }
   }
 
-  void toggleExpand(){
+  void toggleExpand() {
     _isExpand = !_isExpand;
     update();
   }
@@ -510,35 +672,40 @@ class CheckoutController extends GetxController implements GetxService {
 
   void updateDateSlot(int index, int? interval) {
     _selectedDateSlot = index;
-    if(_allTimeSlots != null) {
+    if (_allTimeSlots != null) {
       validateSlot(_allTimeSlots!, index, interval);
     }
     update();
   }
 
-  void validateSlot(List<TimeSlotModel> slots, int dateIndex, int? interval, {bool notify = true}) {
+  void validateSlot(List<TimeSlotModel> slots, int dateIndex, int? interval,
+      {bool notify = true}) {
     _timeSlots = [];
     DateTime now = DateTime.now();
-    if(Get.find<SplashController>().configModel!.moduleConfig!.module!.orderPlaceToScheduleInterval!) {
+    if (Get.find<SplashController>()
+        .configModel!
+        .moduleConfig!
+        .module!
+        .orderPlaceToScheduleInterval!) {
       now = now.add(Duration(minutes: interval!));
     }
     int day = 0;
-    if(dateIndex == 0) {
+    if (dateIndex == 0) {
       day = DateTime.now().weekday;
-    }else {
+    } else {
       day = DateTime.now().add(const Duration(days: 1)).weekday;
     }
-    if(day == 7) {
+    if (day == 7) {
       day = 0;
     }
     for (var slot in slots) {
-      if (day == slot.day && (dateIndex == 0 ? slot.endTime!.isAfter(now) : true)) {
+      if (day == slot.day &&
+          (dateIndex == 0 ? slot.endTime!.isAfter(now) : true)) {
         _timeSlots!.add(slot);
       }
     }
-    if(notify) {
+    if (notify) {
       update();
     }
   }
-
 }

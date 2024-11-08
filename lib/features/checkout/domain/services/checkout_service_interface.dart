@@ -17,5 +17,5 @@ abstract class CheckoutServiceInterface {
   Future<double> getExtraCharge(double? distance);
   Future<Response> placeOrder(PlaceOrderBodyModel orderBody, List<MultipartBody> orderAttachment);
   Future<Response> placePrescriptionOrder(int? storeId, double? distance, String address, String longitude, String latitude, String note,
-      List<MultipartBody> orderAttachment, String dmTips, String deliveryInstruction);
+      List<MultipartBody> orderAttachment, String dmTips, String deliveryInstruction,String area, );
 }

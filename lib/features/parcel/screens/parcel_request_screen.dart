@@ -590,7 +590,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
             chargePayer: parcelController.payerTypes[parcelController.payerIndex], dmTips: parcelController.tips.toString(),
             cutlery: 0, unavailableItemNote: '',
             deliveryInstruction: (isInstructionSelected ? '${parcelController.parcelInstructionList![parcelController.selectedIndexNote!].instruction}' : '') + (isInstructionSelected ? (isCustomNote ? " (${parcelController.customNote})" : '') : (isCustomNote ? parcelController.customNote ?? '' : '')),
-            partialPayment: 0, guestId: AuthHelper.isGuestLoggedIn() ? int.parse(AuthHelper.getGuestId()) : 0, isBuyNow: 0, guestEmail: null, extraPackagingAmount: null,
+            partialPayment: 0, guestId: AuthHelper.isGuestLoggedIn() ? int.parse(AuthHelper.getGuestId()) : 0, isBuyNow: 0, guestEmail: null, extraPackagingAmount: null, area: 'bb',
           );
 
           if(parcelController.paymentIndex == 3) {

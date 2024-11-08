@@ -160,6 +160,12 @@ class _MenuScreenState extends State<MenuScreen> {
                           title: 'language'.tr,
                           hideDivider: true,
                           route: RouteHelper.getLanguageRoute('menu')),
+                      Divider(),
+                      PortionWidget(
+                          icon: Images.favouriteUnselect,
+                          title: 'favorite'.tr,
+                          hideDivider: true,
+                          route: RouteHelper.getFavouriteScreen()),
                     ]),
                   )
                 ]),
@@ -423,7 +429,6 @@ class _MenuScreenState extends State<MenuScreen> {
                                   : true,
                             )
                           : const SizedBox(),
-
                       (Get.find<SplashController>()
                                   .configModel!
                                   .cancellationPolicyStatus ==
@@ -453,8 +458,6 @@ class _MenuScreenState extends State<MenuScreen> {
                                   RouteHelper.getHtmlRoute('shipping-policy'),
                             )
                           : const SizedBox(),
-
-
                     ]),
                   )
                 ]),
@@ -489,39 +492,48 @@ class _MenuScreenState extends State<MenuScreen> {
                         vertical: Dimensions.paddingSizeDefault),
                     margin: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                     child: Column(children: [
-
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           _launchURL(
                               "https://www.facebook.com/talabatcomghareb?mibextid=ZbWKwL");
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: Dimensions.paddingSizeSmall),
                           child: Column(children: [
                             Row(children: [
-                              Image.asset(Images.facebookNew, height: 30, width: 30),
-                              const SizedBox(width: Dimensions.paddingSizeSmall),
-
-                              Expanded(child: Text('facebook'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault))),
-
+                              Image.asset(Images.facebookNew,
+                                  height: 30, width: 30),
+                              const SizedBox(
+                                  width: Dimensions.paddingSizeSmall),
+                              Expanded(
+                                  child: Text('facebook'.tr,
+                                      style: robotoRegular.copyWith(
+                                          fontSize:
+                                              Dimensions.fontSizeDefault))),
                             ]),
                           ]),
                         ),
                       ),
-                    const  Divider(),
+                      const Divider(),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           _launchURL("https://wa.me/+201070812048");
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: Dimensions.paddingSizeSmall),
                           child: Column(children: [
                             Row(children: [
-                              Image.asset(Images.whatsappNew, height: 30, width: 30),
-                              const SizedBox(width: Dimensions.paddingSizeSmall),
-
-                              Expanded(child: Text('whats_app'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeDefault))),
-
+                              Image.asset(Images.whatsappNew,
+                                  height: 30, width: 30),
+                              const SizedBox(
+                                  width: Dimensions.paddingSizeSmall),
+                              Expanded(
+                                  child: Text('whats_app'.tr,
+                                      style: robotoRegular.copyWith(
+                                          fontSize:
+                                              Dimensions.fontSizeDefault))),
                             ]),
                           ]),
                         ),
@@ -529,7 +541,6 @@ class _MenuScreenState extends State<MenuScreen> {
                     ]),
                   )
                 ]),
-
                 const SizedBox(height: 20),
                 InkWell(
                   onTap: () async {

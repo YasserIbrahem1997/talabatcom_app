@@ -84,6 +84,7 @@ class _StoreScreenState extends State<StoreScreen> {
     Get.find<StoreController>().getStoreBannerList(widget.store!.id ?? Get.find<StoreController>().store!.id);
     Get.find<StoreController>().getRestaurantRecommendedItemList(widget.store!.id ?? Get.find<StoreController>().store!.id, false);
     Get.find<StoreController>().getStoreItemList(widget.store!.id ?? Get.find<StoreController>().store!.id, 1, 'all', false);
+    print(Get.find<StoreController>().getStoreItemList(widget.store!.id ?? Get.find<StoreController>().store!.id, 1, 'all', false));
 
     scrollController.addListener(() {
       if(scrollController.position.userScrollDirection == ScrollDirection.reverse){

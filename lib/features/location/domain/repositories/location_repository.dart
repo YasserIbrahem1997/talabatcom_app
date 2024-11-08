@@ -9,7 +9,7 @@ import 'package:talabatcom/common/widgets/custom_snackbar.dart';
 
 class LocationRepository implements LocationRepositoryInterface {
   final ApiClient apiClient;
-
+  List<int>? zoneIds;
   LocationRepository({required this.apiClient});
 
   @override
@@ -37,6 +37,7 @@ class LocationRepository implements LocationRepositoryInterface {
       return ZoneResponseModel(false, response.statusText, [], [], []);
     }
   }
+
 
   @override
   Future<Response> searchLocation(String text) async {

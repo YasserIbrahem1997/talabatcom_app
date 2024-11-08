@@ -20,13 +20,13 @@ class _ItemCampaignScreenState extends State<ItemCampaignScreen> {
   void initState() {
     super.initState();
 
-    Get.find<CampaignController>().getItemCampaignList(false);
+    Get.find<CampaignController>().getItemCampaignList(true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: widget.isJustForYou ? 'just_for_you'.tr : 'campaigns'.tr),
+      appBar: CustomAppBar(title: widget.isJustForYou ? 'just_for_you'.tr : 'offers'.tr),
       endDrawer: const MenuDrawer(),
       endDrawerEnableOpenDragGesture: false,
       body: SingleChildScrollView(
@@ -39,7 +39,7 @@ class _ItemCampaignScreenState extends State<ItemCampaignScreen> {
                 items: campController.itemCampaignList,
                 stores: null,
                 isCampaign: true,
-                noDataText: 'no_campaign_found'.tr,
+                noDataText: 'no_offers_found'.tr,
               );
             }),
           ),

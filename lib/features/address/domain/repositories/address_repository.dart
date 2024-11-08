@@ -22,6 +22,7 @@ class AddressRepository implements AddressRepositoryInterface<AddressModel> {
       String? message = response.body["message"];
       List<int> zoneIds = [];
       response.body['zone_ids'].forEach((z) => zoneIds.add(z));
+
       return ResponseModel(true, message, zoneIds: zoneIds);
     } else {
       return ResponseModel(false, response.statusText == 'Out of coverage!' ? 'service_not_available_in_this_area'.tr : response.statusText);

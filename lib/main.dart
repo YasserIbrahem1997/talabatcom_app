@@ -26,6 +26,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:talabatcom/features/home/widgets/cookies_view.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'features/checkout/domain/repositories/checkout_repository.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/splashOne/screenOne.dart';
 import 'helper/get_di.dart' as di;
@@ -99,6 +100,7 @@ Future<void> main() async {
       version: "v15.0",
     );
   }
+  Get.put(ShippingController());
   runApp(MyApp(languages: languages, body: body));
 }
 

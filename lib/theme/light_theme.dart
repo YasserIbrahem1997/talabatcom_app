@@ -24,8 +24,8 @@ ThemeData light({Color color = const Color(0xFFD6324A)}) => ThemeData(
   appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.dark),
     textButtonTheme: TextButtonThemeData(
         style:
-        TextButton.styleFrom(foregroundColor: const Color(0xFFEF7822))),
+        TextButton.styleFrom(foregroundColor: const Color(0xFFD6324A))),
     colorScheme: const ColorScheme.light(
-        primary: Color(0xFFEF7822), secondary: Color(0xFFEF7822))
+        primary: Color(0xFFD6324A), secondary: Color(0xFFD6324A))
 
 );

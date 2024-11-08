@@ -38,6 +38,8 @@ import 'package:talabatcom/features/checkout/widgets/bottom_section.dart';
 import 'package:talabatcom/features/checkout/widgets/top_section.dart';
 import 'package:flutter/material.dart';
 
+import '../domain/repositories/checkout_repository.dart';
+
 class CheckoutScreen extends StatefulWidget {
   final List<CartModel?>? cartList;
   final bool fromCart;
@@ -58,6 +60,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
   final JustTheController tooltipController1 = JustTheController();
   final JustTheController tooltipController2 = JustTheController();
   final JustTheController tooltipController3 = JustTheController();
+  late ShippingController shippingController;
 
   double? _taxPercent = 0;
   bool? _isCashOnDeliveryActive = false;
@@ -81,7 +84,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     super.initState();
-
+    shippingController = Get.find<ShippingController>();
     initCall();
     // Future.delayed(const Duration(seconds: 3), () {
     //   _showCashBackMessage = true;
@@ -169,6 +172,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
     bool guestCheckoutPermission = AuthHelper.isGuestLoggedIn() &&
         Get.find<SplashController>().configModel!.guestCheckoutStatus!;
     bool isLoggedIn = AuthHelper.isLoggedIn();
+    double minimumShippingCharge = shippingController.minimumShippingCharge.value;
 
     return Scaffold(
       appBar: CustomAppBar(title: 'checkout'.tr),
@@ -267,13 +271,13 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                   store: checkoutController.store,
                   address: AddressHelper.getUserAddressFromSharedPref()!,
                   distance: checkoutController.distance,
-                  extraCharge: checkoutController.extraCharge,
+                  extraCharge: minimumShippingCharge,
                 );
                 double deliveryCharge = _calculateDeliveryCharge(
                   store: checkoutController.store,
                   address: AddressHelper.getUserAddressFromSharedPref()!,
                   distance: checkoutController.distance,
-                  extraCharge: checkoutController.extraCharge,
+                  extraCharge:minimumShippingCharge,
                   orderType: checkoutController.orderType!,
                   orderAmount: orderAmount,
                 );
@@ -283,7 +287,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
 
                 double total = _calculateTotal(
                   subTotal: subTotal,
-                  deliveryCharge: deliveryCharge,
+                  deliveryCharge: minimumShippingCharge,
                   discount: discount,
                   couponDiscount: couponDiscount,
                   taxIncluded: taxIncluded,
@@ -411,7 +415,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                   taxIncluded: taxIncluded,
                                                   tax: tax,
                                                   deliveryCharge:
-                                                      deliveryCharge,
+                                                  minimumShippingCharge,
                                                   todayClosed: todayClosed,
                                                   tomorrowClosed:
                                                       tomorrowClosed,
@@ -436,6 +440,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                     total,
                                                     maxCodOrderAmount,
                                                     isPrescriptionRequired,
+                                                          minimumShippingCharge
                                                   ),
                                                   referralDiscount:
                                                       referralDiscount,
@@ -517,6 +522,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                               total,
                                               maxCodOrderAmount,
                                               isPrescriptionRequired,
+                                                minimumShippingCharge
                                             ),
                                             referralDiscount: referralDiscount,
                                           )
@@ -582,6 +588,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                         total,
                                         maxCodOrderAmount,
                                         isPrescriptionRequired,
+                                          minimumShippingCharge
                                       ),
                                     ],
                                   ),
@@ -608,7 +615,9 @@ class CheckoutScreenState extends State<CheckoutScreen> {
       double? discount,
       double total,
       double? maxCodOrderAmount,
-      bool isPrescriptionRequired) {
+      bool isPrescriptionRequired,
+      double? minimumShippingCharge
+      ) {
     return Container(
       width: Dimensions.webMaxWidth,
       alignment: Alignment.center,
@@ -889,7 +898,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                           cart: carts,
                           couponDiscountAmount:
                               Get.find<CouponController>().discount,
-                          distance: checkoutController.distance,
+                          distance: minimumShippingCharge,
                           scheduleAt: !checkoutController.store!.scheduleOrder!
                               ? null
                               : (checkoutController.selectedDateSlot == 0 &&
@@ -919,8 +928,8 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                   : null,
                           storeId: _cartList![0]!.item!.storeId,
                           address: finalAddress!.address,
-                          latitude: finalAddress.latitude,
-                          longitude: finalAddress.longitude,
+                          latitude: AddressHelper.getUserAddressFromSharedPref()!.latitude,
+                          longitude: AddressHelper.getUserAddressFromSharedPref()!.longitude,
                           senderZoneId: null,
                           addressType: finalAddress.addressType,
                           contactPersonName: finalAddress.contactPersonName ??
@@ -975,7 +984,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                           extraPackagingAmount: Get.find<CartController>()
                                   .needExtraPackage
                               ? checkoutController.store!.extraPackagingAmount
-                              : 0,
+                              : 0, area: AddressHelper.getArea("Area"),
                         );
 
                         if (checkoutController.paymentMethodIndex == 3) {
@@ -1002,10 +1011,10 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                         checkoutController.placePrescriptionOrder(
                             widget.storeId,
                             checkoutController.store!.zoneId,
-                            checkoutController.distance,
-                            finalAddress!.address!,
-                            finalAddress.longitude!,
-                            finalAddress.latitude!,
+                           minimumShippingCharge,
+                            AddressHelper.getUserAddressFromSharedPref()!.address.toString(),
+                            AddressHelper.getUserAddressFromSharedPref()!.longitude!,
+                            AddressHelper.getUserAddressFromSharedPref()!.latitude!,
                             checkoutController.noteController.text,
                             checkoutController.pickedPrescriptions,
                             (checkoutController.orderType == 'take_away' ||
@@ -1020,7 +1029,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                             0,
                             0,
                             widget.fromCart,
-                            _isCashOnDeliveryActive!);
+                            _isCashOnDeliveryActive!,"bb");
                       }
                     }
                   }

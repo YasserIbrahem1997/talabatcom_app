@@ -34,6 +34,8 @@ import 'package:talabatcom/features/cart/widgets/web_suggested_item_view_widget.
 import 'package:talabatcom/features/home/screens/home_screen.dart';
 import 'package:talabatcom/features/store/screens/store_screen.dart';
 
+import '../../checkout/domain/repositories/checkout_repository.dart';
+
 class CartScreen extends StatefulWidget {
   final bool fromNav;
 
@@ -50,8 +52,8 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-
     initCall();
+
   }
 
   Future<void> initCall() async {
@@ -339,7 +341,7 @@ class _CartScreenState extends State<CartScreen> {
                                               Text('variations'.tr,
                                                   style: robotoRegular),
                                               Text(
-                                                  '(+) ${PriceConverter.convertPrice(cartController.variationPrice)}',
+                                                  ' ${PriceConverter.convertPrice(cartController.variationPrice)}',
                                                   style: robotoRegular,
                                                   textDirection:
                                                       TextDirection.ltr),
@@ -356,7 +358,7 @@ class _CartScreenState extends State<CartScreen> {
                                               style: robotoRegular),
                                           storeController.store != null
                                               ? Row(children: [
-                                                  Text('(-)',
+                                                  Text('',
                                                       style: robotoRegular),
                                                   PriceConverter
                                                       .convertAnimationPrice(
@@ -388,7 +390,7 @@ class _CartScreenState extends State<CartScreen> {
                                               Text('addons'.tr,
                                                   style: robotoRegular),
                                               Row(children: [
-                                                Text('(+)',
+                                                Text('',
                                                     style: robotoRegular),
                                                 PriceConverter
                                                     .convertAnimationPrice(
@@ -590,7 +592,7 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Text('variations'.tr, style: robotoRegular),
                               Text(
-                                  '(+) ${PriceConverter.convertPrice(cartController.variationPrice)}',
+                                  ' ${PriceConverter.convertPrice(cartController.variationPrice)}',
                                   style: robotoRegular,
                                   textDirection: TextDirection.ltr),
                             ],
@@ -603,13 +605,13 @@ class _CartScreenState extends State<CartScreen> {
                           Text('discount'.tr, style: robotoRegular),
                           storeController.store != null
                               ? Row(children: [
-                                  Text('(-)', style: robotoRegular),
+                                  Text('', style: robotoRegular),
                                   PriceConverter.convertAnimationPrice(
                                       cartController.itemDiscountPrice,
                                       textStyle: robotoRegular),
                                 ])
                               : Text('calculating'.tr, style: robotoRegular),
-                          // Text('(-) ${PriceConverter.convertPrice(cartController.itemDiscountPrice)}', style: robotoRegular, textDirection: TextDirection.ltr),
+                          // Text(' ${PriceConverter.convertPrice(cartController.itemDiscountPrice)}', style: robotoRegular, textDirection: TextDirection.ltr),
                         ]),
                     SizedBox(
                         height: Get.find<SplashController>()
@@ -629,7 +631,7 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Text('addons'.tr, style: robotoRegular),
                               Text(
-                                  '(+) ${PriceConverter.convertPrice(cartController.addOns)}',
+                                  ' ${PriceConverter.convertPrice(cartController.addOns)}',
                                   style: robotoRegular,
                                   textDirection: TextDirection.ltr),
                             ],
@@ -738,7 +740,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-class CheckoutButton extends StatelessWidget {
+class CheckoutButton extends StatefulWidget {
   final CartController cartController;
   final List<bool> availableList;
 
@@ -746,8 +748,20 @@ class CheckoutButton extends StatelessWidget {
       {super.key, required this.cartController, required this.availableList});
 
   @override
+  State<CheckoutButton> createState() => _CheckoutButtonState();
+}
+
+class _CheckoutButtonState extends State<CheckoutButton> {
+  late ShippingController shippingController;
+  @override
+  void initState() {
+    super.initState();
+    shippingController = Get.find<ShippingController>();
+  }
+  @override
   Widget build(BuildContext context) {
     double percentage = 0;
+    double minimumShippingCharge = shippingController.minimumShippingCharge.value;
 
     return Container(
       width: Dimensions.webMaxWidth,
@@ -762,7 +776,7 @@ class CheckoutButton extends StatelessWidget {
             !Get.find<StoreController>().store!.freeDelivery! &&
             Get.find<SplashController>().configModel!.freeDeliveryOver !=
                 null) {
-          percentage = cartController.subTotal /
+          percentage = widget.cartController.subTotal /
               Get.find<SplashController>().configModel!.freeDeliveryOver!;
         }
         return Column(
@@ -783,7 +797,7 @@ class CheckoutButton extends StatelessWidget {
                         PriceConverter.convertPrice(Get.find<SplashController>()
                                 .configModel!
                                 .freeDeliveryOver! -
-                            cartController.subTotal),
+                            widget.cartController.subTotal),
                         style: robotoMedium.copyWith(
                             color: Theme.of(context).primaryColor),
                         textDirection: TextDirection.ltr,
@@ -816,7 +830,7 @@ class CheckoutButton extends StatelessWidget {
                           color: ResponsiveHelper.isDesktop(context)
                               ? Theme.of(context).textTheme.bodyLarge!.color
                               : Theme.of(context).primaryColor)),
-                  PriceConverter.convertAnimationPrice(cartController.subTotal,
+                  PriceConverter.convertAnimationPrice(widget.cartController.subTotal,
                       textStyle: robotoRegular.copyWith(
                           color: Theme.of(context).primaryColor)),
                   // Text(
@@ -829,7 +843,7 @@ class CheckoutButton extends StatelessWidget {
             ResponsiveHelper.isDesktop(context) &&
                     Get.find<SplashController>()
                         .getModuleConfig(
-                            cartController.cartList[0].item!.moduleType)
+                            widget.cartController.cartList[0].item!.moduleType)
                         .newVariation! &&
                     (storeController.store != null &&
                         storeController.store!.cutlery!)
@@ -861,10 +875,10 @@ class CheckoutButton extends StatelessWidget {
                           Transform.scale(
                             scale: 0.7,
                             child: CupertinoSwitch(
-                              value: cartController.addCutlery,
+                              value: widget.cartController.addCutlery,
                               activeColor: Theme.of(context).primaryColor,
                               onChanged: (bool? value) {
-                                cartController.updateCutlery();
+                                widget.cartController.updateCutlery();
                               },
                               trackColor: Theme.of(context)
                                   .primaryColor
@@ -918,19 +932,19 @@ class CheckoutButton extends StatelessWidget {
                             const Icon(Icons.keyboard_arrow_down, size: 18),
                           ]),
                         ),
-                        cartController.notAvailableIndex != -1
+                        widget.cartController.notAvailableIndex != -1
                             ? Row(children: [
                                 Text(
-                                    cartController
+                                    widget.cartController
                                         .notAvailableList[
-                                            cartController.notAvailableIndex]
+                                            widget.cartController.notAvailableIndex]
                                         .tr,
                                     style: robotoMedium.copyWith(
                                         fontSize: Dimensions.fontSizeSmall,
                                         color: Theme.of(context).primaryColor)),
                                 IconButton(
                                   onPressed: () =>
-                                      cartController.setAvailableIndex(-1),
+                                      widget.cartController.setAvailableIndex(-1),
                                   icon: const Icon(Icons.clear, size: 18),
                                 )
                               ])
@@ -952,10 +966,13 @@ class CheckoutButton extends StatelessWidget {
                       ? Dimensions.radiusSmall
                       : Dimensions.radiusDefault,
                   onPressed: () {
-                    if (!cartController.cartList.first.item!.scheduleOrder! &&
-                        availableList.contains(false)) {
+
+
+                    if (!widget.cartController.cartList.first.item!.scheduleOrder! &&
+                        widget.availableList.contains(false)) {
                       showCustomSnackBar('one_or_more_product_unavailable'.tr);
                     }
+
                     /*else if(AuthHelper.isGuestLoggedIn() && !Get.find<SplashController>().configModel!.guestCheckoutStatus!) {
                     showCustomSnackBar('currently_your_zone_have_no_permission_to_place_any_order'.tr);
                   }*/
@@ -965,7 +982,7 @@ class CheckoutButton extends StatelessWidget {
                         for (i = 0;
                             i < Get.find<SplashController>().moduleList!.length;
                             i++) {
-                          if (cartController.cartList[0].item!.moduleId ==
+                          if (widget.cartController.cartList[0].item!.moduleId ==
                               Get.find<SplashController>().moduleList![i].id) {
                             break;
                           }
@@ -978,6 +995,9 @@ class CheckoutButton extends StatelessWidget {
 
                       Get.toNamed(RouteHelper.getCheckoutRoute('cart'));
                     }
+
+                    minimumShippingCharge = 0.0;
+
                   }),
             ),
           ],

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:talabatcom/features/item/screens/item_campaign_screen.dart';
 import 'package:talabatcom/features/location/controllers/location_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/order/controllers/order_controller.dart';
@@ -168,7 +169,7 @@ class DashboardScreenState extends State<DashboardScreen> {
 
                             _screens = [
                               const HomeScreen(),
-                              isParcel ? const AddressScreen(fromDashboard: true) : const FavouriteScreen(),
+                             const ItemCampaignScreen(isJustForYou: false),
                               const SizedBox(),
                               const OrderScreen(),
                               const MenuScreen()

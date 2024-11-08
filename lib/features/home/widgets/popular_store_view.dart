@@ -63,18 +63,60 @@ class PopularStoreView extends StatelessWidget {
                     ),
                     child: CustomInkWell(
                       onTap: () {
-                        if(isFeatured && Get.find<SplashController>().moduleList != null) {
-                          for(ModuleModel module in Get.find<SplashController>().moduleList!) {
-                            if(module.id == storeList[index].moduleId) {
-                              Get.find<SplashController>().setModule(module);
-                              break;
+                        void _showAlertDialog(BuildContext context) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+
+                                content:  Text( "\n " + 'مطعم' +" "+ storeList[index]!.name.toString() +" "+ "مغلق حاليا ,يمكنك اضافة المنتجات الي عربة التسوق وطلبها عند توفر المتجر عند الساعة: 8.00ص"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('الغاء '),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('متابعة'),
+                                    onPressed: () {
+                                      if(isFeatured && Get.find<SplashController>().moduleList != null) {
+                                        for(ModuleModel module in Get.find<SplashController>().moduleList!) {
+                                          if(module.id == storeList[index].moduleId) {
+                                            Get.find<SplashController>().setModule(module);
+                                            break;
+                                          }
+                                        }
+                                      }
+                                      Get.toNamed(
+                                        RouteHelper.getStoreRoute(id: storeList[index].id, page: isFeatured ? 'module' : 'store'),
+                                        arguments: StoreScreen(store: storeList[index], fromModule: isFeatured),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+
+                        if( storeController.isOpenNow(storeList[index])){
+                          if(isFeatured && Get.find<SplashController>().moduleList != null) {
+                            for(ModuleModel module in Get.find<SplashController>().moduleList!) {
+                              if(module.id == storeList[index].moduleId) {
+                                Get.find<SplashController>().setModule(module);
+                                break;
+                              }
                             }
                           }
+                          Get.toNamed(
+                            RouteHelper.getStoreRoute(id: storeList[index].id, page: isFeatured ? 'module' : 'store'),
+                            arguments: StoreScreen(store: storeList[index], fromModule: isFeatured),
+                          );
+                        }else{
+                          _showAlertDialog(context);
                         }
-                        Get.toNamed(
-                          RouteHelper.getStoreRoute(id: storeList[index].id, page: isFeatured ? 'module' : 'store'),
-                          arguments: StoreScreen(store: storeList[index], fromModule: isFeatured),
-                        );
+
                       },
                       radius: Dimensions.radiusSmall,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [

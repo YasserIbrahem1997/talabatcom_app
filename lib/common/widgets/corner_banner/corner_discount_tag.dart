@@ -70,7 +70,7 @@ class CornerDiscountTag extends StatelessWidget {
               children:  [
                 Text(
                   discount! > 0 ? '$discount${discountType == 'percent' ? '%'
-                      : Get.find<SplashController>().configModel!.currencySymbol} ${'off'.tr}' : 'free_delivery'.tr,
+                      : Get.find<SplashController>().configModel!.currencySymbol} ${'offer'.tr}' : 'free_delivery'.tr,
                   style: robotoMedium.copyWith(
                     color: Colors.white,
                     fontSize: fontSize ?? (ResponsiveHelper.isMobile(Get.context) ? 8 : 12),

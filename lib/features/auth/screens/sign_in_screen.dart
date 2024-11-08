@@ -24,6 +24,7 @@ import 'package:talabatcom/common/widgets/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignInScreen extends StatefulWidget {
   final bool exitFromApp;
@@ -249,7 +250,45 @@ class SignInScreenState extends State<SignInScreen> {
                                 ),
                               ),
                             ]) :  const SizedBox(),
-
+                            SizedBox(
+                              height: Dimensions.paddingSizeExtraLarge,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    _launchURL("https://wa.me/+201070812048");
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: Dimensions.paddingSizeSmall),
+                                    child: Image.asset(Images.whatsappNew,
+                                        height: 30, width: 30,),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: Dimensions.paddingSizeExtraLarge,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    _launchURL("tel://01070812048");
+                                  },
+                                  child: Container(
+                                   decoration: BoxDecoration(
+                                     color: Colors.green.shade400,
+                                     borderRadius: BorderRadius.circular(10)
+                                   ),
+                                    width: 30,height: 30,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5),
+                                    child: Image.asset(Images.call,
+                                        height: 50, width: 50,color: Colors.white,),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ]),
                         )
                       ],
@@ -308,6 +347,13 @@ class SignInScreenState extends State<SignInScreen> {
           showCustomSnackBar(status.message);
         }
       });
+    }
+  }
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 }
