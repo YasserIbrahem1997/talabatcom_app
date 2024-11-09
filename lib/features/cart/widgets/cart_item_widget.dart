@@ -144,10 +144,18 @@ class CartItemWidget extends StatelessWidget {
                       const SizedBox(height: 5),
 
                       Wrap(children: [
-                        Text(
-                          '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
-                              '${endingPrice!= null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
-                          style: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall), textDirection: TextDirection.ltr,
+                        Row(
+                          children: [
+                            Text(
+                              '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
+                                  '${endingPrice!= null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
+                              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall), textDirection: TextDirection.ltr,
+                            ),
+                            Text(
+                              "ج.م ",
+                              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall), textDirection: TextDirection.ltr,
+                            ),
+                          ],
                         ),
                         SizedBox(width: discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
 

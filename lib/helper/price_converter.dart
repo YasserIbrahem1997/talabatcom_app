@@ -20,9 +20,9 @@ class PriceConverter {
     bool isRightSide =
         Get.find<SplashController>().configModel!.currencySymbolDirection ==
             'right';
-    return '${isRightSide ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} '}'
+    return
         '${toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
-        '${isRightSide ? ' ج.م' : ''}';
+        ;
   }
 
   static Widget convertAnimationPrice(double? price,
@@ -49,10 +49,10 @@ class PriceConverter {
         fractionDigits: forDM
             ? 0
             : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
-        prefix: isRightSide
+        prefix: "ج.م ",
+        suffix: isRightSide
             ? ''
             : Get.find<SplashController>().configModel!.currencySymbol!,
-        suffix: "ج.م"
       ),
     );
   }

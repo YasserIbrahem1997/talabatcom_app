@@ -50,7 +50,7 @@ class ItemBottomSheet extends StatefulWidget {
 
 class _ItemBottomSheetState extends State<ItemBottomSheet> {
   bool _newVariation = false;
-  TextEditingController textNote =TextEditingController();
+  TextEditingController textNote = TextEditingController();
 
   @override
   void initState() {
@@ -611,7 +611,43 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                           itemController: itemController,
                                           item: widget.item!)
                                       : const SizedBox(),
-
+                                  TextFormField(
+                                    controller: textNote,
+                                    maxLines: 4,
+                                    // Allows multiple lines (at least 2 as you need)
+                                    decoration: InputDecoration(
+                                      hintText: "Write_your_notes_here".tr,
+                                      filled: true,
+                                      // Adds a background color
+                                      fillColor: Colors.white,
+                                      // Background color
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.red.shade200),
+                                        // Light red border
+                                        borderRadius: BorderRadius.circular(
+                                            10), // Border radius
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade400),
+                                        // Slightly darker red when focused
+                                        borderRadius: BorderRadius.circular(
+                                            10), // Border radius
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.red.shade200),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                        color: Colors
+                                            .black), // Text color inside the field
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   isAvailable
                                       ? const SizedBox()
                                       : Container(
@@ -643,28 +679,6 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                             ),
                                           ]),
                                         ),
-                                  TextFormField(
-                                    controller: textNote,
-                                    maxLines: 4, // Allows multiple lines (at least 2 as you need)
-                                    decoration: InputDecoration(
-                                      hintText: "Write_your_notes_here".tr,
-                                      filled: true, // Adds a background color
-                                      fillColor: Colors.white, // Background color
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.red.shade200), // Light red border
-                                        borderRadius: BorderRadius.circular(10), // Border radius
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey.shade400), // Slightly darker red when focused
-                                        borderRadius: BorderRadius.circular(10), // Border radius
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.red.shade200),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    style: TextStyle(color: Colors.black), // Text color inside the field
-                                  )
                                 ]),
                           ),
                         ]),

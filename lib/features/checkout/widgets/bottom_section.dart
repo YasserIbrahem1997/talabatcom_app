@@ -245,9 +245,16 @@ class _BottomSectionState extends State<BottomSection> {
                                 ? 'subtotal'.tr
                                 : 'item_price'.tr,
                             style: robotoMedium),
-                        Text(PriceConverter.convertPrice(widget.subTotal),
-                            style: robotoMedium,
-                            textDirection: TextDirection.ltr),
+                        Row(
+                          children: [
+                            Text(PriceConverter.convertPrice(widget.subTotal),
+                                style: robotoMedium,
+                                textDirection: TextDirection.ltr),
+                            Text("ج.م ",
+                                style: robotoMedium,
+                                textDirection: TextDirection.ltr),
+                          ],
+                        ),
                       ])
                 : const SizedBox(),
             SizedBox(
@@ -258,9 +265,16 @@ class _BottomSectionState extends State<BottomSection> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                         Text('discount'.tr, style: robotoRegular),
-                        Text('${PriceConverter.convertPrice(widget.discount)}',
-                            style: robotoRegular,
-                            textDirection: TextDirection.ltr),
+                        Row(
+                          children: [
+                            Text('${PriceConverter.convertPrice(widget.discount)}',
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr),
+                            Text("ج.م ",
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr),
+                          ],
+                        ),
                       ])
                 : const SizedBox(),
             const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -279,11 +293,20 @@ class _BottomSectionState extends State<BottomSection> {
                                   style: robotoRegular.copyWith(
                                       color: Theme.of(context).primaryColor),
                                 )
-                              : Text(
-                                  '${PriceConverter.convertPrice(widget.couponController.discount)}',
-                                  style: robotoRegular,
-                                  textDirection: TextDirection.ltr,
-                                ),
+                              : Row(
+                                children: [
+                                  Text(
+                                      '${PriceConverter.convertPrice(widget.couponController.discount)}',
+                                      style: robotoRegular,
+                                      textDirection: TextDirection.ltr,
+                                    ),
+                                  Text(
+                                      "ج.م ",
+                                      style: robotoRegular,
+                                      textDirection: TextDirection.ltr,
+                                    ),
+                                ],
+                              ),
                         ]),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
                   ])
@@ -294,10 +317,19 @@ class _BottomSectionState extends State<BottomSection> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('referral_discount'.tr, style: robotoRegular),
-                          Text(
-                            ' ${PriceConverter.convertPrice(widget.referralDiscount)}',
-                            style: robotoRegular,
-                            textDirection: TextDirection.ltr,
+                          Row(
+                            children: [
+                              Text(
+                                ' ${PriceConverter.convertPrice(widget.referralDiscount)}',
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr,
+                              ),
+                              Text(
+                                "ج.م ",
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr,
+                              ),
+                            ],
                           ),
                         ]),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -310,11 +342,19 @@ class _BottomSectionState extends State<BottomSection> {
                         Text(
                             '${'vat_tax'.tr} ${widget.taxIncluded ? 'tax_included'.tr : ''} (${widget.taxPercent}%)',
                             style: robotoRegular),
-                        Text(
-                            (widget.taxIncluded ? '' : '') +
-                                PriceConverter.convertPrice(widget.tax),
-                            style: robotoRegular,
-                            textDirection: TextDirection.ltr),
+                        Row(
+                          children: [
+                            Text(
+                                (widget.taxIncluded ? '' : '') +
+                                    PriceConverter.convertPrice(widget.tax),
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr),
+                            Text(
+                                "ج.م ",
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr),
+                          ],
+                        ),
                       ])
                 : const SizedBox(),
             SizedBox(
@@ -326,10 +366,18 @@ class _BottomSectionState extends State<BottomSection> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('delivery_man_tips'.tr, style: robotoRegular),
-                      Text(
-                          '${PriceConverter.convertPrice(widget.checkoutController.tips)}',
-                          style: robotoRegular,
-                          textDirection: TextDirection.ltr),
+                      Row(
+                        children: [
+                          Text(
+                              '${PriceConverter.convertPrice(widget.checkoutController.tips)}',
+                              style: robotoRegular,
+                              textDirection: TextDirection.ltr),
+                          Text(
+                              "ج.م ",
+                              style: robotoRegular,
+                              textDirection: TextDirection.ltr),
+                        ],
+                      ),
                     ],
                   )
                 : const SizedBox.shrink(),
@@ -347,10 +395,18 @@ class _BottomSectionState extends State<BottomSection> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('extra_packaging'.tr, style: robotoRegular),
-                      Text(
-                          '${PriceConverter.convertPrice(widget.checkoutController.store!.extraPackagingAmount!)}',
-                          style: robotoRegular,
-                          textDirection: TextDirection.ltr),
+                      Row(
+                        children: [
+                          Text(
+                              '${PriceConverter.convertPrice(widget.checkoutController.store!.extraPackagingAmount!)}',
+                              style: robotoRegular,
+                              textDirection: TextDirection.ltr),
+                          Text(
+                              "ج.م ",
+                              style: robotoRegular,
+                              textDirection: TextDirection.ltr),
+                        ],
+                      ),
                     ],
                   )
                 : const SizedBox.shrink(),
@@ -383,11 +439,20 @@ class _BottomSectionState extends State<BottomSection> {
                                     style: robotoRegular.copyWith(
                                         color: Theme.of(context).primaryColor),
                                   )
-                                : Text(
-                                    '${PriceConverter.convertPrice(shippingController.minimumShippingCharge.value)}',
-                                    style: robotoRegular,
-                                    textDirection: TextDirection.ltr,
-                                  ),
+                                : Row(
+                                  children: [
+                                    Text(
+                                        '${PriceConverter.convertPrice(shippingController.minimumShippingCharge.value)}',
+                                        style: robotoRegular,
+                                        textDirection: TextDirection.ltr,
+                                      ),
+                                    Text(
+                                      "ج.م ",
+                                      style: robotoRegular,
+                                        textDirection: TextDirection.ltr,
+                                      ),
+                                  ],
+                                ),
                       ]),
             SizedBox(
                 height: Get.find<SplashController>()
@@ -406,10 +471,19 @@ class _BottomSectionState extends State<BottomSection> {
                                 .configModel!
                                 .additionalChargeName!,
                             style: robotoRegular),
-                        Text(
-                          '${PriceConverter.convertPrice(Get.find<SplashController>().configModel!.additionCharge)}',
-                          style: robotoRegular,
-                          textDirection: TextDirection.ltr,
+                        Row(
+                          children: [
+                            Text(
+                              '${PriceConverter.convertPrice(Get.find<SplashController>().configModel!.additionCharge)}',
+                              style: robotoRegular,
+                              textDirection: TextDirection.ltr,
+                            ),
+                            Text(
+                              "ج.م ",
+                              style: robotoRegular,
+                              textDirection: TextDirection.ltr,
+                            ),
+                          ],
                         ),
                       ])
                 : const SizedBox(),
@@ -422,10 +496,18 @@ class _BottomSectionState extends State<BottomSection> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                         Text('paid_by_wallet'.tr, style: robotoRegular),
-                        Text(
-                            '${PriceConverter.convertPrice(Get.find<ProfileController>().userInfoModel!.walletBalance!)}',
-                            style: robotoRegular,
-                            textDirection: TextDirection.ltr),
+                        Row(
+                          children: [
+                            Text(
+                                '${PriceConverter.convertPrice(Get.find<ProfileController>().userInfoModel!.walletBalance!)}',
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr),
+                            Text(
+                                "ج.م ",
+                                style: robotoRegular,
+                                textDirection: TextDirection.ltr),
+                          ],
+                        ),
                       ])
                 : const SizedBox(),
             SizedBox(

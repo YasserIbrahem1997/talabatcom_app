@@ -340,11 +340,21 @@ class _CartScreenState extends State<CartScreen> {
                                             children: [
                                               Text('variations'.tr,
                                                   style: robotoRegular),
-                                              Text(
-                                                  ' ${PriceConverter.convertPrice(cartController.variationPrice)}',
-                                                  style: robotoRegular,
-                                                  textDirection:
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      ' ${PriceConverter.convertPrice(cartController.variationPrice)}',
+                                                      style: robotoRegular,
+                                                      textDirection:
+                                                          TextDirection.ltr),
+                                                  Text(
+                                                      'ج.م',
+                                                      style: robotoRegular,
+                                                      textDirection:
                                                       TextDirection.ltr),
+                                                ],
+                                              ),
+
                                             ],
                                           )
                                         : const SizedBox(),
