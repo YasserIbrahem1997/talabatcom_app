@@ -108,25 +108,24 @@ class LanguageSaveButton extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
       CustomButton(
-          buttonText: 'save'.tr,
-          margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-          onPressed: () {
-            if(localizationController.languages.isNotEmpty && localizationController.selectedIndex != -1) {
-              localizationController.setLanguage(Locale(
-                AppConstants.languages[localizationController.selectedIndex].languageCode!,
-                AppConstants.languages[localizationController.selectedIndex].countryCode,
-              ));
-              if (fromMenu!) {
-                Navigator.pop(context);
-              } else {
-                Get.offNamed(RouteHelper.getOnBoardingRoute());
-              }
-            }else {
-              showCustomSnackBar('select_a_language'.tr);
+        buttonText: 'save'.tr,
+        margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+        onPressed: () {
+          if(localizationController.languages.isNotEmpty && localizationController.selectedIndex != -1) {
+            localizationController.setLanguage(Locale(
+              AppConstants.languages[localizationController.selectedIndex].languageCode!,
+              AppConstants.languages[localizationController.selectedIndex].countryCode,
+            ));
+            if (fromMenu!) {
+              Navigator.pop(context);
+            } else {
+              Get.offNamed(RouteHelper.getOnBoardingRoute());
             }
-          },
-        ),
+          }else {
+            showCustomSnackBar('select_a_language'.tr);
+          }
+        },
+      ),
     ]);
   }
 }
-
