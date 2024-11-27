@@ -5,6 +5,7 @@ import 'package:meta_seo/meta_seo.dart';
 import 'package:talabatcom/features/auth/controllers/auth_controller.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
+import 'package:talabatcom/features/parcel/controllers/parcel_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/common/controllers/theme_controller.dart';
 import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
@@ -153,6 +154,8 @@ class _MyAppState extends State<MyApp> {
         }
       }
     });
+    Get.put(ParcelControllerNew());
+
   }
 
   @override
