@@ -283,6 +283,7 @@ class _ParcelViewWidgetState extends State<ParcelViewWidget> {
                                   var get = AddressHelper.getArea("Area");
                                   print('Selected City: $get, Minimum Shipping Charge: $minimumShippingCharge');
                                   parcelControllerNew.updateLocation(newValue!);
+                                 widget.isSender? parcelControllerNew.updateSenderPrice(minimumShippingCharge.toString()): parcelControllerNew.updateReceiverPrice(minimumShippingCharge.toString());
 
                                 });
                               },

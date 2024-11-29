@@ -186,6 +186,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                         controller: _tabController,
                         labelColor: Theme.of(context).primaryColor,
                         unselectedLabelColor: Colors.black,
+                        physics: BouncingScrollPhysics(),
                         onTap: (int index) {
                           if (index == 1) {
                             _validateSender(parcelController);
@@ -204,7 +205,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                             child: Text(
                               'sender_info'.tr,
                               style: robotoMedium.copyWith(
-                                  fontSize: Dimensions.fontSizeLarge,
+                                  fontSize: Dimensions.fontSizeDefault,
                                   color: parcelController.isSender
                                       ? Theme.of(context).primaryColor
                                       : Theme.of(context)
@@ -216,7 +217,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                           Text(
                             'receiver_info'.tr,
                             style: robotoMedium.copyWith(
-                                fontSize: Dimensions.fontSizeLarge,
+                                fontSize: Dimensions.fontSizeDefault,
                                 color: !parcelController.isSender
                                     ? Theme.of(context).primaryColor
                                     : Theme.of(context)
@@ -288,7 +289,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                 await CustomValidator.isPhoneValid(numberWithCountryCode);
             numberWithCountryCode = phoneValid.phone;
 
-            if (parcelControllerNew.selectedLocation.value == null) {
+            if (parcelControllerNew.receiverPrice.value.isEmpty) {
               showCustomSnackBar('select_destination_address'.tr);
             } else if (_receiverNameController.text.isEmpty) {
               showCustomSnackBar('enter_receiver_name'.tr);
@@ -322,6 +323,13 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                 parcelController.pickupAddress!,
                 parcelController.destinationAddress!,
               ));
+              // parcelControllerNew.senderPrice.value = '';
+              // parcelControllerNew.receiverPrice.value = '';
+              // parcelControllerNew.selectedLocation.value = '';
+              // print("sender" + parcelControllerNew.senderPrice.value);
+              // print("rec" + parcelControllerNew.receiverPrice.value);
+              // print("selectedLocation" + parcelControllerNew.selectedLocation.value);
+
             }
           }
         },
@@ -336,7 +344,7 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
         await CustomValidator.isPhoneValid(numberWithCountryCode);
     numberWithCountryCode = phoneValid.phone;
 
-    if (parcelControllerNew.selectedLocation.value == null) {
+    if (parcelControllerNew.selectedLocation.value.isEmpty) {
       showCustomSnackBar('select_pickup_address'.tr);
       _tabController!.animateTo(0);
     } else if (_senderNameController.text.isEmpty) {

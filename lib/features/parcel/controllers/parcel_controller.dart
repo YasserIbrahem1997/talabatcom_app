@@ -432,8 +432,16 @@ class ParcelController extends GetxController implements GetxService {
 
 class ParcelControllerNew extends GetxController implements GetxService{
   var selectedLocation = ''.obs;
+  var senderPrice = ''.obs;
+  var receiverPrice = ''.obs;
 
   void updateLocation(String location) {
     selectedLocation.value = location;
+  }
+  void updateSenderPrice(String updateSender) {
+    senderPrice.value = updateSender;
+  }
+  void updateReceiverPrice(String updateReceiver) {
+    receiverPrice.value = updateReceiver;
   }
 }
