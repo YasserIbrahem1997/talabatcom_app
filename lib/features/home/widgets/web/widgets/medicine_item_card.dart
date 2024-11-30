@@ -115,7 +115,7 @@ class MedicineItemCard extends StatelessWidget {
                     style: robotoMedium.copyWith(
                       fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor,
                       decoration: TextDecoration.lineThrough,
-                    ), textDirection: TextDirection.ltr,
+                    ), textDirection: TextDirection.rtl,
                   ) : const SizedBox(),
 
                   Align(
@@ -126,7 +126,7 @@ class MedicineItemCard extends StatelessWidget {
                           Get.find<ItemController>().getStartingPrice(item), discount: item.discount,
                           discountType: item.discountType,
                         ),
-                        textDirection: TextDirection.ltr, style: robotoMedium,
+                        textDirection: TextDirection.rtl, style: robotoMedium,
                       ),
                       const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 

@@ -21,8 +21,8 @@ class PriceConverter {
         Get.find<SplashController>().configModel!.currencySymbolDirection ==
             'right';
     return
-        '${toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
-        ;
+        " "+'${toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
+        + " "+"ج.م";
   }
 
   static Widget convertAnimationPrice(double? price,

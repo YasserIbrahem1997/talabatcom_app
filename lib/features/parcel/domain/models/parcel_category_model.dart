@@ -7,6 +7,7 @@ class ParcelCategoryModel {
   String? updatedAt;
   double? parcelPerKmShippingCharge;
   double? parcelMinimumShippingCharge;
+  double? available;
 
   ParcelCategoryModel({
         this.id,
@@ -16,7 +17,8 @@ class ParcelCategoryModel {
         this.createdAt,
         this.updatedAt,
         this.parcelPerKmShippingCharge,
-        this.parcelMinimumShippingCharge});
+        this.parcelMinimumShippingCharge,
+        this.available,});
 
   ParcelCategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,6 +29,7 @@ class ParcelCategoryModel {
     updatedAt = json['updated_at'];
     parcelPerKmShippingCharge = json['parcel_per_km_shipping_charge'] != null ? json['parcel_per_km_shipping_charge'].toDouble() : 0;
     parcelMinimumShippingCharge = json['parcel_minimum_shipping_charge'] != null ? json['parcel_minimum_shipping_charge'].toDouble() : 0;
+    available = json['available']!= null ? json['available'].toDouble() : 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +42,7 @@ class ParcelCategoryModel {
     data['updated_at'] = updatedAt;
     data['parcel_per_km_shipping_charge'] = parcelPerKmShippingCharge;
     data['parcel_minimum_shipping_charge'] = parcelMinimumShippingCharge;
+    data['available'] = available;
     return data;
   }
 }

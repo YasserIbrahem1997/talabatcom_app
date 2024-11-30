@@ -256,14 +256,14 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                                 Text('delivery_fee'.tr,
                                                     style: robotoRegular),
                                                 Text(
-                                                  parcelControllerNew
+                                                   " "+"${parcelControllerNew
                                                       .receiverPrice.value
-                                                      .toString(),
+                                                      .toString()}" +" "+ "ج.م",
                                                   style: robotoBold.copyWith(
                                                       color: Theme.of(context)
                                                           .primaryColor),
                                                   textDirection:
-                                                      TextDirection.ltr,
+                                                      TextDirection.rtl,
                                                 ),
                                               ]),
                                         ]))
@@ -971,9 +971,9 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                         Text('delivery_fee'.tr,
                                             style: robotoRegular),
                                         Text(
-                                          parcelControllerNew
+                                          " " + "${parcelControllerNew
                                               .receiverPrice.value
-                                              .toString(),
+                                              .toString()}" + " " + "ج.م",
                                           style: robotoRegular.copyWith(
                                               color:
                                                   parcelController.distance ==
@@ -1003,7 +1003,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                             Text('delivery_man_tips'.tr,
                                                 style: robotoRegular),
                                             Text(
-                                                '${PriceConverter.convertPrice(dmTips)}',
+                                                " "+'${PriceConverter.convertPrice(dmTips)}'+" " +"ج.م",
                                                 style: robotoRegular,
                                                 textDirection:
                                                     TextDirection.ltr),
@@ -1029,10 +1029,10 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                                       .additionalChargeName!,
                                                   style: robotoRegular),
                                               Text(
-                                                '${PriceConverter.convertPrice(Get.find<SplashController>().configModel!.additionCharge)}',
+                                               " "+ '${PriceConverter.convertPrice(Get.find<SplashController>().configModel!.additionCharge)}'+" " +"ج.م",
                                                 style: robotoRegular,
                                                 textDirection:
-                                                    TextDirection.ltr,
+                                                    TextDirection.rtl,
                                               ),
                                             ])
                                       : const SizedBox(),
