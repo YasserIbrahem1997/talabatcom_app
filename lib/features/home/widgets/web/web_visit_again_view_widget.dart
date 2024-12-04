@@ -19,7 +19,7 @@ class WebVisitAgainView extends StatefulWidget {
 }
 
 class _WebVisitAgainViewState extends State<WebVisitAgainView> {
-  final CarouselController carouselController = CarouselController();
+  final CarouselSliderController  carouselController = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

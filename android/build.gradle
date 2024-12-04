@@ -1,7 +1,24 @@
-allprojects {
+buildscript {
+    ext.kotlin_version = '1.7.10'
     repositories {
         google()
         mavenCentral()
+    }
+    dependencies {
+        // هنا يتم تحديد إصدار Android Gradle Plugin
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.32"
+    }
+}
+
+allprojects {
+
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://maven.google.com"
+        }
     }
 }
 
