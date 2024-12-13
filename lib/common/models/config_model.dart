@@ -62,6 +62,7 @@ class ConfigModel {
   String? cookiesText;
   int? homeDeliveryStatus;
   int? takeawayStatus;
+  int? writtenOrders;
   bool? partialPaymentStatus;
   String? partialPaymentMethod;
   bool? additionalChargeStatus;
@@ -135,6 +136,7 @@ class ConfigModel {
     this.cookiesText,
     this.homeDeliveryStatus,
     this.takeawayStatus,
+    this.writtenOrders,
     this.partialPaymentStatus,
     this.partialPaymentMethod,
     this.additionalChargeStatus,
@@ -229,6 +231,7 @@ class ConfigModel {
     cookiesText = json['cookies_text'];
     homeDeliveryStatus = json['home_delivery_status'];
     takeawayStatus = json['takeaway_status'];
+    writtenOrders = json['written_orders'];
     partialPaymentStatus = json['partial_payment_status'] == 1;
     partialPaymentMethod = json['partial_payment_method'];
     additionalChargeStatus = json['additional_charge_status'] == 1;
@@ -325,6 +328,7 @@ class ConfigModel {
     data['cookies_text'] = cookiesText;
     data['home_delivery_status'] = homeDeliveryStatus;
     data['takeaway_status'] = takeawayStatus;
+    data['written_orders'] = writtenOrders;
     data['partial_payment_status'] = partialPaymentStatus;
     data['partial_payment_method'] = partialPaymentMethod;
     data['additional_charge_status'] = additionalChargeStatus;
