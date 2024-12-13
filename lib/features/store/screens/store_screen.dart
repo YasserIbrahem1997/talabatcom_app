@@ -1111,10 +1111,7 @@ class _StoreScreenState extends State<StoreScreen> {
                           : const SliverToBoxAdapter(child: SizedBox()),
                       // todo this text written_orders
 
-                      (Get.find<
-                          SplashController>()
-                          .configModel!
-                          .writtenOrders! == 1)?
+                      (widget.store!.showFooterText == 1) ?
                       SliverToBoxAdapter(
                       child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -1143,7 +1140,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
                                   ),
                                   Text(
-                                 "We_hope_that_our_products_and_offers_will_satisfy_you".tr,
+                                 widget.store!.footerText == null ? "لايوجد اعلان": widget.store!.footerText.toString(),
                                     style: const TextStyle(color: Colors.black,fontSize: 10),
                                   ),
                                 ],

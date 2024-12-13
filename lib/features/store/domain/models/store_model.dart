@@ -74,7 +74,9 @@ class Store {
   String? slug;
   bool? announcementActive;
   String? announcementMessage;
+  String? footerText;
   int? itemCount;
+  int? showFooterText;
   List<Items>? items;
   bool? extraPackagingStatus;
   double? extraPackagingAmount;
@@ -121,7 +123,9 @@ class Store {
         this.slug,
         this.announcementActive,
         this.announcementMessage,
+        this.footerText,
         this.itemCount,
+        this.showFooterText,
         this.items,
         this.extraPackagingStatus,
         this.extraPackagingAmount,
@@ -174,7 +178,9 @@ class Store {
     slug = json['slug'];
     announcementActive = json['announcement'] == 1;
     announcementMessage = json['announcement_message'];
+    footerText = json['footer_text'];
     itemCount = json['total_items'];
+    showFooterText = json['showFooterText'];
     if (json['items'] != null) {
       items = <Items>[];
       json['items'].forEach((v) {
@@ -232,7 +238,9 @@ class Store {
     data['slug'] = slug;
     data['announcement'] = announcementActive;
     data['announcement_message'] = announcementMessage;
+    data['footer_text'] = footerText;
     data['total_items'] = itemCount;
+    data['showFooterText'] = showFooterText;
     if (items != null) {
       data['items'] = items!.map((v) => v.toJson()).toList();
     }
