@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_image_compression/flutter_image_compression.dart';
 import 'package:get/get.dart';
-import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:talabatcom/features/checkout/domain/repositories/checkout_repository.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
@@ -98,6 +98,7 @@ class _TopSectionState extends State<TopSection> {
       minimumShippingCharge = newCharge;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     bool takeAway = (widget.checkoutController.orderType == 'take_away');
@@ -148,7 +149,8 @@ class _TopSectionState extends State<TopSection> {
                                     color: Colors.white)),
                           ),
                           child: InkWell(
-                            onTap: () => widget.tooltipController1.showTooltip(),
+                            onTap: () =>
+                                widget.tooltipController1.showTooltip(),
                             child: const Icon(Icons.info_outline),
                           ),
                         ),
@@ -159,14 +161,16 @@ class _TopSectionState extends State<TopSection> {
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
-                          itemCount:
-                              widget.checkoutController.pickedPrescriptions.length + 1,
+                          itemCount: widget.checkoutController
+                                  .pickedPrescriptions.length +
+                              1,
                           itemBuilder: (context, index) {
                             XFile? file = index ==
                                     widget.checkoutController
                                         .pickedPrescriptions.length
                                 ? null
-                                : widget.checkoutController.pickedPrescriptions[index];
+                                : widget.checkoutController
+                                    .pickedPrescriptions[index];
                             if (index < 5 &&
                                 index ==
                                     widget.checkoutController
@@ -174,8 +178,9 @@ class _TopSectionState extends State<TopSection> {
                               return InkWell(
                                 onTap: () {
                                   if (ResponsiveHelper.isDesktop(context)) {
-                                    widget.checkoutController.pickPrescriptionImage(
-                                        isRemove: false, isCamera: false);
+                                    widget.checkoutController
+                                        .pickPrescriptionImage(
+                                            isRemove: false, isCamera: false);
                                   } else {
                                     Get.bottomSheet(
                                         const CameraButtonSheetWidget());
@@ -261,7 +266,8 @@ class _TopSectionState extends State<TopSection> {
                                             right: 0,
                                             top: 0,
                                             child: InkWell(
-                                              onTap: () => widget.checkoutController
+                                              onTap: () => widget
+                                                  .checkoutController
                                                   .removePrescriptionImage(
                                                       index),
                                               child: const Padding(
@@ -327,7 +333,8 @@ class _TopSectionState extends State<TopSection> {
                                 value: 'delivery',
                                 title: 'home_delivery'.tr,
                                 charge: widget.charge,
-                                isFree: widget.checkoutController.store!.freeDelivery,
+                                isFree: widget
+                                    .checkoutController.store!.freeDelivery,
                                 fromWeb: true,
                                 total: widget.total,
                               )
@@ -382,12 +389,13 @@ class _TopSectionState extends State<TopSection> {
           address: widget.address,
           addressList: widget.addressList,
           guestNameTextEditingController: widget.guestNameTextEditingController,
-          guestNumberTextEditingController: widget.guestNumberTextEditingController,
+          guestNumberTextEditingController:
+              widget.guestNumberTextEditingController,
           guestNumberNode: widget.guestNumberNode,
           guestEmailController: widget.guestEmailController,
           guestEmailNode: widget.guestEmailNode,
-          onShippingChargeChanged: updateMinimumShippingCharge, // Pass the callback
-
+          onShippingChargeChanged:
+              updateMinimumShippingCharge, // Pass the callback
         ),
 
         SizedBox(
@@ -467,7 +475,8 @@ class _TopSectionState extends State<TopSection> {
             SizedBox(height: isGuestLoggedIn ? 0 : Dimensions.paddingSizeLarge),
             !isDesktop && !isGuestLoggedIn
                 ? PartialPayView(
-                    totalPrice: widget.total, isPrescription: widget.storeId != null)
+                    totalPrice: widget.total,
+                    isPrescription: widget.storeId != null)
                 : const SizedBox(),
           ]),
         ),

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compression/flutter_image_compression.dart';
 import 'package:get/get.dart';
-import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:talabatcom/common/widgets/custom_tool_tip_widget.dart';
 import 'package:talabatcom/features/checkout/controllers/checkout_controller.dart';
 import 'package:talabatcom/features/checkout/widgets/prescription_view_dialog_widget.dart';

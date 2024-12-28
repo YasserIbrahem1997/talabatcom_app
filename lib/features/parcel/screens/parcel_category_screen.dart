@@ -174,8 +174,9 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                                     ? 95
                                                     : 80,
                                           ),
-                                          itemCount:parcelController.parcelCategoryList!
-                                              .where((item) => item.available == 1)
+                                          itemCount: parcelController
+                                              .parcelCategoryList!
+                                              .where((item) => item.status == 1)
                                               .length,
                                           shrinkWrap: true,
                                           physics:
@@ -183,27 +184,61 @@ class _ParcelCategoryScreenState extends State<ParcelCategoryScreen> {
                                           padding: EdgeInsets.zero,
                                           itemBuilder: (context, index) {
                                             // Filter the list again to get the actual item
-                                            final filteredList = parcelController.parcelCategoryList!
-                                                .where((item) => item.available == 1)
-                                                .toList();
+                                            final filteredList =
+                                                parcelController
+                                                    .parcelCategoryList!
+                                                    .where((item) =>
+                                                        item.status == 1)
+                                                    .toList();
                                             final item = filteredList[index];
-                                            return CustomInkWell(
-                                              onTap: () {
-                                                Get.toNamed(
-                                                  RouteHelper.getParcelLocationRoute(item),
-                                                );
-                                              },
-                                              radius: Dimensions.radiusDefault,
-                                              child: DeliverItemCardWidget(
-                                                isDeliverItem: true,
-                                                image:
-                                                    '${Get.find<SplashController>().configModel!.baseUrls!.parcelCategoryImageUrl}'
-                                                    '/${parcelController.parcelCategoryList![index].image}',
-                                                itemName: item
-                                                    .name!,
-                                                description: item
-                                                    .description!,
-                                              ),
+                                            return Stack(
+                                              children: [
+                                                CustomInkWell(
+                                                  onTap: item.available == 1
+                                                      ? () {
+                                                          // Navigate to the next screen if available
+                                                          Get.toNamed(
+                                                            RouteHelper
+                                                                .getParcelLocationRoute(
+                                                                    item),
+                                                          );
+                                                        }
+                                                      : null,
+                                                  // Disable onTap if not available
+                                                  radius:
+                                                      Dimensions.radiusDefault,
+                                                  child: DeliverItemCardWidget(
+                                                    isDeliverItem: true,
+                                                    image:
+                                                        '${Get.find<SplashController>().configModel!.baseUrls!.parcelCategoryImageUrl}'
+                                                        '/${item.image}',
+                                                    itemName: item.name!,
+                                                    description:
+                                                        item.description!,
+                                                  ),
+                                                ),
+                                                if (item.available == 0)
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.7),
+                                                      // Semi-transparent overlay
+                                                      borderRadius: BorderRadius
+                                                          .circular(Dimensions
+                                                              .radiusDefault),
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'out_of_stock_now'.tr,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                              ],
                                             );
                                           },
                                         )

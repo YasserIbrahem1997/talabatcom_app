@@ -951,7 +951,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 isExpanded: true,
                                 value: selectedCity,
                                 hint: Text(
-                                  "اختر المدينة",
+                                  "Select_country".tr,
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 items: areas.isNotEmpty

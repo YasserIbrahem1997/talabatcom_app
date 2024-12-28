@@ -166,7 +166,7 @@ class _DeliverySectionState extends State<DeliverySection> {
                               isExpanded: true,
                               value: selectedCity,
                               hint: Text(
-                                "اختر المدينة",
+                                "Select_country".tr,
                                 style: TextStyle(color: Colors.grey),
                               ),
                               items: areas.isNotEmpty

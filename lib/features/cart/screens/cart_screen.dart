@@ -343,15 +343,11 @@ class _CartScreenState extends State<CartScreen> {
                                               Row(
                                                 children: [
                                                   Text(
-                                                      ' ${PriceConverter.convertPrice(cartController.variationPrice)}',
+                                              cartController.variationPrice==0? "0": '${PriceConverter.convertPrice(cartController.variationPrice)}',
                                                       style: robotoRegular,
                                                       textDirection:
-                                                          TextDirection.ltr),
-                                                  Text(
-                                                      'ج.م',
-                                                      style: robotoRegular,
-                                                      textDirection:
-                                                      TextDirection.ltr),
+                                                          TextDirection.rtl),
+
                                                 ],
                                               ),
 

@@ -370,6 +370,9 @@ class FoodVariation {
           variationValues!.add(VariationValue.fromJson(v));
         });
       }
+
+      // تعديل أول قيمة في القائمة لتكون optionPrice = 0
+      variationValues = VariationValue.modifyFirstOptionPriceToZero(variationValues!);
     }
   }
 
@@ -406,5 +409,13 @@ class VariationValue {
     data['optionPrice'] = optionPrice;
     data['isSelected'] = isSelected;
     return data;
+  }
+
+  // دالة لتعديل ذأول قيمة في القائمة
+  static List<VariationValue> modifyFirstOptionPriceToZero(List<VariationValue> variations) {
+    if (variations.isNotEmpty) {
+      variations[0].optionPrice = 0;  // تعيين القيمة 0 لأول عنصر فقط
+    }
+    return variations;
   }
 }

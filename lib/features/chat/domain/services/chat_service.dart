@@ -1,5 +1,6 @@
+import 'package:flutter_image_compression/flutter_image_compression.dart';
 import 'package:get/get.dart';
-import 'package:image_compression_flutter/image_compression_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:talabatcom/api/api_client.dart';
 import 'package:talabatcom/features/chat/domain/models/conversation_model.dart';
 import 'package:talabatcom/features/chat/domain/repositories/chat_repository_interface.dart';

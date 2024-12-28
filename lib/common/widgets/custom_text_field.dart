@@ -115,7 +115,7 @@ class CustomTextFieldState extends State<CustomTextField> {
             filled: true,
             prefixIcon: widget.isPhone ? SizedBox(width: 95, child: Row(children: [
               Container(
-                width: 85,height: 50,
+                  width: 85,height: 50,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(Dimensions.radiusSmall),

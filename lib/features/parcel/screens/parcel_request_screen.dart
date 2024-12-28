@@ -221,6 +221,16 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                         DetailsWidget(
                                             title: 'receiver_details'.tr,
                                             address: widget.destinationAddress),
+                                            const SizedBox(
+                                                height: Dimensions.paddingSizeDefault),
+
+                                            Text("تاريخ توصيل الطلب".tr),
+                                            const SizedBox(
+                                                height: Dimensions.paddingSizeSmall),
+                                            Text(widget.destinationAddress.schedule_at.toString(),
+                                              style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+
+                                            ),
                                       ])),
                                   const SizedBox(
                                       height: Dimensions.paddingSizeSmall),
@@ -1092,95 +1102,95 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
           ? null
           : const EdgeInsets.all(Dimensions.paddingSizeSmall),
       onPressed: parcelController.acceptTerms
-          ? () {
-              if (parcelController.distance == -1) {
-                showCustomSnackBar('delivery_fee_not_set_yet'.tr);
-              } else if (parcelController.tips < 0) {
-                showCustomSnackBar('tips_can_not_be_negative'.tr);
-              } else if (parcelController.paymentIndex == -1) {
-                showCustomSnackBar('please_select_payment_method_first'.tr);
-              } else {
-                PlaceOrderBodyModel placeOrderBody = PlaceOrderBodyModel(
-                  cart: [],
-                  couponDiscountAmount: null,
-                  distance: parcelController.distance,
-                  scheduleAt: null,
-                  orderAmount: charge,
-                  orderNote: '',
-                  orderType: 'parcel',
-                  receiverDetails: widget.destinationAddress,
-                  paymentMethod: parcelController.paymentIndex == 0
-                      ? 'cash_on_delivery'
-                      : parcelController.paymentIndex == 1
-                          ? 'wallet'
-                          : parcelController.paymentIndex == 2
-                              ? 'digital_payment'
-                              : 'offline_payment',
-                  couponCode: null,
-                  storeId: null,
-                  address: widget.pickedUpAddress.address,
-                  latitude: widget.pickedUpAddress.latitude,
-                  longitude: widget.pickedUpAddress.longitude,
-                  senderZoneId: widget.pickedUpAddress.zoneId,
-                  addressType: widget.pickedUpAddress.addressType,
-                  contactPersonName:
-                      widget.pickedUpAddress.contactPersonName ?? '',
-                  contactPersonNumber:
-                      widget.pickedUpAddress.contactPersonNumber ?? '',
-                  streetNumber: widget.pickedUpAddress.streetNumber ?? '',
-                  house: widget.pickedUpAddress.house ?? '',
-                  floor: widget.pickedUpAddress.floor ?? '',
-                  discountAmount: 0,
-                  taxAmount: 0,
-                  parcelCategoryId: widget.parcelCategory.id.toString(),
-                  chargePayer:
-                      parcelController.payerTypes[parcelController.payerIndex],
-                  dmTips: parcelController.tips.toString(),
-                  cutlery: 0,
-                  unavailableItemNote: '',
-                  deliveryInstruction: (isInstructionSelected
-                          ? '${parcelController.parcelInstructionList![parcelController.selectedIndexNote!].instruction}'
-                          : '') +
-                      (isInstructionSelected
-                          ? (isCustomNote
-                              ? " (${parcelController.customNote})"
-                              : '')
-                          : (isCustomNote
-                              ? parcelController.customNote ?? ''
-                              : '')),
-                  partialPayment: 0,
-                  guestId: AuthHelper.isGuestLoggedIn()
-                      ? int.parse(AuthHelper.getGuestId())
-                      : 0,
-                  isBuyNow: 0,
-                  guestEmail: null,
-                  extraPackagingAmount: null,
-                  area: AddressHelper.getArea("Area"),
-                );
+          ?AuthHelper.isLoggedIn()==null? null : () {
+        if (parcelController.distance == -1) {
+          showCustomSnackBar('delivery_fee_not_set_yet'.tr);
+        } else if (parcelController.tips < 0) {
+          showCustomSnackBar('tips_can_not_be_negative'.tr);
+        } else if (parcelController.paymentIndex == -1) {
+          showCustomSnackBar('please_select_payment_method_first'.tr);
+        } else {
+          PlaceOrderBodyModel placeOrderBody = PlaceOrderBodyModel(
+            cart: [],
+            couponDiscountAmount: null,
+            distance: parcelController.distance,
+            scheduleAt: widget.destinationAddress.schedule_at,
+            orderAmount: charge,
+            orderNote: '',
+            orderType: 'parcel',
+            receiverDetails: widget.destinationAddress,
+            paymentMethod: parcelController.paymentIndex == 0
+                ? 'cash_on_delivery'
+                : parcelController.paymentIndex == 1
+                ? 'wallet'
+                : parcelController.paymentIndex == 2
+                ? 'digital_payment'
+                : 'offline_payment',
+            couponCode: null,
+            storeId: null,
+            address: widget.pickedUpAddress.address,
+            latitude: widget.pickedUpAddress.latitude,
+            longitude: widget.pickedUpAddress.longitude,
+            senderZoneId: widget.pickedUpAddress.zoneId,
+            addressType: widget.pickedUpAddress.addressType,
+            contactPersonName:
+            widget.pickedUpAddress.contactPersonName ?? '',
+            contactPersonNumber:
+            widget.pickedUpAddress.contactPersonNumber ?? '',
+            streetNumber: widget.pickedUpAddress.streetNumber ?? '',
+            house: widget.pickedUpAddress.house ?? '',
+            floor: widget.pickedUpAddress.floor ?? '',
+            discountAmount: 0,
+            taxAmount: 0,
+            parcelCategoryId: widget.parcelCategory.id.toString(),
+            chargePayer:
+            parcelController.payerTypes[parcelController.payerIndex],
+            dmTips: parcelController.tips.toString(),
+            cutlery: 0,
+            unavailableItemNote: '',
+            deliveryInstruction: (isInstructionSelected
+                ? '${parcelController.parcelInstructionList![parcelController.selectedIndexNote!].instruction}'
+                : '') +
+                (isInstructionSelected
+                    ? (isCustomNote
+                    ? " (${parcelController.customNote})"
+                    : '')
+                    : (isCustomNote
+                    ? parcelController.customNote ?? ''
+                    : '')),
+            partialPayment: 0,
+            guestId: AuthHelper.isGuestLoggedIn()
+                ? int.parse(AuthHelper.getGuestId())
+                : 0,
+            isBuyNow: 0,
+            guestEmail: null,
+            extraPackagingAmount: null,
+            area: AddressHelper.getArea("Area"),
+          );
 
-                if (parcelController.paymentIndex == 3) {
-                  Get.toNamed(RouteHelper.getOfflinePaymentScreen(
-                      placeOrderBody: placeOrderBody,
-                      zoneId: widget.pickedUpAddress.zoneId,
-                      total: charge,
-                      maxCodOrderAmount: 0,
-                      fromCart: false,
-                      isCodActive: false,
-                      forParcel: true));
-                } else {
-                  parcelController.startLoader(true);
-                  parcelController.placeOrder(placeOrderBody,
-                      widget.pickedUpAddress.zoneId, 0, 0, false, false,
-                      forParcel: true);
-                  parcelControllerNew.senderPrice.value = '';
-                  parcelControllerNew.receiverPrice.value = '';
-                  parcelControllerNew.selectedLocation.value = '';
-                  print("sender" + parcelControllerNew.senderPrice.value);
-                  print("rec" + parcelControllerNew.receiverPrice.value);
-                  print("selectedLocation" + parcelControllerNew.selectedLocation.value);
-                }
-              }
-            }
+          if (parcelController.paymentIndex == 3) {
+            Get.toNamed(RouteHelper.getOfflinePaymentScreen(
+                placeOrderBody: placeOrderBody,
+                zoneId: widget.pickedUpAddress.zoneId,
+                total: charge,
+                maxCodOrderAmount: 0,
+                fromCart: false,
+                isCodActive: false,
+                forParcel: true));
+          } else {
+            parcelController.startLoader(true);
+            parcelController.placeOrder(placeOrderBody,
+                widget.pickedUpAddress.zoneId, 0, 0, false, false,
+                forParcel: true);
+            parcelControllerNew.senderPrice.value = '';
+            parcelControllerNew.receiverPrice.value = '';
+            parcelControllerNew.selectedLocation.value = '';
+            print("sender" + parcelControllerNew.senderPrice.value);
+            print("rec" + parcelControllerNew.receiverPrice.value);
+            print("selectedLocation" + parcelControllerNew.selectedLocation.value);
+          }
+        }
+      }
           : null,
     );
   }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:talabatcom/common/widgets/address_widget.dart';
 import 'package:talabatcom/features/location/controllers/location_controller.dart';
@@ -25,7 +26,8 @@ import 'package:http/http.dart' as http;
 import '../../checkout/domain/repositories/checkout_repository.dart';
 
 class ParcelViewWidget extends StatefulWidget {
-  final bool isSender ;
+  final bool isSender;
+
   final Widget bottomButton;
   final TextEditingController nameController;
   final TextEditingController phoneController;
@@ -34,8 +36,17 @@ class ParcelViewWidget extends StatefulWidget {
   final TextEditingController floorController;
   final String? countryCode;
 
-  const ParcelViewWidget({super.key, required this.isSender, required this.nameController, required this.phoneController,
-    required this.streetController, required this.houseController, required this.floorController, required this.bottomButton, required this.countryCode});
+   ParcelViewWidget(
+      {super.key,
+      required this.isSender,
+      required this.nameController,
+      required this.phoneController,
+      required this.streetController,
+      required this.houseController,
+      required this.floorController,
+      required this.bottomButton,
+      required this.countryCode,
+      });
 
   @override
   State<ParcelViewWidget> createState() => _ParcelViewWidgetState();
@@ -55,12 +66,12 @@ class _ParcelViewWidgetState extends State<ParcelViewWidget> {
   // Define the list of areas fetched from API
   List<dynamic> areas = [];
   double? minimumShippingCharge;
-  final ParcelControllerNew parcelControllerNew = Get.put(ParcelControllerNew());
-
+  final ParcelControllerNew parcelControllerNew =
+      Get.put(ParcelControllerNew());
   // Function to fetch the data from the API
   Future<void> fetchAreas() async {
     var zone_id = AddressHelper.getUserAddressFromSharedPref()!.zoneId;
-    print("this zone " +zone_id.toString());
+    print("this zone " + zone_id.toString());
     final response = await http.get(
       Uri.parse(
           'https://talabatcom.net/newupdate/api/v1/vehicle/extra_charge?distance=0&zone_id=$zone_id'),
@@ -76,403 +87,454 @@ class _ParcelViewWidgetState extends State<ParcelViewWidget> {
       throw Exception('Failed to load areas');
     }
   }
+
   @override
   void initState() {
     super.initState();
     _addressCountryCode = null;
     _countryCode = _addressCountryCode ?? widget.countryCode;
     fetchAreas(); // Fetch areas when the widget initializes
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     bool isDesktop = ResponsiveHelper.isDesktop(context);
     _countryCode = _addressCountryCode ?? widget.countryCode;
     String? countryDialCode;
 
-    return SizedBox(width: Dimensions.webMaxWidth, child: GetBuilder<AddressController>(builder: (addressController) {
+    return SizedBox(
+      width: Dimensions.webMaxWidth,
+      child: GetBuilder<AddressController>(builder: (addressController) {
         return GetBuilder<ParcelController>(builder: (parcelController) {
-          List<DropdownItem<int>> senderAddressList = _getDropdownAddressList(context: context, addressList: addressController.addressList, isSender: true, pickupAddress: parcelController.pickupAddress, destinationAddress: parcelController.destinationAddress);
-          List<DropdownItem<int>> receiverAddressList = _getDropdownAddressList(context: context, addressList: addressController.addressList, isSender: false, pickupAddress: parcelController.pickupAddress, destinationAddress: parcelController.destinationAddress);
-          List<AddressModel> senderAddress = _getAddressList(addressList: addressController.addressList, isSender: true, pickupAddress: parcelController.pickupAddress, destinationAddress: parcelController.destinationAddress);
-          List<AddressModel> receiverAddress = _getAddressList(addressList: addressController.addressList, isSender: false, pickupAddress: parcelController.pickupAddress, destinationAddress: parcelController.destinationAddress);
+          List<DropdownItem<int>> senderAddressList = _getDropdownAddressList(
+              context: context,
+              addressList: addressController.addressList,
+              isSender: true,
+              pickupAddress: parcelController.pickupAddress,
+              destinationAddress: parcelController.destinationAddress);
+          List<DropdownItem<int>> receiverAddressList = _getDropdownAddressList(
+              context: context,
+              addressList: addressController.addressList,
+              isSender: false,
+              pickupAddress: parcelController.pickupAddress,
+              destinationAddress: parcelController.destinationAddress);
+          List<AddressModel> senderAddress = _getAddressList(
+              addressList: addressController.addressList,
+              isSender: true,
+              pickupAddress: parcelController.pickupAddress,
+              destinationAddress: parcelController.destinationAddress);
+          List<AddressModel> receiverAddress = _getAddressList(
+              addressList: addressController.addressList,
+              isSender: false,
+              pickupAddress: parcelController.pickupAddress,
+              destinationAddress: parcelController.destinationAddress);
 
           return SingleChildScrollView(
-              controller: ScrollController(),
-              child: Center(child: FooterView(
-                child: SizedBox(width: Dimensions.webMaxWidth, child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Column(children: [
-                    const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                    Container(
-                      decoration: BoxDecoration(color: Theme.of(context).cardColor),
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                      child: Column(children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          Text(widget.isSender ? 'pickup_location'.tr : 'delivery_location'.tr, style: robotoMedium),
-
-                          // TextButton.icon(
-                          //   onPressed: () async {
-                          //     if(ResponsiveHelper.isDesktop(Get.context)){
-                          //       showGeneralDialog(context: context, pageBuilder: (_,__,___) {
-                          //         return SizedBox(
-                          //           height: 300, width: 300,
-                          //           child: PickMapScreen(fromSignUp: false, canRoute: false, fromAddAddress: false, route:'', onPicked: (AddressModel address) async {
-                          //
-                          //             ZoneResponseModel responseModel = await Get.find<LocationController>().getZone(address.latitude.toString(), address.longitude.toString(), false);
-                          //
-                          //             AddressModel a = AddressModel(
-                          //               id: address.id, addressType: address.addressType, contactPersonNumber: address.contactPersonNumber, contactPersonName: address.contactPersonName,
-                          //               address: address.address, latitude: address.latitude, longitude: address.longitude, zoneId: responseModel.isSuccess ? responseModel.zoneIds[0] : 0,
-                          //               zoneIds: address.zoneIds, method: address.method, streetNumber: address.streetNumber, house: address.house, floor: address.floor,
-                          //             );
-                          //
-                          //             if(parcelController.isPickedUp!) {
-                          //               parcelController.setPickupAddress(a, true);
-                          //             }else {
-                          //               parcelController.setDestinationAddress(a);
-                          //             }
-                          //           }),
-                          //         );
-                          //       });
-                          //     }else{
-                          //       Get.toNamed(RouteHelper.getPickMapRoute('parcel', false), arguments: PickMapScreen(
-                          //         fromSignUp: false, fromAddAddress: false, canRoute: false, route: '', onPicked: (AddressModel address) async {
-                          //
-                          //         if(parcelController.isPickedUp!) {
-                          //           ZoneResponseModel responseModel = await Get.find<LocationController>().getZone(address.latitude.toString(), address.longitude.toString(), false);
-                          //           AddressModel pickupAddress = AddressModel(
-                          //             id: address.id, addressType: address.addressType, contactPersonNumber: address.contactPersonNumber, contactPersonName: address.contactPersonName,
-                          //             address: address.address, latitude: address.latitude, longitude: address.longitude, zoneId: responseModel.isSuccess ? responseModel.zoneIds[0] : 0,
-                          //             zoneIds: responseModel.zoneIds, method: address.method, streetNumber: address.streetNumber, house: address.house, floor: address.floor,
-                          //           );
-                          //           parcelController.setPickupAddress(pickupAddress, true);
-                          //           parcelController.setSenderAddressIndex(0);
-                          //         }else {
-                          //           ZoneResponseModel responseModel = await Get.find<LocationController>().getZone(address.latitude.toString(), address.longitude.toString(), false);
-                          //           AddressModel a = AddressModel(
-                          //             id: address.id, addressType: address.addressType, contactPersonNumber: address.contactPersonNumber, contactPersonName: address.contactPersonName,
-                          //             address: address.address, latitude: address.latitude, longitude: address.longitude, zoneId: responseModel.isSuccess ? responseModel.zoneIds[0] : 0,
-                          //             zoneIds: responseModel.zoneIds, method: address.method, streetNumber: address.streetNumber, house: address.house, floor: address.floor,
-                          //           );
-                          //           parcelController.setDestinationAddress(a);
-                          //           parcelController.setReceiverAddressIndex(0);
-                          //         }
-                          //       },
-                          //       ));
-                          //     }
-                          //   },
-                          //   icon: const Icon(Icons.add, size: 20),
-                          //   label: Text('add_new'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall)),
-                          // ),
-                        ]),
-                        SizedBox(
-                          height: 20,
-                        ),
-
-                        SizedBox(
-                          height: 20,
-                        ),
-                        // Container(
-                        //   constraints: BoxConstraints(minHeight: ResponsiveHelper.isDesktop(context) ? 90 : 75),
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        //     color: Theme.of(context).primaryColor.withOpacity(0.1),
-                        //   ),
-                        //   child: CustomDropdown<int>(
-                        //     onChange: (int? value, int index) async {
-                        //
-                        //       if(parcelController.isSender){
-                        //         parcelController.setPickupAddress(senderAddress[index], true);
-                        //         parcelController.setSenderAddressIndex(index);
-                        //         widget.streetController.text = senderAddress[index].streetNumber ?? '';
-                        //         widget.houseController.text = senderAddress[index].house ?? '';
-                        //         widget.floorController.text = senderAddress[index].floor ?? '';
-                        //         widget.nameController.text = senderAddress[index].contactPersonName ?? '';
-                        //         await _splitPhoneNumber(senderAddress[index].contactPersonNumber??'');
-                        //         parcelController.setCountryCode(_addressCountryCode!, true);
-                        //
-                        //         // widget.phoneController.text = senderAddress[index].contactPersonNumber ?? '';
-                        //       }else{
-                        //         parcelController.setDestinationAddress(receiverAddress[index]);
-                        //         parcelController.setReceiverAddressIndex(index);
-                        //         widget.streetController.text = receiverAddress[index].streetNumber ?? '';
-                        //         widget.houseController.text = receiverAddress[index].house ?? '';
-                        //         widget.floorController.text = receiverAddress[index].floor ?? '';
-                        //       }
-                        //     },
-                        //     dropdownButtonStyle: DropdownButtonStyle(
-                        //       height: 45,
-                        //       padding: const EdgeInsets.symmetric(
-                        //         vertical: Dimensions.paddingSizeExtraSmall,
-                        //         horizontal: Dimensions.paddingSizeExtraSmall,
-                        //       ),
-                        //       primaryColor: Theme.of(context).textTheme.bodyLarge!.color,
-                        //     ),
-                        //     dropdownStyle: DropdownStyle(
-                        //       elevation: 10,
-                        //       borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        //       padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                        //     ),
-                        //     items: parcelController.isSender ? senderAddressList : receiverAddressList,
-                        //     child: AddressWidget(
-                        //       address: parcelController.isSender ? senderAddress[parcelController.senderAddressIndex!] : receiverAddress[parcelController.receiverAddressIndex!],
-                        //       fromAddress: false, fromCheckout: true,
-                        //     ),
-                        //   ),
-                        // ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey),
+            controller: ScrollController(),
+            child: Center(
+                child: FooterView(
+              child: SizedBox(
+                  width: Dimensions.webMaxWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Column(children: [
+                      const SizedBox(height: Dimensions.paddingSizeSmall),
+                      Container(
+                        decoration:
+                            BoxDecoration(color: Theme.of(context).cardColor),
+                        padding:
+                            const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                        child: Column(children: [
+                          SizedBox(
+                            height: 20,
                           ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: selectedCity,
-                              hint: Text(
-                                "اختر المدينة",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              items: areas.isNotEmpty
-                                  ? areas.map((area) {
-                                return DropdownMenuItem<String>(
-                                  value: area['name'],
-                                  child: Text(
-                                    area['name'],
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                );
-                              }).toList()
-                                  : [
-                                DropdownMenuItem<String>(
-                                  value: 'no_areas',
-                                  child: Text(
-                                    "There_are_no_areas_now".tr,
-                                    style: TextStyle(color: Colors.red),
-                                  ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    widget.isSender
+                                        ? 'pickup_location'.tr
+                                        : 'delivery_location'.tr,
+                                    style: robotoMedium),
+
+                              ]),
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                value: selectedCity,
+                                hint: Text(
+                                  "Select_country".tr,
+                                  style: TextStyle(color: Colors.grey),
                                 ),
-                              ],
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedCity = newValue;
+                                items: areas.isNotEmpty
+                                    ? areas.map((area) {
+                                        return DropdownMenuItem<String>(
+                                          value: area['name'],
+                                          child: Text(
+                                            area['name'],
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        );
+                                      }).toList()
+                                    : [
+                                        DropdownMenuItem<String>(
+                                          value: 'no_areas',
+                                          child: Text(
+                                            "There_are_no_areas_now".tr,
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ),
+                                      ],
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedCity = newValue;
 
-                                  // Safely casting to double
-                                  var minimumCharge = areas.firstWhere((area) =>
-                                  area['name'] ==
-                                      newValue)['minimum_shipping_charge'];
-                                  minimumShippingCharge = minimumCharge is int
-                                      ? minimumCharge.toDouble()
-                                      : minimumCharge;
-                                  shippingController.setMinimumShippingCharge(
-                                      minimumShippingCharge!);
+                                    // Safely casting to double
+                                    var minimumCharge = areas.firstWhere(
+                                            (area) => area['name'] == newValue)[
+                                        'minimum_shipping_charge'];
+                                    minimumShippingCharge = minimumCharge is int
+                                        ? minimumCharge.toDouble()
+                                        : minimumCharge;
+                                    shippingController.setMinimumShippingCharge(
+                                        minimumShippingCharge!);
 
-                                  shippingController.setMinimumShippingCharge(minimumShippingCharge!);
+                                    shippingController.setMinimumShippingCharge(
+                                        minimumShippingCharge!);
 
-
-                                  AddressHelper.saveArea("Area", newValue.toString());
-                                  // Print minimumShippingCharge to the terminal
-                                  print('Selected City: $newValue, Minimum Shipping Charge: $minimumShippingCharge');
-                                  var get = AddressHelper.getArea("Area");
-                                  print('Selected City: $get, Minimum Shipping Charge: $minimumShippingCharge');
-                                  parcelControllerNew.updateLocation(newValue!);
-                                 widget.isSender? parcelControllerNew.updateSenderPrice(minimumShippingCharge.toString()): parcelControllerNew.updateReceiverPrice(minimumShippingCharge.toString());
-
-                                });
-                              },
-                              icon: Icon(
-                                Icons.arrow_drop_down, // Default down arrow
-                                color: Colors.black,
+                                    AddressHelper.saveArea(
+                                        "Area", newValue.toString());
+                                    // Print minimumShippingCharge to the terminal
+                                    print(
+                                        'Selected City: $newValue, Minimum Shipping Charge: $minimumShippingCharge');
+                                    var get = AddressHelper.getArea("Area");
+                                    print(
+                                        'Selected City: $get, Minimum Shipping Charge: $minimumShippingCharge');
+                                    parcelControllerNew
+                                        .updateLocation(newValue!);
+                                    widget.isSender
+                                        ? parcelControllerNew.updateSenderPrice(
+                                            minimumShippingCharge.toString())
+                                        : parcelControllerNew
+                                            .updateReceiverPrice(
+                                                minimumShippingCharge
+                                                    .toString());
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.arrow_drop_down, // Default down arrow
+                                  color: Colors.black,
+                                ),
+                                iconSize: 24,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                                dropdownColor: Colors.white,
+                                // Inner dropdown color
+                                borderRadius: BorderRadius.circular(
+                                    10), // Border radius for dropdown
                               ),
-                              iconSize: 24,
-                              style:
-                              TextStyle(color: Colors.black, fontSize: 16),
-                              dropdownColor: Colors.white,
-                              // Inner dropdown color
-                              borderRadius: BorderRadius.circular(
-                                  10), // Border radius for dropdown
                             ),
                           ),
-                        ),
-                        const SizedBox(height: Dimensions.paddingSizeLarge),
+                          const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                        !isDesktop ? CustomTextField(
-                          hintText: ' ',
-                          titleText: 'street_number'.tr,
-                          inputType: TextInputType.streetAddress,
-                          focusNode: streetNode,
-                          nextFocus: houseNode,
-                          controller: widget.streetController,
-                        ) : const SizedBox(),
-                        SizedBox(height: !isDesktop ? Dimensions.paddingSizeLarge : 0),
-
-                        Row(
-                            children: [
-                              isDesktop ? Expanded(
-                                child: CustomTextField(
-                                  showTitle: true,
+                          !isDesktop
+                              ? CustomTextField(
                                   hintText: ' ',
                                   titleText: 'street_number'.tr,
                                   inputType: TextInputType.streetAddress,
                                   focusNode: streetNode,
                                   nextFocus: houseNode,
                                   controller: widget.streetController,
-                                ),
-                              ) : const SizedBox(),
-                              SizedBox(width: isDesktop ? Dimensions.paddingSizeSmall : 0),
+                                )
+                              : const SizedBox(),
+                          SizedBox(
+                              height:
+                                  !isDesktop ? Dimensions.paddingSizeLarge : 0),
 
-                              Expanded(
-                                child: CustomTextField(
-                                  showTitle: isDesktop,
-                                  hintText: ' ',
-                                  titleText: 'house'.tr,
-                                  inputType: TextInputType.text,
-                                  focusNode: houseNode,
-                                  nextFocus: floorNode,
-                                  controller: widget.houseController,
+                          Row(children: [
+                            isDesktop
+                                ? Expanded(
+                                    child: CustomTextField(
+                                      showTitle: true,
+                                      hintText: ' ',
+                                      titleText: 'street_number'.tr,
+                                      inputType: TextInputType.streetAddress,
+                                      focusNode: streetNode,
+                                      nextFocus: houseNode,
+                                      controller: widget.streetController,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                            SizedBox(
+                                width: isDesktop
+                                    ? Dimensions.paddingSizeSmall
+                                    : 0),
+
+                            Expanded(
+                              child: CustomTextField(
+                                showTitle: isDesktop,
+                                hintText: ' ',
+                                titleText: 'house'.tr,
+                                inputType: TextInputType.text,
+                                focusNode: houseNode,
+                                nextFocus: floorNode,
+                                controller: widget.houseController,
+                              ),
+                            ),
+                            const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                            Expanded(
+                              child: CustomTextField(
+                                showTitle: isDesktop,
+                                hintText: ' ',
+                                titleText: 'floor'.tr,
+                                inputType: TextInputType.text,
+                                focusNode: floorNode,
+                                nextFocus: nameNode,
+                                controller: widget.floorController,
+                              ),
+                            ),
+                            //const SizedBox(height: Dimensions.paddingSizeLarge),
+                          ]),
+                          const SizedBox(height: Dimensions.paddingSizeLarge),
+
+                          Row(
+                            children: [
+                              // زر اختيار اليوم
+                              InkWell(
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(2100),
+                                  );
+                                  if (pickedDate != null) {
+                                    parcelController.setSelectedDate(pickedDate);
+                                  }
+                                },
+                                child: Container(
+
+                                  width: 175,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      border: Border.all(
+                                          width: 0.5, color: Colors.black12)),
+                                  child: Center(
+                                    child: Obx(() =>  Text(
+                                      parcelController.selectedDate.value== null
+                                          ? 'اختر اليوم'
+                                          : '${DateFormat('EEEE').format(parcelController.selectedDate.value!)}',
+                                    )),
+                                  ),
                                 ),
                               ),
-                              const SizedBox(width: Dimensions.paddingSizeSmall),
-
-                              Expanded(
-                                child: CustomTextField(
-                                  showTitle: isDesktop,
-                                  hintText: ' ',
-                                  titleText: 'floor'.tr,
-                                  inputType: TextInputType.text,
-                                  focusNode: floorNode,
-                                  nextFocus: nameNode,
-                                  controller: widget.floorController,
+                              const SizedBox(
+                                  width: Dimensions.paddingSizeSmall),
+                              // زر اختيار اليوم
+                              InkWell(
+                                onTap: () async {
+                                  TimeOfDay? pickedTime = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  );
+                                  if (pickedTime != null) {
+                                    parcelController.setSelectedTime(
+                                        pickedTime);
+                                  }
+                                },
+                                child: Container(
+                                  width: 175,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                      border: Border.all(
+                                          width: 0.5,
+                                          color: Colors.black12)),
+                                  child: Center(
+                                    child: Obx(() =>
+                                        Text(
+                                          parcelController.selectedTime
+                                              .value == null
+                                              ? 'اختر الساعة'
+                                              : 'الساعة: ${parcelController
+                                              .selectedTime.value!
+                                              .hour}:${parcelController
+                                              .selectedTime.value!.minute}',
+                                        )),
+                                  ),
                                 ),
                               ),
-                              //const SizedBox(height: Dimensions.paddingSizeLarge),
-                            ]
-                        ),
-                      ]),
-                    ),
-
-                    const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
+                            ],
+                          ),
+                        ]),
                       ),
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                        Text(parcelController.isSender ? 'sender_information'.tr : 'receiver_information'.tr, style: robotoMedium),
-                        const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                        CustomTextField(
-                          showTitle: isDesktop,
-                          hintText: ' ',
-                          titleText: parcelController.isSender ? 'sender_name'.tr : 'receiver_name'.tr,
-                          inputType: TextInputType.name,
-                          focusNode: nameNode,
-                          nextFocus: phoneNode,
-                          controller: widget.nameController,
+                      const SizedBox(height: Dimensions.paddingSizeLarge),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeDefault),
+                        padding:
+                            const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeSmall),
 
-                        // CustomTextField(
-                        //   showTitle: isDesktop,
-                        //   hintText: ' ',
-                        //   titleText: parcelController.isSender ? 'sender_phone_number'.tr : 'receiver_phone_number'.tr,
-                        //   inputType: TextInputType.phone,
-                        //   focusNode: _phoneNode,
-                        //   inputAction: TextInputAction.done,
-                        //   controller: phoneController,
-                        // ),
-                        CustomTextField(
-                          titleText: parcelController.isSender ? 'sender_phone_number'.tr : 'receiver_phone_number'.tr,
-                          hintText: ' ',
-                          controller: widget.phoneController,
-                          focusNode: phoneNode,
-                          inputType: TextInputType.phone,
-                          inputAction: TextInputAction.done,
-                          isPhone: true,
-                          showTitle: ResponsiveHelper.isDesktop(context),
-                          onCountryChanged: (CountryCode countryCode) {
-                            countryDialCode = countryCode.dialCode;
-                            parcelController.setCountryCode(countryDialCode!, parcelController.isSender);
-                          },
-                          countryDialCode: countryDialCode ?? _countryCode,
-                        ),
-                        const SizedBox(height: Dimensions.paddingSizeDefault),
-                      ]),
-                    ),
+                              Text(
+                                  parcelController.isSender
+                                      ? 'sender_information'.tr
+                                      : 'receiver_information'.tr,
+                                  style: robotoMedium),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeDefault),
 
-                    ResponsiveHelper.isDesktop(context) ? Padding(
-                      padding: EdgeInsets.symmetric(vertical: Dimensions.fontSizeSmall),
-                      child: widget.bottomButton,
-                    ) : const SizedBox(),
+                              CustomTextField(
+                                showTitle: isDesktop,
+                                hintText: ' ',
+                                titleText: parcelController.isSender
+                                    ? 'sender_name'.tr
+                                    : 'receiver_name'.tr,
+                                inputType: TextInputType.name,
+                                focusNode: nameNode,
+                                nextFocus: phoneNode,
+                                controller: widget.nameController,
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeDefault),
 
-                  ]),
-                )),
-              )),
-            );
-            }
+
+                              CustomTextField(
+                                titleText: parcelController.isSender
+                                    ? 'sender_phone_number'.tr
+                                    : 'receiver_phone_number'.tr,
+                                hintText: ' ',
+                                controller: widget.phoneController,
+                                focusNode: phoneNode,
+                                inputType: TextInputType.phone,
+                                inputAction: TextInputAction.done,
+                                isPhone: true,
+                                showTitle: ResponsiveHelper.isDesktop(context),
+                                onCountryChanged: (CountryCode countryCode) {
+                                  countryDialCode = countryCode.dialCode;
+                                  parcelController.setCountryCode(
+                                      countryDialCode!,
+                                      parcelController.isSender);
+                                },
+                                countryDialCode:
+                                    countryDialCode ?? _countryCode,
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeDefault),
+                            ]),
+                      ),
+                      ResponsiveHelper.isDesktop(context)
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: Dimensions.fontSizeSmall),
+                              child: widget.bottomButton,
+                            )
+                          : const SizedBox(),
+                    ]),
+                  )),
+            )),
           );
-      }
-    ),
+        });
+      }),
     );
   }
 
-  List<DropdownItem<int>> _getDropdownAddressList({required BuildContext context, required List<AddressModel>? addressList, required bool isSender, required AddressModel? pickupAddress, required AddressModel? destinationAddress}) {
+  List<DropdownItem<int>> _getDropdownAddressList(
+      {required BuildContext context,
+      required List<AddressModel>? addressList,
+      required bool isSender,
+      required AddressModel? pickupAddress,
+      required AddressModel? destinationAddress}) {
     List<DropdownItem<int>> dropDownAddressList = [];
 
-    if(isSender) {
-      dropDownAddressList.add(DropdownItem<int>(value: 0, child: SizedBox(
-        width: context.width > Dimensions.webMaxWidth ? Dimensions.webMaxWidth - 50 : context.width - 50,
-        child: AddressWidget(
-          address: pickupAddress,
-          fromAddress: false, fromCheckout: true,
-        ),
-      )));
+    if (isSender) {
+      dropDownAddressList.add(DropdownItem<int>(
+          value: 0,
+          child: SizedBox(
+            width: context.width > Dimensions.webMaxWidth
+                ? Dimensions.webMaxWidth - 50
+                : context.width - 50,
+            child: AddressWidget(
+              address: pickupAddress,
+              fromAddress: false,
+              fromCheckout: true,
+            ),
+          )));
     } else {
-      dropDownAddressList.add(DropdownItem<int>(value: 0, child: SizedBox(
-        width: context.width > Dimensions.webMaxWidth ? Dimensions.webMaxWidth - 50 : context.width - 50,
-        child: AddressWidget(
-          address: destinationAddress ?? AddressHelper.getUserAddressFromSharedPref(),
-          fromAddress: false, fromCheckout: true,
-        ),
-      )));
+      dropDownAddressList.add(DropdownItem<int>(
+          value: 0,
+          child: SizedBox(
+            width: context.width > Dimensions.webMaxWidth
+                ? Dimensions.webMaxWidth - 50
+                : context.width - 50,
+            child: AddressWidget(
+              address: destinationAddress ??
+                  AddressHelper.getUserAddressFromSharedPref(),
+              fromAddress: false,
+              fromCheckout: true,
+            ),
+          )));
     }
 
-    if(addressList != null && AuthHelper.isLoggedIn()) {
-      for(int index=0; index<addressList.length; index++) {
-
-        dropDownAddressList.add(DropdownItem<int>(value: index + 1, child: SizedBox(
-          width: context.width > Dimensions.webMaxWidth ? Dimensions.webMaxWidth-50 : context.width-50,
-          child: AddressWidget(
-            address: addressList[index],
-            fromAddress: false, fromCheckout: true,
-          ),
-        )));
+    if (addressList != null && AuthHelper.isLoggedIn()) {
+      for (int index = 0; index < addressList.length; index++) {
+        dropDownAddressList.add(DropdownItem<int>(
+            value: index + 1,
+            child: SizedBox(
+              width: context.width > Dimensions.webMaxWidth
+                  ? Dimensions.webMaxWidth - 50
+                  : context.width - 50,
+              child: AddressWidget(
+                address: addressList[index],
+                fromAddress: false,
+                fromCheckout: true,
+              ),
+            )));
       }
     }
     return dropDownAddressList;
   }
 
-  List<AddressModel> _getAddressList({required List<AddressModel>? addressList, required bool isSender, required AddressModel? pickupAddress, required AddressModel? destinationAddress}) {
+  List<AddressModel> _getAddressList(
+      {required List<AddressModel>? addressList,
+      required bool isSender,
+      required AddressModel? pickupAddress,
+      required AddressModel? destinationAddress}) {
     List<AddressModel> address = [];
 
-    if(isSender) {
+    if (isSender) {
       address.add(pickupAddress!);
-    } else if(!isSender) {
-      address.add(destinationAddress ?? AddressHelper.getUserAddressFromSharedPref()!);
+    } else if (!isSender) {
+      address.add(
+          destinationAddress ?? AddressHelper.getUserAddressFromSharedPref()!);
     }
 
-    if(addressList != null && AuthHelper.isLoggedIn()) {
-      for(int index=0; index<addressList.length; index++) {
+    if (addressList != null && AuthHelper.isLoggedIn()) {
+      for (int index = 0; index < addressList.length; index++) {
         address.add(addressList[index]);
       }
     }
@@ -483,7 +545,8 @@ class _ParcelViewWidgetState extends State<ParcelViewWidget> {
     try {
       PhoneNumber phoneNumber = PhoneNumber.parse(number);
       _addressCountryCode = '+${phoneNumber.countryCode}';
-      widget.phoneController.text = phoneNumber.international.substring(_addressCountryCode!.length);
+      widget.phoneController.text =
+          phoneNumber.international.substring(_addressCountryCode!.length);
     } catch (e) {
       debugPrint('number can\'t parse : $e');
     }

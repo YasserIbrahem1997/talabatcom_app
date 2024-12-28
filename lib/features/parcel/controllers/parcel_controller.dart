@@ -31,6 +31,17 @@ class ParcelController extends GetxController implements GetxService {
   List<ParcelCategoryModel>? _parcelCategoryList;
   List<ParcelCategoryModel>? get parcelCategoryList => _parcelCategoryList;
 
+  Rx<DateTime?> selectedDate = Rx<DateTime?>(null); // تاريخ مختار
+  Rx<TimeOfDay?> selectedTime = Rx<TimeOfDay?>(null); // وقت مختار
+
+  void setSelectedDate(DateTime date) {
+    selectedDate.value = date;
+  }
+
+  void setSelectedTime(TimeOfDay time) {
+    selectedTime.value = time;
+  }
+
   AddressModel? _pickupAddress;
   AddressModel? get pickupAddress => _pickupAddress;
 

@@ -134,6 +134,83 @@ class CartController extends GetxController implements GetxService {
 
     return _subTotal;
   }
+  double calculationCartNew() {
+    _addOnsList = [];
+    _availableList = [];
+    _itemPrice = 0;
+    _itemDiscountPrice = 0;
+    _addOns = 0;
+    _variationPrice = 0; // تعيين القيمة الافتراضية للفيريشن إلى صفر.
+    bool isFoodVariation = false;
+    double variationWithoutDiscountPrice = 0;
+    bool haveVariation = false;
+
+    for (int i = 0; i < cartList.length; i++) {
+      var cartModel = cartList[i];
+      isFoodVariation = ModuleHelper.getModuleConfig(cartModel.item!.moduleType)
+          .newVariation!;
+
+      double? discount = cartModel.item!.storeDiscount == 0
+          ? cartModel.item!.discount
+          : cartModel.item!.storeDiscount;
+      String? discountType = cartModel.item!.storeDiscount == 0
+          ? cartModel.item!.discountType
+          : 'percent';
+
+      List<AddOns> addOnList = cartServiceInterface.prepareAddonList(cartModel);
+
+      _addOnsList.add(addOnList);
+      _availableList.add(DateConverter.isAvailable(
+          cartModel.item!.availableTimeStarts,
+          cartModel.item!.availableTimeEnds));
+
+      _addOns = cartServiceInterface.calculateAddonPrice(
+          _addOns, addOnList, cartModel);
+
+      // هنا نقوم بالتحقق إذا كان هذا هو العنصر الأول
+      if (i == 0) {
+        // إذا كان الفيريشن الأول، اجعل قيمته صفرًا
+        _variationPrice = 0;
+      } else {
+        // في الحالات الأخرى، قم بحساب الفيريشن
+        _variationPrice = cartServiceInterface.calculateVariationPrice(
+            isFoodVariation, cartModel, discount, discountType, _variationPrice);
+      }
+
+      variationWithoutDiscountPrice =
+          cartServiceInterface.calculateVariationWithoutDiscountPrice(
+              isFoodVariation, cartModel, variationWithoutDiscountPrice);
+      haveVariation =
+          cartServiceInterface.checkVariation(isFoodVariation, cartModel);
+
+      double price = haveVariation
+          ? variationWithoutDiscountPrice
+          : (cartModel.item!.price! * cartModel.quantity!);
+      double discountPrice = haveVariation
+          ? (variationWithoutDiscountPrice - _variationPrice)
+          : (price -
+          (PriceConverter.convertWithDiscount(
+              cartModel.item!.price!, discount, discountType)! *
+              cartModel.quantity!));
+
+      _itemPrice = _itemPrice + price;
+      _itemDiscountPrice = _itemDiscountPrice + discountPrice;
+
+      haveVariation = false;
+    }
+
+    if (isFoodVariation) {
+      _itemDiscountPrice = _itemDiscountPrice +
+          (variationWithoutDiscountPrice - _variationPrice);
+      _variationPrice = variationWithoutDiscountPrice;
+      _subTotal = (_itemPrice - _itemDiscountPrice) + _addOns + _variationPrice;
+    } else {
+      _subTotal = (_itemPrice - _itemDiscountPrice);
+    }
+
+    return _subTotal;
+  }
+
 
   Future<void> addToCart(CartModel cartModel, int? index) async {
     if(index != null && index != -1) {

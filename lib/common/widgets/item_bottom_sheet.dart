@@ -128,8 +128,13 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                 i < widget.item!.foodVariations![index].variationValues!.length;
                 i++) {
               if (itemController.selectedVariations[index][i]!) {
-                variationPrice += widget.item!.foodVariations![index]
-                    .variationValues![i].optionPrice!;
+                if (i == 0) {
+                  variationPrice = 0; // اجعل السعر صفرًا إذا كان دائمًا أول خيار
+                }else{
+                  variationPrice += widget.item!.foodVariations![index]
+                      .variationValues![i].optionPrice!;
+                }
+
               }
             }
           }
@@ -786,262 +791,147 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                   width: ResponsiveHelper.isDesktop(context)
                                       ? MediaQuery.of(context).size.width / 2.0
                                       : null,
-                                  /*buttonText: isCampaign ? 'order_now'.tr : isExistInCart ? 'already_added_in_cart'.tr : fromCart
-                                          ? 'update_in_cart'.tr : 'add_to_cart'.tr,*/
                                   isLoading: cartController.isLoading,
                                   buttonText: (Get.find<SplashController>()
-                                              .configModel!
-                                              .moduleConfig!
-                                              .module!
-                                              .stock! &&
-                                          stock! <= 0)
+                                      .configModel!
+                                      .moduleConfig!
+                                      .module!
+                                      .stock! &&
+                                      stock! <= 0)
                                       ? 'out_of_stock'.tr
                                       : widget.isCampaign
-                                          ? 'order_now'.tr
-                                          : (widget.cart != null ||
-                                                  itemController.cartIndex !=
-                                                      -1)
-                                              ? 'update_in_cart'.tr
-                                              : 'add_to_cart'.tr,
-                                  onPressed: (Get.find<SplashController>()
-                                              .configModel!
-                                              .moduleConfig!
-                                              .module!
-                                              .stock! &&
-                                          stock! <= 0)
-                                      ? null
-                                      : () async {
-                                          String? invalid;
-                                          if (_newVariation) {
-                                            for (int index = 0;
-                                                index <
-                                                    widget.item!.foodVariations!
-                                                        .length;
-                                                index++) {
-                                              if (!widget
-                                                      .item!
-                                                      .foodVariations![index]
-                                                      .multiSelect! &&
-                                                  widget
-                                                      .item!
-                                                      .foodVariations![index]
-                                                      .required! &&
-                                                  !itemController
-                                                      .selectedVariations[index]
-                                                      .contains(true)) {
-                                                invalid =
-                                                    '${'choose_a_variation_from'.tr} ${widget.item!.foodVariations![index].name}';
-                                                break;
-                                              } else if (widget
-                                                      .item!
-                                                      .foodVariations![index]
-                                                      .multiSelect! &&
-                                                  (widget
-                                                          .item!
-                                                          .foodVariations![
-                                                              index]
-                                                          .required! ||
-                                                      itemController
-                                                          .selectedVariations[
-                                                              index]
-                                                          .contains(true)) &&
-                                                  widget
-                                                          .item!
-                                                          .foodVariations![
-                                                              index]
-                                                          .min! >
-                                                      itemController
-                                                          .selectedVariationLength(
-                                                              itemController
-                                                                  .selectedVariations,
-                                                              index)) {
-                                                invalid =
-                                                    '${'select_minimum'.tr} ${widget.item!.foodVariations![index].min} '
-                                                    '${'and_up_to'.tr} ${widget.item!.foodVariations![index].max} ${'options_from'.tr}'
-                                                    ' ${widget.item!.foodVariations![index].name} ${'variation'.tr}';
-                                                break;
-                                              }
-                                            }
-                                          }
+                                      ? 'order_now'.tr
+                                      : (widget.cart != null || itemController.cartIndex != -1)
+                                      ? 'update_in_cart'.tr
+                                      : 'add_to_cart'.tr,
+                                  onPressed: () async {
+                                    String? invalid;
+                                    if (_newVariation) {
+                                      for (int index = 0; index < widget.item!.foodVariations!.length; index++) {
+                                        if (!widget.item!.foodVariations![index].multiSelect! &&
+                                            widget.item!.foodVariations![index].required! &&
+                                            !itemController.selectedVariations[index].contains(true)) {
+                                          invalid =
+                                          '${'choose_a_variation_from'.tr} ${widget.item!.foodVariations![index].name}';
+                                          break;
+                                        } else if (widget.item!.foodVariations![index].multiSelect! &&
+                                            (widget.item!.foodVariations![index].required! ||
+                                                itemController.selectedVariations[index].contains(true)) &&
+                                            widget.item!.foodVariations![index].min! >
+                                                itemController.selectedVariationLength(
+                                                    itemController.selectedVariations, index)) {
+                                          invalid =
+                                          '${'select_minimum'.tr} ${widget.item!.foodVariations![index].min} '
+                                              '${'and_up_to'.tr} ${widget.item!.foodVariations![index].max} ${'options_from'.tr}'
+                                              ' ${widget.item!.foodVariations![index].name} ${'variation'.tr}';
+                                          break;
+                                        }
+                                      }
+                                    }
 
-                                          if (Get.find<SplashController>()
-                                                  .moduleList !=
-                                              null) {
-                                            for (ModuleModel module
-                                                in Get.find<SplashController>()
-                                                    .moduleList!) {
-                                              if (module.id ==
-                                                  widget.item!.moduleId) {
-                                                Get.find<SplashController>()
-                                                    .setModule(module);
-                                                break;
-                                              }
-                                            }
-                                          }
+                                    if (invalid != null) {
+                                      showCustomSnackBar(invalid, getXSnackBar: true);
+                                    } else {
+                                      CartModel cartModel = CartModel(
+                                        null,
+                                        price,
+                                        priceWithDiscountAndAddons,
+                                        variation != null ? [variation] : [], // التأكد من إرسال الفيرشن هنا
+                                        itemController.selectedVariations,
+                                        (price! - PriceConverter.convertWithDiscount(
+                                            price, discount, discountType)!),
+                                        itemController.quantity,
+                                        addOnIdList,
+                                        addOnsList,
+                                        widget.isCampaign,
+                                        stock,
+                                        widget.item,
+                                        widget.item?.quantityLimit,
+                                      );
 
-                                          if (invalid != null) {
-                                            showCustomSnackBar(invalid,
-                                                getXSnackBar: true);
-                                          } else {
-                                            CartModel cartModel = CartModel(
-                                                null,
-                                                price,
-                                                priceWithDiscountAndAddons,
-                                                variation != null
-                                                    ? [variation]
-                                                    : [],
-                                                itemController
-                                                    .selectedVariations,
-                                                (price! -
-                                                    PriceConverter
-                                                        .convertWithDiscount(
-                                                            price,
-                                                            discount,
-                                                            discountType)!),
-                                                itemController.quantity,
-                                                addOnIdList,
-                                                addOnsList,
-                                                widget.isCampaign,
-                                                stock,
-                                                widget.item,
-                                                widget.item?.quantityLimit);
+                                      // إرسال الفيرشن إلى العربة في حالة كانت قيمته صفر
+                                      List<OrderVariation> variations = _getSelectedVariations(
+                                        isFoodVariation: Get.find<SplashController>()
+                                            .getModuleConfig(widget.item!.moduleType)
+                                            .newVariation!,
+                                        foodVariations: widget.item!.foodVariations!,
+                                        selectedVariations: itemController.selectedVariations,
+                                      );
+                                      List<int?> listOfAddOnId = _getSelectedAddonIds(addOnIdList: addOnIdList);
+                                      List<int?> listOfAddOnQty =
+                                      _getSelectedAddonQtnList(addOnIdList: addOnIdList);
 
-                                            List<OrderVariation> variations =
-                                                _getSelectedVariations(
-                                              isFoodVariation:
-                                                  Get.find<SplashController>()
-                                                      .getModuleConfig(widget
-                                                          .item!.moduleType)
-                                                      .newVariation!,
-                                              foodVariations:
-                                                  widget.item!.foodVariations!,
-                                              selectedVariations: itemController
-                                                  .selectedVariations,
-                                            );
-                                            List<int?> listOfAddOnId =
-                                                _getSelectedAddonIds(
-                                                    addOnIdList: addOnIdList);
-                                            List<int?> listOfAddOnQty =
-                                                _getSelectedAddonQtnList(
-                                                    addOnIdList: addOnIdList);
+                                      OnlineCart onlineCart = OnlineCart(
+                                        widget.cart?.id,
+                                        widget.isCampaign ? null : widget.item!.id,
+                                        widget.isCampaign ? widget.item!.id : null,
+                                        priceWithDiscountAndAddons.toString(),
+                                        '',
+                                        variation != null ? [variation] : null, // التأكد من إرسال الفيرشن هنا
+                                        Get.find<SplashController>()
+                                            .getModuleConfig(widget.item!.moduleType)
+                                            .newVariation!
+                                            ? variations
+                                            : null,
+                                        itemController.quantity,
+                                        listOfAddOnId,
+                                        addOnsList,
+                                        listOfAddOnQty,
+                                        'Item',
+                                      );
 
-                                            OnlineCart onlineCart = OnlineCart(
-                                                widget.cart?.id,
-                                                widget.isCampaign
-                                                    ? null
-                                                    : widget.item!.id,
-                                                widget.isCampaign
-                                                    ? widget.item!.id
-                                                    : null,
-                                                priceWithDiscountAndAddons
-                                                    .toString(),
-                                                '',
-                                                variation != null
-                                                    ? [variation]
-                                                    : null,
-                                                Get.find<SplashController>()
-                                                        .getModuleConfig(widget
-                                                            .item!.moduleType)
-                                                        .newVariation!
-                                                    ? variations
-                                                    : null,
-                                                itemController.quantity,
-                                                listOfAddOnId,
-                                                addOnsList,
-                                                listOfAddOnQty,
-                                                'Item');
-
-                                            if (widget.isCampaign) {
-                                              Get.toNamed(
-                                                  RouteHelper.getCheckoutRoute(
-                                                      'campaign'),
-                                                  arguments: CheckoutScreen(
-                                                    storeId: null,
-                                                    fromCart: false,
-                                                    cartList: [cartModel],
-                                                  ));
-                                            } else {
-                                              if (Get.find<CartController>()
-                                                  .existAnotherStoreItem(
-                                                cartModel.item!.storeId,
-                                                Get.find<SplashController>()
-                                                            .module !=
-                                                        null
-                                                    ? Get.find<
-                                                            SplashController>()
-                                                        .module!
-                                                        .id
-                                                    : Get.find<
-                                                            SplashController>()
-                                                        .cacheModule!
-                                                        .id,
-                                              )) {
-                                                Get.dialog(
-                                                    ConfirmationDialog(
-                                                      icon: Images.warning,
-                                                      title:
-                                                          'are_you_sure_to_reset'
-                                                              .tr,
-                                                      description: Get.find<
-                                                                  SplashController>()
-                                                              .configModel!
-                                                              .moduleConfig!
-                                                              .module!
-                                                              .showRestaurantText!
-                                                          ? 'if_you_continue'.tr
-                                                          : 'if_you_continue_without_another_store'
-                                                              .tr,
-                                                      onYesPressed: () {
-                                                        Get.back();
-                                                        Get.find<
-                                                                CartController>()
-                                                            .clearCartOnline()
-                                                            .then(
-                                                                (success) async {
-                                                          if (success) {
-                                                            await Get.find<
-                                                                    CartController>()
-                                                                .addToCartOnline(
-                                                                    onlineCart);
-                                                            Get.back();
-                                                            showCartSnackBar();
-                                                          }
-                                                        });
-                                                      },
-                                                    ),
-                                                    barrierDismissible: false);
-                                              } else {
-                                                if (widget.cart != null ||
-                                                    itemController.cartIndex !=
-                                                        -1) {
-                                                  await Get.find<
-                                                          CartController>()
-                                                      .updateCartOnline(
-                                                          onlineCart)
-                                                      .then((success) {
+                                      if (widget.isCampaign) {
+                                        Get.toNamed(RouteHelper.getCheckoutRoute('campaign'),
+                                            arguments: CheckoutScreen(
+                                              storeId: null,
+                                              fromCart: false,
+                                              cartList: [cartModel],
+                                            ));
+                                      } else {
+                                        if (Get.find<CartController>().existAnotherStoreItem(
+                                          cartModel.item!.storeId,
+                                          Get.find<SplashController>().module != null
+                                              ? Get.find<SplashController>().module!.id
+                                              : Get.find<SplashController>().cacheModule!.id,
+                                        )) {
+                                          Get.dialog(ConfirmationDialog(
+                                            icon: Images.warning,
+                                            title: 'are_you_sure_to_reset'.tr,
+                                            description: Get.find<SplashController>()
+                                                .configModel!
+                                                .moduleConfig!
+                                                .module!
+                                                .showRestaurantText!
+                                                ? 'if_you_continue'.tr
+                                                : 'if_you_continue_without_another_store'.tr,
+                                            onYesPressed: () {
+                                              Get.back();
+                                              Get.find<CartController>().clearCartOnline().then(
+                                                      (success) async {
                                                     if (success) {
+                                                      await Get.find<CartController>().addToCartOnline(onlineCart);
                                                       Get.back();
+                                                      showCartSnackBar();
                                                     }
                                                   });
-                                                } else {
-                                                  await Get.find<
-                                                          CartController>()
-                                                      .addToCartOnline(
-                                                          onlineCart)
-                                                      .then((success) {
-                                                    if (success) {
-                                                      Get.back();
-                                                    }
-                                                  });
-                                                }
-
-                                                showCartSnackBar();
-                                              }
+                                            },
+                                          ),
+                                              barrierDismissible: false);
+                                        } else {
+                                          await Get.find<CartController>()
+                                              .addToCartOnline(onlineCart)
+                                              .then((success) {
+                                            if (success) {
+                                              Get.back();
                                             }
-                                          }
-                                        },
+                                          });
+                                          showCartSnackBar();
+                                        }
+                                      }
+                                    }
+                                  },
                                 );
-                              })),
+                                  })),
                             ]),
                           ),
                         ]),

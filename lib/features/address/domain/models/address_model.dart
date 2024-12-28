@@ -12,6 +12,8 @@ class AddressModel {
   List<int>? zoneIds;
   String? method;
   String? contactPersonName;
+  String? order_note;
+  String? schedule_at;
   String? streetNumber;
   String? house;
   String? floor;
@@ -31,6 +33,8 @@ class AddressModel {
     this.zoneIds,
     this.method,
     this.contactPersonName,
+    this.order_note,
+    this.schedule_at,
     this.streetNumber,
     this.house,
     this.floor,
@@ -51,6 +55,8 @@ class AddressModel {
     zoneIds = json['zone_ids']?.cast<int>();
     method = json['_method'];
     contactPersonName = json['contact_person_name'];
+    order_note = json['order_note'];
+    schedule_at = json['schedule_at'];
     streetNumber = json['road'];
     house = json['house'];
     floor = json['floor'] ;
@@ -79,6 +85,8 @@ class AddressModel {
     data['zone_ids'] = zoneIds;
     data['_method'] = method;
     data['contact_person_name'] = contactPersonName;
+    data['order_note'] = order_note;
+    data['schedule_at'] = schedule_at;
     data['road'] = streetNumber;
     data['house'] = house;
     data['floor'] = floor;

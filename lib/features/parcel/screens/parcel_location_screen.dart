@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/profile/controllers/profile_controller.dart';
@@ -48,6 +49,9 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
       TextEditingController();
   final TextEditingController _receiverFloorController =
       TextEditingController();
+
+  DateTime? selectedDate; // متغير لتخزين التاريخ المختار
+  TimeOfDay? selectedTime; // متغير لتخزين الوقت المختار
 
   TabController? _tabController;
   String? _countryDialCode;
@@ -246,7 +250,9 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                     floorController: _senderFloorController,
                     houseController: _senderHouseController,
                     countryCode: parcelController
-                        .senderCountryCode /* _countryDialCode*/,
+                        .senderCountryCode,
+                    /* _countryDialCode*/
+
                   ),
                   ParcelViewWidget(
                     isSender: false,
@@ -257,7 +263,9 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                     floorController: _receiverFloorController,
                     houseController: _receiverHouseController,
                     countryCode: parcelController
-                        .receiverCountryCode /*_countryDialCode*/,
+                        .receiverCountryCode ,
+
+                    /*_countryDialCode*/
                   ),
                 ],
               )),
@@ -312,6 +320,10 @@ class _ParcelLocationScreenState extends State<ParcelLocationScreen>
                 zoneIds: parcelController.destinationAddress!.zoneIds,
                 id: parcelController.destinationAddress!.id,
                 streetNumber: _receiverStreetNumberController.text.trim(),
+                schedule_at: "${DateFormat('EEEE').format(parcelController.selectedDate.value!)}  ${parcelController
+                    .selectedTime.value!
+                    .hour}:${parcelController
+                    .selectedTime.value!.minute}",
                 house: _receiverHouseController.text.trim(),
                 floor: _receiverFloorController.text.trim(),
               );
