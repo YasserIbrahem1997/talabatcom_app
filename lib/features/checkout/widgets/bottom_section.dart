@@ -70,12 +70,18 @@ class BottomSection extends StatefulWidget {
 
 class _BottomSectionState extends State<BottomSection> {
   final shippingController = Get.find<ShippingController>();
+  final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
+
 
   @override
   Widget build(BuildContext context) {
     bool takeAway = widget.checkoutController.orderType == 'take_away';
     bool isDesktop = ResponsiveHelper.isDesktop(context);
     bool isGuestLoggedIn = AuthHelper.isGuestLoggedIn();
+    var totalStat ;
+    setState(() {
+      totalStat =widget.checkoutController.viewTotalPrice;
+    });
 
     return Container(
       decoration: ResponsiveHelper.isDesktop(context)
@@ -249,10 +255,7 @@ class _BottomSectionState extends State<BottomSection> {
                           children: [
                             Text(PriceConverter.convertPrice(widget.subTotal),
                                 style: robotoMedium,
-                                textDirection: TextDirection.ltr),
-                            Text("ج.م ",
-                                style: robotoMedium,
-                                textDirection: TextDirection.ltr),
+                                textDirection: TextDirection.rtl),
                           ],
                         ),
                       ])
@@ -267,12 +270,10 @@ class _BottomSectionState extends State<BottomSection> {
                         Text('discount'.tr, style: robotoRegular),
                         Row(
                           children: [
-                            Text('${PriceConverter.convertPrice(widget.discount)}',
+                            Text(
+                                '${PriceConverter.convertPrice(widget.discount)}',
                                 style: robotoRegular,
-                                textDirection: TextDirection.ltr),
-                            Text("ج.م ",
-                                style: robotoRegular,
-                                textDirection: TextDirection.ltr),
+                                textDirection: TextDirection.rtl),
                           ],
                         ),
                       ])
@@ -294,19 +295,14 @@ class _BottomSectionState extends State<BottomSection> {
                                       color: Theme.of(context).primaryColor),
                                 )
                               : Row(
-                                children: [
-                                  Text(
+                                  children: [
+                                    Text(
                                       '${PriceConverter.convertPrice(widget.couponController.discount)}',
                                       style: robotoRegular,
-                                      textDirection: TextDirection.ltr,
+                                      textDirection: TextDirection.rtl,
                                     ),
-                                  Text(
-                                      "ج.م ",
-                                      style: robotoRegular,
-                                      textDirection: TextDirection.ltr,
-                                    ),
-                                ],
-                              ),
+                                  ],
+                                ),
                         ]),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
                   ])
@@ -322,12 +318,7 @@ class _BottomSectionState extends State<BottomSection> {
                               Text(
                                 ' ${PriceConverter.convertPrice(widget.referralDiscount)}',
                                 style: robotoRegular,
-                                textDirection: TextDirection.ltr,
-                              ),
-                              Text(
-                                "ج.م ",
-                                style: robotoRegular,
-                                textDirection: TextDirection.ltr,
+                                textDirection: TextDirection.rtl,
                               ),
                             ],
                           ),
@@ -348,11 +339,7 @@ class _BottomSectionState extends State<BottomSection> {
                                 (widget.taxIncluded ? '' : '') +
                                     PriceConverter.convertPrice(widget.tax),
                                 style: robotoRegular,
-                                textDirection: TextDirection.ltr),
-                            Text(
-                                "ج.م ",
-                                style: robotoRegular,
-                                textDirection: TextDirection.ltr),
+                                textDirection: TextDirection.rtl),
                           ],
                         ),
                       ])
@@ -371,11 +358,7 @@ class _BottomSectionState extends State<BottomSection> {
                           Text(
                               '${PriceConverter.convertPrice(widget.checkoutController.tips)}',
                               style: robotoRegular,
-                              textDirection: TextDirection.ltr),
-                          Text(
-                              "ج.م ",
-                              style: robotoRegular,
-                              textDirection: TextDirection.ltr),
+                              textDirection: TextDirection.rtl),
                         ],
                       ),
                     ],
@@ -400,11 +383,7 @@ class _BottomSectionState extends State<BottomSection> {
                           Text(
                               '${PriceConverter.convertPrice(widget.checkoutController.store!.extraPackagingAmount!)}',
                               style: robotoRegular,
-                              textDirection: TextDirection.ltr),
-                          Text(
-                              "ج.م ",
-                              style: robotoRegular,
-                              textDirection: TextDirection.ltr),
+                              textDirection: TextDirection.rtl),
                         ],
                       ),
                     ],
@@ -440,19 +419,17 @@ class _BottomSectionState extends State<BottomSection> {
                                         color: Theme.of(context).primaryColor),
                                   )
                                 : Row(
-                                  children: [
-                                    Text(
-                                        '${PriceConverter.convertPrice(shippingController.minimumShippingCharge.value)}',
-                                        style: robotoRegular,
-                                        textDirection: TextDirection.ltr,
-                                      ),
-                                    Text(
-                                      "ج.م ",
-                                      style: robotoRegular,
-                                        textDirection: TextDirection.ltr,
-                                      ),
-                                  ],
-                                ),
+                                    children: [
+                                      Obx(() {
+                                        final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
+                                        return Text(
+                                          '${PriceConverter.convertPrice(shippingCharge)}',
+                                          style: robotoRegular,
+                                          textDirection: TextDirection.rtl,
+                                        );
+                                      }),
+                                    ],
+                                  ),
                       ]),
             SizedBox(
                 height: Get.find<SplashController>()
@@ -476,12 +453,7 @@ class _BottomSectionState extends State<BottomSection> {
                             Text(
                               '${PriceConverter.convertPrice(Get.find<SplashController>().configModel!.additionCharge)}',
                               style: robotoRegular,
-                              textDirection: TextDirection.ltr,
-                            ),
-                            Text(
-                              "ج.م ",
-                              style: robotoRegular,
-                              textDirection: TextDirection.ltr,
+                              textDirection: TextDirection.rtl,
                             ),
                           ],
                         ),
@@ -501,11 +473,7 @@ class _BottomSectionState extends State<BottomSection> {
                             Text(
                                 '${PriceConverter.convertPrice(Get.find<ProfileController>().userInfoModel!.walletBalance!)}',
                                 style: robotoRegular,
-                                textDirection: TextDirection.ltr),
-                            Text(
-                                "ج.م ",
-                                style: robotoRegular,
-                                textDirection: TextDirection.ltr),
+                                textDirection: TextDirection.rtl),
                           ],
                         ),
                       ])

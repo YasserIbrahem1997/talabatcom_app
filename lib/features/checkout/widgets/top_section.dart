@@ -367,15 +367,18 @@ class _TopSectionState extends State<TopSection> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text('${'delivery_charge'.tr}: '),
-                Text(
-                  widget.checkoutController.store!.freeDelivery!
-                      ? 'free'.tr
-                      : widget.checkoutController.distance != -1
-                          ? PriceConverter.convertPrice(
-                              shippingController.minimumShippingCharge.value)
-                          : 'calculating'.tr,
-                  textDirection: TextDirection.ltr,
-                ),
+                Obx((){
+                  return  Text(
+                    widget.checkoutController.store!.freeDelivery!
+                        ? 'free'.tr
+                        : widget.checkoutController.distance != -1
+                        ? PriceConverter.convertPrice(
+                        shippingController.minimumShippingCharge.value)
+                        : 'calculating'.tr,
+                    textDirection: TextDirection.rtl,
+                  );
+                })
+
               ]))
             : const SizedBox(),
         SizedBox(
@@ -384,19 +387,23 @@ class _TopSectionState extends State<TopSection> {
                 : 0),
 
         ///delivery section
-        DeliverySection(
-          checkoutController: widget.checkoutController,
-          address: widget.address,
-          addressList: widget.addressList,
-          guestNameTextEditingController: widget.guestNameTextEditingController,
-          guestNumberTextEditingController:
-              widget.guestNumberTextEditingController,
-          guestNumberNode: widget.guestNumberNode,
-          guestEmailController: widget.guestEmailController,
-          guestEmailNode: widget.guestEmailNode,
-          onShippingChargeChanged:
-              updateMinimumShippingCharge, // Pass the callback
-        ),
+        Obx((){
+          final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
+          return  DeliverySection(
+            checkoutController: widget.checkoutController,
+            address: widget.address,
+            addressList: widget.addressList,
+            guestNameTextEditingController: widget.guestNameTextEditingController,
+            guestNumberTextEditingController:
+            widget.guestNumberTextEditingController,
+            guestNumberNode: widget.guestNumberNode,
+            guestEmailController: widget.guestEmailController,
+            guestEmailNode: widget.guestEmailNode,
+            onShippingChargeChanged:
+            shippingController.setMinimumShippingCharge, // Pass the callback
+          );
+        }),
+
 
         SizedBox(
             height: !takeAway

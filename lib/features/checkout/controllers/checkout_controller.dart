@@ -278,6 +278,7 @@ class CheckoutController extends GetxController implements GetxService {
 
   void setTotalAmount(double amount) {
     _viewTotalPrice = amount;
+
   }
 
   void clearPrevData() {

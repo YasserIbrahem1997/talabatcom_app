@@ -199,13 +199,9 @@ class _DeliverySectionState extends State<DeliverySection> {
                                   minimumShippingCharge = minimumCharge is int
                                       ? minimumCharge.toDouble()
                                       : minimumCharge;
-                                  shippingController.setMinimumShippingCharge(
-                                      minimumShippingCharge!);
-
-                                  shippingController.setMinimumShippingCharge(minimumShippingCharge!);
+                                  Get.find<ShippingController>().setMinimumShippingCharge(minimumShippingCharge!);
 
                                   // Call the callback to update minimumShippingCharge in TopSection
-                                  widget.onShippingChargeChanged(minimumShippingCharge!);
                                   AddressHelper.saveArea("Area", newValue.toString());
                                   // Print minimumShippingCharge to the terminal
                                   print('Selected City: $newValue, Minimum Shipping Charge: $minimumShippingCharge');

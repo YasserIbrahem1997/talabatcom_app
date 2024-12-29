@@ -174,5 +174,6 @@ class ShippingController extends GetxController {
 
   void setMinimumShippingCharge(double value) {
     minimumShippingCharge.value = value;
+    print("Updated Shipping Charge: $value"); // التحقق من التحديث
   }
 }

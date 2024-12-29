@@ -29,7 +29,8 @@ class PriceConverter {
       {double? discount,
       String? discountType,
       bool forDM = false,
-      TextStyle? textStyle}) {
+      TextStyle? textStyle})
+  {
     if (discount != null && discountType != null) {
       if (discountType == 'amount') {
         price = price! - discount;

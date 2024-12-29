@@ -172,8 +172,17 @@ class CheckoutScreenState extends State<CheckoutScreen> {
     bool guestCheckoutPermission = AuthHelper.isGuestLoggedIn() &&
         Get.find<SplashController>().configModel!.guestCheckoutStatus!;
     bool isLoggedIn = AuthHelper.isLoggedIn();
-    double minimumShippingCharge = shippingController.minimumShippingCharge.value;
+    final ShippingController shippingControllerTow = Get.put(ShippingController());
 
+
+
+    double minimumShippingCharge = shippingController.minimumShippingCharge.value;
+// Function to update the shipping charge
+    void updateMinimumShippingCharge(double newCharge) {
+      setState(() {
+        minimumShippingCharge = newCharge;
+      });
+    }
     return Scaffold(
       appBar: CustomAppBar(title: 'checkout'.tr),
       endDrawer: const MenuDrawer(),
@@ -403,48 +412,53 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                     .paddingSizeLarge),
                                             Expanded(
                                                 flex: 4,
-                                                child: BottomSection(
-                                                  checkoutController:
-                                                      checkoutController,
-                                                  total: total,
-                                                  module: module!,
-                                                  subTotal: subTotal,
-                                                  discount: discount,
-                                                  couponController:
-                                                      couponController,
-                                                  taxIncluded: taxIncluded,
-                                                  tax: tax,
-                                                  deliveryCharge:
-                                                  minimumShippingCharge,
-                                                  todayClosed: todayClosed,
-                                                  tomorrowClosed:
-                                                      tomorrowClosed,
-                                                  orderAmount: orderAmount,
-                                                  maxCodOrderAmount:
-                                                      maxCodOrderAmount,
-                                                  storeId: widget.storeId,
-                                                  taxPercent: _taxPercent,
-                                                  price: price,
-                                                  addOns: addOns,
-                                                  isPrescriptionRequired:
-                                                      isPrescriptionRequired,
-                                                  checkoutButton:
-                                                      _orderPlaceButton(
+                                                child:Obx((){
+                                                  final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
+
+                                                  return BottomSection(
+
+                                                    checkoutController:
                                                     checkoutController,
-                                                    todayClosed,
+                                                    total: total,
+                                                    module: module!,
+                                                    subTotal: subTotal,
+                                                    discount: discount,
+                                                    couponController:
+                                                    couponController,
+                                                    taxIncluded: taxIncluded,
+                                                    tax: tax,
+                                                    deliveryCharge:shippingCharge,
+                                                    todayClosed: todayClosed,
+                                                    tomorrowClosed:
                                                     tomorrowClosed,
-                                                    orderAmount,
-                                                    deliveryCharge,
-                                                    tax,
-                                                    discount,
-                                                    total,
+                                                    orderAmount: orderAmount,
+                                                    maxCodOrderAmount:
                                                     maxCodOrderAmount,
+                                                    storeId: widget.storeId,
+                                                    taxPercent: _taxPercent,
+                                                    price: price,
+                                                    addOns: addOns,
+                                                    isPrescriptionRequired:
                                                     isPrescriptionRequired,
-                                                          minimumShippingCharge
-                                                  ),
-                                                  referralDiscount:
-                                                      referralDiscount,
-                                                )),
+                                                    checkoutButton:
+                                                    _orderPlaceButton(
+                                                        checkoutController,
+                                                        todayClosed,
+                                                        tomorrowClosed,
+                                                        orderAmount,
+                                                        deliveryCharge,
+                                                        tax,
+                                                        discount,
+                                                        total,
+                                                        maxCodOrderAmount,
+                                                        isPrescriptionRequired,
+                                                        minimumShippingCharge
+                                                    ),
+                                                    referralDiscount:
+                                                    referralDiscount,
+                                                  );
+                                                })
+                ),
                                           ]),
                                     )
                                   : Column(
@@ -617,7 +631,8 @@ class CheckoutScreenState extends State<CheckoutScreen> {
       double? maxCodOrderAmount,
       bool isPrescriptionRequired,
       double? minimumShippingCharge
-      ) {
+      )
+  {
     return Container(
       width: Dimensions.webMaxWidth,
       alignment: Alignment.center,
