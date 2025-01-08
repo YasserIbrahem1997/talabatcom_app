@@ -1,4 +1,5 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
 import 'package:talabatcom/features/store/controllers/store_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
@@ -19,7 +20,6 @@ import 'package:talabatcom/common/widgets/title_widget.dart';
 import 'package:talabatcom/features/home/widgets/web/widgets/arrow_icon_button.dart';
 import 'package:talabatcom/features/store/screens/store_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:get/get.dart';
 
 
@@ -307,10 +307,11 @@ class WebNewOnMartShimmer extends StatelessWidget {
 
                   ClipRRect(
                     borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                    child: Shimmer(
-                      duration: const Duration(seconds: 2),
+                    child:Shimmer.fromColors(
                       enabled: true,
-                      direction: const ShimmerDirection.fromLTRB(),
+                      highlightColor: Colors.white.withAlpha(1),
+                      baseColor: Colors.grey.withOpacity(0.5),
+                      period: const Duration(seconds: 2),
                       child: Container(
                         height: 90, width: 90,
                         decoration: BoxDecoration(
@@ -325,10 +326,11 @@ class WebNewOnMartShimmer extends StatelessWidget {
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
-                      Shimmer(
-                        duration: const Duration(seconds: 2),
+                      Shimmer.fromColors(
                         enabled: true,
-                        direction: const ShimmerDirection.fromLTRB(),
+                        highlightColor: Colors.white.withAlpha(1),
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        period: const Duration(seconds: 2),
                         child: Container(
                           height: 10, width: 100,
                           decoration: BoxDecoration(
@@ -338,10 +340,11 @@ class WebNewOnMartShimmer extends StatelessWidget {
                         ),
                       ),
 
-                      Shimmer(
-                        duration: const Duration(seconds: 2),
+                      Shimmer.fromColors(
                         enabled: true,
-                        direction: const ShimmerDirection.fromLTRB(),
+                        highlightColor: Colors.white.withAlpha(1),
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        period: const Duration(seconds: 2),
                         child: Container(
                           height: 10, width: 100,
                           decoration: BoxDecoration(
@@ -351,10 +354,11 @@ class WebNewOnMartShimmer extends StatelessWidget {
                         ),
                       ),
 
-                      Shimmer(
-                        duration: const Duration(seconds: 2),
+                      Shimmer.fromColors(
                         enabled: true,
-                        direction: const ShimmerDirection.fromLTRB(),
+                        highlightColor: Colors.white.withAlpha(1),
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        period: const Duration(seconds: 2),
                         child: Container(
                           height: 10, width: 100,
                           decoration: BoxDecoration(
@@ -364,10 +368,11 @@ class WebNewOnMartShimmer extends StatelessWidget {
                         ),
                       ),
 
-                      Shimmer(
-                        duration: const Duration(seconds: 2),
+                      Shimmer.fromColors(
                         enabled: true,
-                        direction: const ShimmerDirection.fromLTRB(),
+                        highlightColor: Colors.white.withAlpha(1),
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        period: const Duration(seconds: 2),
                         child: Container(
                           height: 10, width: 100,
                           decoration: BoxDecoration(
@@ -384,10 +389,11 @@ class WebNewOnMartShimmer extends StatelessWidget {
                         color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                       ),
-                      child: Shimmer(
-                        duration: const Duration(seconds: 2),
+                      child: Shimmer.fromColors(
                         enabled: true,
-                        direction: const ShimmerDirection.fromLTRB(),
+                        highlightColor: Colors.white.withAlpha(1),
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        period: const Duration(seconds: 2),
                         child: Icon(
                           Icons.favorite_border,  size: 20,
                           color: Theme.of(context).disabledColor,
@@ -402,10 +408,11 @@ class WebNewOnMartShimmer extends StatelessWidget {
                 flex: 2,
                 child: Row(children: [
 
-                  Shimmer(
-                    duration: const Duration(seconds: 2),
+                  Shimmer.fromColors(
                     enabled: true,
-                    direction: const ShimmerDirection.fromLTRB(),
+                    highlightColor: Colors.white.withAlpha(1),
+                    baseColor: Colors.grey.withOpacity(0.5),
+                    period: const Duration(seconds: 2),
                     child: Container(
                       height: 10, width: 100,
                       decoration: BoxDecoration(

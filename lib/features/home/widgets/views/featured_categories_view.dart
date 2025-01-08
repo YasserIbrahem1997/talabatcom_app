@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
 import 'package:talabatcom/features/item/domain/models/basic_medicine_model.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
@@ -148,9 +148,11 @@ class FeaturedCategoriesShimmerView extends StatelessWidget {
               itemCount: 4,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return Shimmer(
-                  duration: const Duration(seconds: 2),
+                return Shimmer.fromColors(
                   enabled: true,
+                  highlightColor: Colors.white.withAlpha(1),
+                  baseColor: Colors.grey.withOpacity(0.5),
+                  period: const Duration(seconds: 2),
                   child: Container(
                     width: 160, height: 200,
                     decoration: BoxDecoration(

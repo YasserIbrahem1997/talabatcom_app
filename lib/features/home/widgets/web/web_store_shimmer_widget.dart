@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/common/widgets/rating_bar.dart';
 
@@ -15,8 +15,10 @@ class WebStoreShimmerWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)]
       ),
-      child: Shimmer(
-        duration: const Duration(seconds: 2),
+      child: Shimmer.fromColors(
+        highlightColor: Colors.white.withAlpha(1),
+        baseColor: Colors.grey.withOpacity(0.5),
+        period: const Duration(seconds: 2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
           Container(

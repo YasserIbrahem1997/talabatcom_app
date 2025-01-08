@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/banner/controllers/banner_controller.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
@@ -35,9 +35,11 @@ class PromotionalBannerShimmerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer(
-      duration: const Duration(seconds: 2),
+    return Shimmer.fromColors(
       enabled: true,
+      highlightColor: Colors.white.withAlpha(1),
+      baseColor: Colors.grey.withOpacity(0.5),
+      period: const Duration(seconds: 2),
       child: Container(
         height: 90, width: double.infinity,
         decoration: BoxDecoration(

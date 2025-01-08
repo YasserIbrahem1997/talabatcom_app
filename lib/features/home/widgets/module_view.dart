@@ -1,4 +1,4 @@
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
 import 'package:talabatcom/features/banner/controllers/banner_controller.dart';
 import 'package:talabatcom/features/home/widgets/views/new_on_mart_view.dart';
@@ -33,14 +33,14 @@ class ModuleView extends StatelessWidget {
           ? splashController.moduleList!.isNotEmpty
               ? SizedBox(
                   width: double.infinity,
-                  height: 350,
+                  height: 330,
                   child: GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2, // Only one item per row
                       mainAxisSpacing: Dimensions.paddingSizeSmall,
                       crossAxisSpacing: Dimensions.paddingSizeExtraOverLarge,
-                      childAspectRatio: 1.28, // Ensures the item is a square
+                      childAspectRatio: 1.38, // Ensures the item is a square
                     ),
                     padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                     itemCount: splashController.moduleList!.length,
@@ -83,17 +83,12 @@ class ModuleView extends StatelessWidget {
                                       Dimensions.radiusSmall),
                                   child: CustomImage(
                                     image:
-                                        '${splashController.configModel!.baseUrls!.moduleImageUrl}/${splashController.moduleList![index].icon}',
-                                    fit: BoxFit.cover,
-                                    height:
-                                        MediaQuery.of(context).size.height / 1.5,
-                                    width:
-                                        MediaQuery.of(context).size.height / 1,
+                                    '${splashController.configModel!.baseUrls!.moduleImageUrl}/${splashController.moduleList![index].icon}',
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                  height: Dimensions.paddingSizeExtraSmall),
+
                               Expanded(
                                 flex: 1,
                                 child: Center(
@@ -168,8 +163,10 @@ class ModuleShimmer extends StatelessWidget {
                   blurRadius: 5)
             ],
           ),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             enabled: isEnabled,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -243,8 +240,10 @@ class AddressShimmer extends StatelessWidget {
                     ),
                     const SizedBox(width: Dimensions.paddingSizeSmall),
                     Expanded(
-                      child: Shimmer(
-                        duration: const Duration(seconds: 2),
+                      child: Shimmer.fromColors(
+                        highlightColor: Colors.white.withAlpha(1),
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        period: const Duration(seconds: 2),
                         enabled: isEnabled,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

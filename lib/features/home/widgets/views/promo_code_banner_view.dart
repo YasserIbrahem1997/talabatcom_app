@@ -3,7 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
 import 'package:talabatcom/features/coupon/controllers/coupon_controller.dart';
 import 'package:talabatcom/helper/price_converter.dart';
@@ -155,9 +155,11 @@ class PromoCodeShimmerView extends StatelessWidget {
             viewportFraction: 0.95,
           ),
           itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
-            return Shimmer(
-              duration: const Duration(seconds: 2),
+            return Shimmer.fromColors(
               enabled: true,
+              highlightColor: Colors.white.withAlpha(1),
+              baseColor: Colors.grey.withOpacity(0.5),
+              period: const Duration(seconds: 2),
               child: Container(
                 height: 135, width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeSmall),

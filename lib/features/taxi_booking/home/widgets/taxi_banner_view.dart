@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/banner/controllers/banner_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/item/domain/models/basic_campaign_model.dart';
@@ -6,7 +7,6 @@ import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class TaxiBannerView extends StatelessWidget {
   const TaxiBannerView({super.key});
@@ -76,8 +76,10 @@ class TaxiBannerView extends StatelessWidget {
               }).toList(),
             ),)
           ],
-        ) : Shimmer(
-          duration: const Duration(seconds: 2),
+        ) : Shimmer.fromColors(
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           enabled: bannerList == null,
           child: Container(margin: const EdgeInsets.symmetric(horizontal: 10), decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),

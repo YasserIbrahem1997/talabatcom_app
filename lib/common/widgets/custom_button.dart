@@ -10,15 +10,17 @@ class CustomButton extends StatelessWidget {
   final EdgeInsets? margin;
   final double? height;
   final double? width;
+  final double borderSide;
   final double? fontSize;
   final double radius;
   final IconData? icon;
   final Color? color;
+  final Color colorBorderSide;
   final Color? textColor;
   final bool isLoading;
   final bool isBold;
   const CustomButton({super.key, this.onPressed, required this.buttonText, this.transparent = false, this.margin, this.width, this.height,
-    this.fontSize, this.radius = 10, this.icon, this.color, this.textColor, this.isLoading = false, this.isBold = true});
+    this.fontSize, this.radius = 10,this.borderSide = 0,this.colorBorderSide=Colors.transparent, this.icon, this.color, this.textColor, this.isLoading = false, this.isBold = true});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,10 @@ class CustomButton extends StatelessWidget {
       minimumSize: Size(width != null ? width! : Dimensions.webMaxWidth, height != null ? height! : 50),
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
+        side: BorderSide(
+          width: borderSide.toDouble(),
+          color: colorBorderSide!,
+        ),
         borderRadius: BorderRadius.circular(radius),
       ),
     );

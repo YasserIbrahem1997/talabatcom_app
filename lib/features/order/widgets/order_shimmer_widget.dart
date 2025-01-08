@@ -1,8 +1,8 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/order/controllers/order_controller.dart';
 import 'package:talabatcom/helper/responsive_helper.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class OrderShimmerWidget extends StatelessWidget {
   final OrderController orderController;
@@ -35,8 +35,10 @@ class OrderShimmerWidget extends StatelessWidget {
                     boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)],
                   ) : const BoxDecoration(),
                   padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                  child: Shimmer(
-                    duration: const Duration(seconds: 2),
+                  child: Shimmer.fromColors(
+                    highlightColor: Colors.white.withAlpha(1),
+                    baseColor: Colors.grey.withOpacity(0.5),
+                    period: const Duration(seconds: 2),
                     enabled: orderController.runningOrderModel == null,
                     child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
 

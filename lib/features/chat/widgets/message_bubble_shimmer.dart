@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/chat/controllers/chat_controller.dart';
 import 'package:talabatcom/util/dimensions.dart';
 
@@ -17,9 +17,12 @@ class MessageBubbleShimmer extends StatelessWidget {
         mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
           Flexible(
-            child: Shimmer(
-              duration: const Duration(seconds: 2),
-              enabled: Get.find<ChatController>().messageModel == null,
+            child: Shimmer.fromColors(
+              enabled: true,
+              highlightColor: Colors.transparent,
+              baseColor: Colors.transparent,
+              period: const Duration(seconds: 2),
+
               child: Container(
                 height: 30,
                 width: MediaQuery.of(context).size.width,

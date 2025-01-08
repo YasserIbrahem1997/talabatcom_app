@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talabatcom/common/widgets/custom_asset_image_widget.dart';
 import 'package:talabatcom/common/widgets/custom_tool_tip_widget.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
@@ -51,7 +52,7 @@ class ItemBottomSheet extends StatefulWidget {
 class _ItemBottomSheetState extends State<ItemBottomSheet> {
   bool _newVariation = false;
   TextEditingController textNote = TextEditingController();
-
+String? addNote;
   @override
   void initState() {
     super.initState();
@@ -67,6 +68,13 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
             .newVariation ??
         false;
     Get.find<ItemController>().initData(widget.item, widget.cart);
+    _loadAddNote();
+  }
+  Future<void> _loadAddNote() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      addNote = prefs.getString('addNoteOrder') ?? "";
+    });
   }
 
   @override
@@ -84,6 +92,8 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
       child: GetBuilder<ItemController>(builder: (itemController) {
         double? startingPrice;
         double? endingPrice;
+
+// حساب النطاق السعري (إذا لم تكن هناك فيريشنات غذائية)
         if (widget.item!.choiceOptions!.isNotEmpty &&
             widget.item!.foodVariations!.isEmpty) {
           List<double?> priceList = [];
@@ -99,54 +109,53 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
           startingPrice = widget.item!.price;
         }
 
+// تعريف المتغيرات
         double? price = widget.item!.price;
         double variationPrice = 0;
         Variation? variation;
         double? initialDiscount =
-            (widget.isCampaign || widget.item!.storeDiscount == 0)
-                ? widget.item!.discount
-                : widget.item!.storeDiscount;
+        (widget.isCampaign || widget.item!.storeDiscount == 0)
+            ? widget.item!.discount
+            : widget.item!.storeDiscount;
         double? discount =
-            (widget.isCampaign || widget.item!.storeDiscount == 0)
-                ? widget.item!.discount
-                : widget.item!.storeDiscount;
+        (widget.isCampaign || widget.item!.storeDiscount == 0)
+            ? widget.item!.discount
+            : widget.item!.storeDiscount;
         String? discountType =
-            (widget.isCampaign || widget.item!.storeDiscount == 0)
-                ? widget.item!.discountType
-                : 'percent';
+        (widget.isCampaign || widget.item!.storeDiscount == 0)
+            ? widget.item!.discountType
+            : 'percent';
         int? stock = widget.item!.stock ?? 0;
 
+// احتساب الخصم إذا كان نوع الخصم "مبلغ محدد"
         if (discountType == 'amount') {
           discount = discount! * itemController.quantity!;
         }
 
+// منطق اختيار الفيريشن وتحديث السعر
         if (_newVariation) {
-          for (int index = 0;
-              index < widget.item!.foodVariations!.length;
-              index++) {
-            for (int i = 0;
-                i < widget.item!.foodVariations![index].variationValues!.length;
-                i++) {
+          for (int index = 0; index < widget.item!.foodVariations!.length; index++) {
+            for (int i = 0; i < widget.item!.foodVariations![index].variationValues!.length; i++) {
               if (itemController.selectedVariations[index][i]!) {
                 if (i == 0) {
-                  variationPrice = 0; // اجعل السعر صفرًا إذا كان دائمًا أول خيار
-                }else{
-                  variationPrice += widget.item!.foodVariations![index]
-                      .variationValues![i].optionPrice!;
+                  // إذا كان الفيريشن الأول، يبقى السعر الأساسي كما هو
+                  variationPrice = 0;
+                } else {
+                  // إذا كان الفيريشن الثاني أو الثالث، يتم استبدال السعر الأساسي بسعر الفيريشن
+                  price = widget.item!.foodVariations![index].variationValues![i].optionPrice!;
+                  variationPrice = 0; // لا يتم إضافة فرق السعر لأن السعر الأساسي تم تغييره بالفعل
                 }
-
               }
             }
           }
         } else {
           List<String> variationList = [];
-          for (int index = 0;
-              index < widget.item!.choiceOptions!.length;
-              index++) {
+          for (int index = 0; index < widget.item!.choiceOptions!.length; index++) {
             variationList.add(widget.item!.choiceOptions![index]
                 .options![itemController.variationIndex![index]]
                 .replaceAll(' ', ''));
           }
+
           String variationType = '';
           bool isFirst = true;
           for (var variation in variationList) {
@@ -168,9 +177,11 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
           }
         }
 
+// حساب السعر النهائي بعد الخصم
         price = price! + variationPrice;
-        double priceWithDiscount =
-            PriceConverter.convertWithDiscount(price, discount, discountType)!;
+
+        double priceWithDiscount = PriceConverter.convertWithDiscount(price, discount, discountType)!;
+
         double addonsCost = 0;
         List<AddOn> addOnIdList = [];
         List<AddOns> addOnsList = [];
@@ -185,8 +196,11 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
             addOnsList.add(widget.item!.addOns![index]);
           }
         }
-        priceWithDiscount = priceWithDiscount;
+
+// حساب السعر مع الخصم والإضافات
         double? priceWithDiscountAndAddons = priceWithDiscount + addonsCost;
+
+// التحقق من التوافر
         bool isAvailable = DateConverter.isAvailable(
             widget.item!.availableTimeStarts, widget.item!.availableTimeEnds);
 
@@ -328,14 +342,14 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                                       fontSize: Dimensions
                                                           .fontSizeLarge),
                                                   textDirection:
-                                                      TextDirection.ltr,
+                                                      TextDirection.rtl,
                                                 ),
                                                 price > priceWithDiscount
                                                     ? Text(
                                                         '${PriceConverter.convertPrice(startingPrice)}'
                                                         '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice)}' : ''}',
                                                         textDirection:
-                                                            TextDirection.ltr,
+                                                            TextDirection.rtl,
                                                         style: robotoMedium.copyWith(
                                                             color: Theme.of(
                                                                     context)
@@ -621,7 +635,7 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                     maxLines: 4,
                                     // Allows multiple lines (at least 2 as you need)
                                     decoration: InputDecoration(
-                                      hintText: "Write_your_notes_here".tr,
+                                      hintText:textNote.text.isNotEmpty ? "Write_your_notes_here".tr: addNote.toString(),
                                       filled: true,
                                       // Adds a background color
                                       fillColor: Colors.white,
@@ -806,6 +820,7 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                       : 'add_to_cart'.tr,
                                   onPressed: () async {
                                     String? invalid;
+                                    final SharedPreferences prefs = await SharedPreferences.getInstance();
                                     if (_newVariation) {
                                       for (int index = 0; index < widget.item!.foodVariations!.length; index++) {
                                         if (!widget.item!.foodVariations![index].multiSelect! &&
@@ -917,7 +932,9 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                             },
                                           ),
                                               barrierDismissible: false);
-                                        } else {
+
+                                        } else
+                                        {
                                           await Get.find<CartController>()
                                               .addToCartOnline(onlineCart)
                                               .then((success) {
@@ -929,6 +946,11 @@ class _ItemBottomSheetState extends State<ItemBottomSheet> {
                                         }
                                       }
                                     }
+                                    textNote.text.isEmpty?null:  prefs.setString("addNoteOrder", textNote.text.trim());
+
+
+                                  var prints=  prefs.getString("addNoteOrder");
+                                  print(prints);
                                   },
                                 );
                                   })),
@@ -1091,7 +1113,7 @@ class AddonView extends StatelessWidget {
                         : 'free'.tr,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    textDirection: TextDirection.ltr,
+                    textDirection: TextDirection.rtl,
                     style: itemController.addOnActiveList[index]
                         ? robotoMedium.copyWith(
                             fontSize: Dimensions.fontSizeSmall)
@@ -1483,10 +1505,10 @@ class NewVariationView extends StatelessWidget {
                                   const Spacer(),
                                   showOriginalPrice
                                       ? Text(
-                                          '+${PriceConverter.convertPrice(item!.foodVariations![index].variationValues![i].optionPrice)}',
+                                          '${PriceConverter.convertPrice(item!.foodVariations![index].variationValues![i].optionPrice)}',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          textDirection: TextDirection.ltr,
+                                          textDirection: TextDirection.rtl,
                                           style: robotoRegular.copyWith(
                                               fontSize:
                                                   Dimensions.fontSizeExtraSmall,
@@ -1500,11 +1522,11 @@ class NewVariationView extends StatelessWidget {
                                       width: showOriginalPrice
                                           ? Dimensions.paddingSizeExtraSmall
                                           : 0),
-                                  Text(
-                                    '+${PriceConverter.convertPrice(item!.foodVariations![index].variationValues![i].optionPrice, discount: discount, discountType: discountType, isFoodVariation: true)}',
+                                  item!.foodVariations![index].variationValues![i].optionPrice!=0?  Text(
+                                    '${PriceConverter.convertPrice(item!.foodVariations![index].variationValues![i].optionPrice, discount: discount, discountType: discountType, isFoodVariation: true)}',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    textDirection: TextDirection.ltr,
+                                    textDirection: TextDirection.rtl,
                                     style: itemController
                                             .selectedVariations[index][i]!
                                         ? robotoMedium.copyWith(
@@ -1515,6 +1537,21 @@ class NewVariationView extends StatelessWidget {
                                                 Dimensions.fontSizeExtraSmall,
                                             color: Theme.of(context)
                                                 .disabledColor),
+                                  ):Text(
+                                    "${PriceConverter.convertPrice(item!.price)}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textDirection: TextDirection.rtl,
+                                    style: itemController
+                                        .selectedVariations[index][i]!
+                                        ? robotoMedium.copyWith(
+                                        fontSize:
+                                        Dimensions.fontSizeExtraSmall)
+                                        : robotoRegular.copyWith(
+                                        fontSize:
+                                        Dimensions.fontSizeExtraSmall,
+                                        color: Theme.of(context)
+                                            .disabledColor),
                                   ),
                                 ]),
                               ),

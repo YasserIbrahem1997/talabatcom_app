@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/category/controllers/category_controller.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
@@ -9,7 +10,6 @@ import 'package:talabatcom/util/styles.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:talabatcom/features/home/widgets/category_pop_up.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:get/get.dart';
 
 class CategoryView extends StatelessWidget {
@@ -101,9 +101,7 @@ class CategoryView extends StatelessWidget {
                                                           child: CustomImage(
                                                             image:
                                                                 '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
-                                                            height: 75,
-                                                            width: 75,
-                                                            fit: BoxFit.cover,
+                                                            fit: BoxFit.fill,
                                                           ),
                                                         ),
                                                         (index == 9 &&
@@ -141,7 +139,7 @@ class CategoryView extends StatelessWidget {
                                                                               Text(
                                                                             '+${categoryController.categoryList!.length - 10}',
                                                                             style:
-                                                                                robotoMedium.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: Theme.of(context).cardColor),
+                                                                                robotoMedium.copyWith(fontSize:Dimensions.fontSizeSmall, color: Theme.of(context).cardColor),
                                                                             maxLines:
                                                                                 2,
                                                                             overflow:
@@ -280,15 +278,19 @@ class PharmacyCategoryView extends StatelessWidget {
         height: 160,
         child: categoryController.categoryList != null
             ? GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: ResponsiveHelper.isDesktop(context) ? 6 : ResponsiveHelper.isTab(context) ? 4 : 3,
-            childAspectRatio: (1/1),
-            mainAxisSpacing: Dimensions.paddingSizeSmall,
-            crossAxisSpacing: Dimensions.paddingSizeSmall,
-          ),
-          padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: ResponsiveHelper.isDesktop(context)
+                      ? 6
+                      : ResponsiveHelper.isTab(context)
+                          ? 4
+                          : 3,
+                  childAspectRatio: (1 / 1),
+                  mainAxisSpacing: Dimensions.paddingSizeSmall,
+                  crossAxisSpacing: Dimensions.paddingSizeSmall,
+                ),
+                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                 itemCount: categoryController.categoryList!.length > 10
                     ? 10
                     : categoryController.categoryList!.length,
@@ -305,102 +307,105 @@ class PharmacyCategoryView extends StatelessWidget {
                         ));
                       }
                     },
-                    borderRadius:
-                        BorderRadius.circular(Dimensions.radiusSmall),
+                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 1)],
-                      ),
                       alignment: Alignment.center,
                       child: Center(
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                          Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                child: CustomImage(
-                                  height: 50, width: 50, fit: BoxFit.cover,
-                                  image: '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
-
-                                ),
-                              ),
-                              (index == 9 &&
-                                      categoryController.categoryList!.length >
-                                          10)
-                                  ? Positioned(
-                                      right: 0,
-                                      left: 0,
-                                      top: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.only(
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusSmall),
+                                    child: CustomImage(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              10,
+                                      fit: BoxFit.fill,
+                                      image:
+                                          '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
+                                    ),
+                                  ),
+                                  (index == 9 &&
+                                          categoryController
+                                                  .categoryList!.length >
+                                              10)
+                                      ? Positioned(
+                                          right: 0,
+                                          left: 0,
+                                          top: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: const BorderRadius
+                                                    .only(
                                                     topLeft:
                                                         Radius.circular(100),
                                                     topRight:
                                                         Radius.circular(100)),
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.4),
-                                                Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.6),
-                                                Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.4),
-                                              ],
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              '+${categoryController.categoryList!.length - 10}',
-                                              style: robotoMedium.copyWith(
-                                                  fontSize: Dimensions
-                                                      .fontSizeExtraLarge,
-                                                  color: Theme.of(context)
-                                                      .cardColor),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          )),
-                                    )
-                                  : const SizedBox(),
-                            ],
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeSmall),
-                          Expanded(
-                              child: Text(
-                            (index == 9 &&
-                                    categoryController.categoryList!.length >
-                                        10)
-                                ? 'see_all'.tr
-                                : categoryController.categoryList![index].name!,
-                            style: robotoMedium.copyWith(
-                                fontSize: Dimensions.fontSizeSmall,
-                                color: (index == 9 &&
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(0.4),
+                                                    Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(0.6),
+                                                    Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(0.4),
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '+${categoryController.categoryList!.length - 10}',
+                                                  style: robotoMedium.copyWith(
+                                                      fontSize: Dimensions
+                                                          .fontSizeExtraLarge,
+                                                      color: Theme.of(context)
+                                                          .cardColor),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              )),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeExtraSmall),
+                              Expanded(
+                                  child: Text(
+                                (index == 9 &&
                                         categoryController
                                                 .categoryList!.length >
                                             10)
-                                    ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .color),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                          )),
-                        ]),
+                                    ? 'see_all'.tr
+                                    : categoryController
+                                        .categoryList![index].name!,
+                                style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeSmall,
+                                    color: (index == 9 &&
+                                            categoryController
+                                                    .categoryList!.length >
+                                                10)
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              )),
+                            ]),
                       ),
                     ),
                   );
@@ -422,134 +427,155 @@ class FoodCategoryView extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
     return Stack(children: [
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         SizedBox(
           height: 150,
           child: categoryController.categoryList != null
               ? ListView.separated(
-            // physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //   crossAxisCount: ResponsiveHelper.isDesktop(context)
-            //       ? 6
-            //       : ResponsiveHelper.isTab(context)
-            //       ? 4
-            //       : 3,
-            //   childAspectRatio: (1 / 1),
-            //   mainAxisSpacing: Dimensions.paddingSizeSmall,
-            //   crossAxisSpacing: Dimensions.paddingSizeSmall,
-            // ),
-            controller: scrollController,
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-            itemCount: categoryController.categoryList!.length > 10
-                ? 10
-                : categoryController.categoryList!.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  if (index == 9 && categoryController.categoryList!.length > 10) {
-                    Get.toNamed(RouteHelper.getCategoryRoute());
-                  } else {
-                    Get.toNamed(RouteHelper.getCategoryItemRoute(
-                      categoryController.categoryList![index].id,
-                      categoryController.categoryList![index].name!,
-                    ));
-                  }
-                },
-                borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black12, blurRadius: 5, spreadRadius: 1)
-                    ],
-                  ),
-                  alignment: Alignment.center,
-                  width:100,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                              child: CustomImage(
-                                height: MediaQuery.of(context).size.height/8.5,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                image: '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
-                              ),
-                            ),
-                            (index == 9 && categoryController.categoryList!.length > 10)
-                                ? Positioned(
-                              right: 0,
-                              left: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: Container(
-                                  decoration: BoxDecoration(
-
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.4),
-                                        Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.6),
-                                        Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.4),
-                                      ],
+                  // physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: ResponsiveHelper.isDesktop(context)
+                  //       ? 6
+                  //       : ResponsiveHelper.isTab(context)
+                  //       ? 4
+                  //       : 3,
+                  //   childAspectRatio: (1 / 1),
+                  //   mainAxisSpacing: Dimensions.paddingSizeSmall,
+                  //   crossAxisSpacing: Dimensions.paddingSizeSmall,
+                  // ),
+                  controller: scrollController,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                  itemCount: categoryController.categoryList!.length > 10
+                      ? 10
+                      : categoryController.categoryList!.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        if (index == 9 &&
+                            categoryController.categoryList!.length > 10) {
+                          Get.toNamed(RouteHelper.getCategoryRoute());
+                        } else {
+                          Get.toNamed(RouteHelper.getCategoryItemRoute(
+                            categoryController.categoryList![index].id,
+                            categoryController.categoryList![index].name!,
+                          ));
+                        }
+                      },
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusSmall),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 100,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusSmall),
+                                    child: CustomImage(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              8.5,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      image:
+                                          '${Get.find<SplashController>().configModel!.baseUrls!.categoryImageUrl}/${categoryController.categoryList![index].image}',
                                     ),
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      '+${categoryController.categoryList!.length - 10}',
-                                      style: robotoMedium.copyWith(
-                                          fontSize: Dimensions.fontSizeExtraLarge,
-                                          color: Theme.of(context).cardColor),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )),
-                            )
-                                : const SizedBox(),
-                          ],
+                                  (index == 9 &&
+                                          categoryController
+                                                  .categoryList!.length >
+                                              10)
+                                      ? Positioned(
+                                          right: 0,
+                                          left: 0,
+                                          top: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(0.4),
+                                                    Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(0.6),
+                                                    Theme.of(context)
+                                                        .primaryColor
+                                                        .withOpacity(0.4),
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '+${categoryController.categoryList!.length - 10}',
+                                                  style: robotoMedium.copyWith(
+                                                      fontSize: Dimensions
+                                                          .fontSizeExtraLarge,
+                                                      color: Theme.of(context)
+                                                          .cardColor),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              )),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                              const SizedBox(
+                                  height: Dimensions.paddingSizeExtraSmall),
+                              Text(
+                                (index == 9 &&
+                                        categoryController
+                                                .categoryList!.length >
+                                            10)
+                                    ? 'see_all'.tr
+                                    : categoryController
+                                            .categoryList![index].name ??
+                                        '',
+                                style: robotoMedium.copyWith(
+                                    fontSize: Dimensions.fontSizeSmall,
+                                    color: (index == 9 &&
+                                            categoryController
+                                                    .categoryList!.length >
+                                                10)
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeSmall),
-                        Text(
-                          (index == 9 && categoryController.categoryList!.length > 10)
-                              ? 'see_all'.tr
-                              : categoryController.categoryList![index].name ?? '',
-                          style: robotoMedium.copyWith(
-                              fontSize: Dimensions.fontSizeSmall,
-                              color: (index == 9 &&
-                                  categoryController.categoryList!.length > 10)
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).textTheme.bodyMedium!.color),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(
+                    width: 10,
                   ),
-                ),
-              );
-            }, separatorBuilder: (BuildContext context, int index)  =>const SizedBox(width: 10,),
-          )
-        : FoodCategoryShimmer(categoryController: categoryController),
+                )
+              : FoodCategoryShimmer(categoryController: categoryController),
         ),
-        const SizedBox(height: 15,),
+        const SizedBox(
+          height: 15,
+        ),
       ]),
     ]);
   }
@@ -573,9 +599,11 @@ class CategoryShimmer extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: 1, vertical: Dimensions.paddingSizeDefault),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
             enabled: true,
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             child: SizedBox(
               width: 80,
               child: Column(children: [
@@ -630,9 +658,11 @@ class FoodCategoryShimmer extends StatelessWidget {
               bottom: Dimensions.paddingSizeDefault,
               left: Dimensions.paddingSizeDefault,
               top: Dimensions.paddingSizeDefault),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child:Shimmer.fromColors(
             enabled: true,
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             child: SizedBox(
               width: 60,
               child: Column(children: [
@@ -683,9 +713,11 @@ class PharmacyCategoryShimmer extends StatelessWidget {
               bottom: Dimensions.paddingSizeDefault,
               left: Dimensions.paddingSizeDefault,
               top: Dimensions.paddingSizeDefault),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
             enabled: true,
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             child: Container(
               width: 70,
               decoration: const BoxDecoration(

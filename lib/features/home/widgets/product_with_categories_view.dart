@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/title_widget.dart';
 import 'package:talabatcom/features/item/controllers/campaign_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
@@ -6,7 +7,6 @@ import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class BasicCampaignView extends StatelessWidget {
   final CampaignController campaignController;
@@ -70,8 +70,10 @@ class CampaignShimmer extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
       itemBuilder: (context, index) {
-        return Shimmer(
-          duration: const Duration(seconds: 2),
+        return Shimmer.fromColors(
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           enabled: campaignController.basicCampaignList == null,
           child: Container(
             width: 200, height: 80,

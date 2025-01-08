@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/title_widget.dart';
 import 'package:talabatcom/util/dimensions.dart';
 
@@ -30,22 +30,41 @@ class BrandViewShimmer extends StatelessWidget {
         ),
         itemCount: 8,
         itemBuilder: (context, index) {
-          return Shimmer(
-            duration: const Duration(seconds: 2),
+          return Shimmer.fromColors(
             enabled: true,
+            baseColor: Colors.white.withOpacity(0.05) ,
+            highlightColor: Colors.white.withOpacity(0.05) ,
             child: Container(
-              padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+              height: 100,
+              margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+              padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               decoration: BoxDecoration(
-                color: Theme.of(context).disabledColor.withOpacity(0.1),
+                color: Get.isDarkMode ? Colors.white.withOpacity(0.05) : Colors.grey[300],
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                boxShadow: [BoxShadow(color: Get.isDarkMode ? Colors.black12 : Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 5, offset: const Offset(0, 1))],
               ),
-              child: Container(
-                height: 60, width: 60,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+              child: Row(children: [
+
+                Container(
+                  height: 80, width: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                    color: Get.isDarkMode ? Theme.of(context).disabledColor.withOpacity(0.2) : Theme.of(context).cardColor,
+                  ),
                 ),
-              ),
+                const SizedBox(width: Dimensions.paddingSizeSmall),
+
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Container(height: 20, width: double.maxFinite, color: Get.isDarkMode ? Theme.of(context).disabledColor.withOpacity(0.2) : Theme.of(context).cardColor),
+                    const SizedBox(height: Dimensions.paddingSizeSmall),
+                    Container(height: 15, width: double.maxFinite, color: Get.isDarkMode ? Theme.of(context).disabledColor.withOpacity(0.2) : Theme.of(context).cardColor),
+                    const SizedBox(height: Dimensions.paddingSizeSmall),
+                    Container(height: 15, width: double.maxFinite, color: Get.isDarkMode ? Theme.of(context).disabledColor.withOpacity(0.2) : Theme.of(context).cardColor),
+                  ]),
+                ),
+
+              ]),
             ),
           );
         },

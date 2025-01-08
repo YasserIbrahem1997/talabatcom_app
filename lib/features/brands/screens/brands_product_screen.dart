@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/custom_app_bar.dart';
 import 'package:talabatcom/common/widgets/footer_view.dart';
 import 'package:talabatcom/common/widgets/item_view.dart';
@@ -70,10 +70,10 @@ class BrandItemScreenShimmer extends StatelessWidget {
       ),
       itemCount: 12,
       itemBuilder: (context, index) {
-        return Shimmer(
-          duration: const Duration(seconds: 2),
+        return Shimmer.fromColors(
           enabled: true,
-          colorOpacity: 0.1,
+          baseColor: Colors.white.withOpacity(0.05) ,
+          highlightColor: Colors.white.withOpacity(0.05) ,
           child: Container(
             height: 100,
             margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),
@@ -113,10 +113,10 @@ class BrandItemScreenShimmer extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return Shimmer(
-          duration: const Duration(seconds: 2),
+        return Shimmer.fromColors(
           enabled: true,
-          colorOpacity: 0.1,
+          baseColor: Colors.white.withOpacity(0.05) ,
+          highlightColor: Colors.white.withOpacity(0.05) ,
           child: Container(
             height: 100,
             margin: const EdgeInsets.all(Dimensions.paddingSizeSmall),

@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/category/controllers/category_controller.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
@@ -8,7 +9,6 @@ import 'package:talabatcom/util/styles.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:talabatcom/features/home/widgets/category_pop_up.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:get/get.dart';
 
 class CategoryView extends StatelessWidget {
@@ -249,8 +249,10 @@ class CategoryShimmer extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-            child: Shimmer(
-              duration: const Duration(seconds: 2),
+            child: Shimmer.fromColors(
+              highlightColor: Colors.white.withAlpha(1),
+              baseColor: Colors.grey.withOpacity(0.5),
+              period: const Duration(seconds: 2),
               enabled: categoryController.categoryList == null,
               child: Column(children: [
                 Container(
@@ -281,8 +283,10 @@ class CategoryAllShimmer extends StatelessWidget {
       height: 75,
       child: Padding(
         padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-        child: Shimmer(
-          duration: const Duration(seconds: 2),
+        child: Shimmer.fromColors(
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           enabled: categoryController.categoryList == null,
           child: Column(children: [
             Container(

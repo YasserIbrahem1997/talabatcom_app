@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
 import 'package:talabatcom/features/flash_sale/controllers/flash_sale_controller.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
@@ -154,9 +154,11 @@ class FlashSaleShimmerView extends StatelessWidget {
         color: Theme.of(context).primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
       ),
-      child: Shimmer(
-        duration: const Duration(seconds: 2),
+      child: Shimmer.fromColors(
         enabled: true,
+        highlightColor: Colors.white.withAlpha(1),
+        baseColor: Colors.grey.withOpacity(0.5),
+        period: const Duration(seconds: 2),
         child: Column(children: [
 
           Padding(

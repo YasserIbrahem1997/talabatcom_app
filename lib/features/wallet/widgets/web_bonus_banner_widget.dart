@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/wallet/controllers/wallet_controller.dart';
 import 'package:talabatcom/helper/date_converter.dart';
@@ -7,7 +8,6 @@ import 'package:talabatcom/util/images.dart';
 import 'package:talabatcom/util/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class WebBonusBannerWidget extends StatelessWidget {
   const WebBonusBannerWidget ({super.key});
@@ -182,8 +182,10 @@ class WebBannerShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer(
-      duration: const Duration(seconds: 2),
+    return Shimmer.fromColors(
+      highlightColor: Colors.white.withAlpha(1),
+      baseColor: Colors.grey.withOpacity(0.5),
+      period: const Duration(seconds: 2),
       enabled: walletController.fundBonusList == null,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),

@@ -30,6 +30,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'features/checkout/domain/repositories/checkout_repository.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/splashOne/screenOne.dart';
+import 'firebase_options.dart';
 import 'helper/get_di.dart' as di;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -55,25 +56,31 @@ Future<void> main() async {
 
   if (GetPlatform.isWeb) {
     await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: 'AIzaSyAilwXWDDQl4y-UDUaTR7SyiXrai1riB5E',
-            appId: '1:544286221908:web:6b27cdbf004e778679afc1',
-            messagingSenderId: '544286221908',
-            projectId: 'talabatcom-7f83c',
-            authDomain: "talabatcom-7f83c.firebaseapp.com",
-            databaseURL: "https://talabatcom-7f83c-default-rtdb.firebaseio.com",
-            storageBucket: "talabatcom-7f83c.appspot.com",
-            measurementId: "G-0W71Q1Y90Q"));
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    // await Firebase.initializeApp(
+    //     options: const FirebaseOptions(
+    //         apiKey: 'AIzaSyAilwXWDDQl4y-UDUaTR7SyiXrai1riB5E',
+    //         appId: '1:544286221908:web:6b27cdbf004e778679afc1',
+    //         messagingSenderId: '544286221908',
+    //         projectId: 'talabatcom-7f83c',
+    //         authDomain: "talabatcom-7f83c.firebaseapp.com",
+    //         databaseURL: "https://talabatcom-7f83c-default-rtdb.firebaseio.com",
+    //         storageBucket: "talabatcom-7f83c.appspot.com",
+    //         measurementId: "G-0W71Q1Y90Q"));
     MetaSEO().config();
   } else if (GetPlatform.isAndroid) {
     await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: "AIzaSyAilwXWDDQl4y-UDUaTR7SyiXrai1riB5E",
-        appId: "1:544286221908:web:6b27cdbf004e778679afc1",
-        messagingSenderId: "544286221908",
-        projectId: "talabatcom-7f83c",
-      ),
+      options: DefaultFirebaseOptions.currentPlatform,
     );
+    // await Firebase.initializeApp(
+    //   options: const FirebaseOptions(
+    //     apiKey: "AIzaSyAilwXWDDQl4y-UDUaTR7SyiXrai1riB5E",
+    //     appId: "1:544286221908:web:6b27cdbf004e778679afc1",
+    //     messagingSenderId: "544286221908",
+    //     projectId: "talabatcom-7f83c",
+    //   ),
+    // );
   } else {
     await Firebase.initializeApp();
   }
@@ -95,7 +102,7 @@ Future<void> main() async {
 
   if (ResponsiveHelper.isWeb()) {
     await FacebookAuth.instance.webAndDesktopInitialize(
-      appId: "380903914182154",
+      appId: "359802914118",
       cookie: true,
       xfbml: true,
       version: "v15.0",

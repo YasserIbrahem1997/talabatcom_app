@@ -34,6 +34,23 @@ class OnlineCartModel {
     this.item,
   });
 
+  // دالة لحساب السعر الإجمالي
+  double calculateTotalPrice(List<double> addOnPrices) {
+    double totalPrice = price ?? 0.0;
+
+    // إضافة الإضافات وأسعارها بناءً على الكمية
+    if (addOnIds != null && addOnQtys != null) {
+      for (int i = 0; i < addOnIds!.length; i++) {
+        int addOnQty = addOnQtys![i];
+        double addOnPrice = addOnPrices[i]; // السعر الخاص بالإضافة
+        totalPrice += addOnQty * addOnPrice; // إضافة السعر الإجمالي للإضافات
+      }
+    }
+
+    // ضرب السعر الإجمالي في الكمية
+    return totalPrice * (quantity ?? 1);
+  }
+
   OnlineCartModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];

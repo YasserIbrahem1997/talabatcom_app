@@ -127,7 +127,7 @@ class CartController extends GetxController implements GetxService {
     if(isFoodVariation){
       _itemDiscountPrice = _itemDiscountPrice + (variationWithoutDiscountPrice - _variationPrice);
       _variationPrice =  variationWithoutDiscountPrice;
-      _subTotal = (_itemPrice - _itemDiscountPrice) + _addOns + _variationPrice;
+      _subTotal = (_itemPrice - _itemDiscountPrice) + _addOns ;
     } else {
       _subTotal = (_itemPrice - _itemDiscountPrice);
     }

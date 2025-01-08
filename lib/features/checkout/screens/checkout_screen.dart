@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talabatcom/common/widgets/address_widget.dart';
 import 'package:talabatcom/features/address/controllers/address_controller.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
@@ -80,6 +81,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
   final TextEditingController guestEmailController = TextEditingController();
   final FocusNode guestNumberNode = FocusNode();
   final FocusNode guestEmailNode = FocusNode();
+  String? addNote;
 
   @override
   void initState() {
@@ -89,6 +91,14 @@ class CheckoutScreenState extends State<CheckoutScreen> {
     // Future.delayed(const Duration(seconds: 3), () {
     //   _showCashBackMessage = true;
     // });
+    _loadAddNote();
+  }
+
+  Future<void> _loadAddNote() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      addNote = prefs.getString('addNoteOrder') ?? "";
+    });
   }
 
   Future<void> initCall() async {
@@ -172,17 +182,18 @@ class CheckoutScreenState extends State<CheckoutScreen> {
     bool guestCheckoutPermission = AuthHelper.isGuestLoggedIn() &&
         Get.find<SplashController>().configModel!.guestCheckoutStatus!;
     bool isLoggedIn = AuthHelper.isLoggedIn();
-    final ShippingController shippingControllerTow = Get.put(ShippingController());
+    final ShippingController shippingControllerTow =
+        Get.put(ShippingController());
 
-
-
-    double minimumShippingCharge = shippingController.minimumShippingCharge.value;
+    double minimumShippingCharge =
+        shippingController.minimumShippingCharge.value;
 // Function to update the shipping charge
     void updateMinimumShippingCharge(double newCharge) {
       setState(() {
         minimumShippingCharge = newCharge;
       });
     }
+
     return Scaffold(
       appBar: CustomAppBar(title: 'checkout'.tr),
       endDrawer: const MenuDrawer(),
@@ -286,7 +297,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                   store: checkoutController.store,
                   address: AddressHelper.getUserAddressFromSharedPref()!,
                   distance: checkoutController.distance,
-                  extraCharge:minimumShippingCharge,
+                  extraCharge: minimumShippingCharge,
                   orderType: checkoutController.orderType!,
                   orderAmount: orderAmount,
                 );
@@ -314,6 +325,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                 }
 
                 total = total - referralDiscount;
+                print('=====referraltotal===?> $total');
 
                 if (widget.storeId != null) {
                   checkoutController.setPaymentMethod(0, isUpdate: false);
@@ -369,7 +381,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                       checkoutController,
                                                   charge: originalCharge,
                                                   deliveryCharge:
-                                                      deliveryCharge,
+                                                      minimumShippingCharge,
                                                   addressList: addressList,
                                                   tomorrowClosed:
                                                       tomorrowClosed,
@@ -412,53 +424,53 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                     .paddingSizeLarge),
                                             Expanded(
                                                 flex: 4,
-                                                child:Obx((){
-                                                  final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
+                                                child: Obx(() {
+                                                  final shippingCharge = Get.find<
+                                                          ShippingController>()
+                                                      .minimumShippingCharge
+                                                      .value;
 
                                                   return BottomSection(
-
                                                     checkoutController:
-                                                    checkoutController,
+                                                        checkoutController,
                                                     total: total,
                                                     module: module!,
                                                     subTotal: subTotal,
                                                     discount: discount,
                                                     couponController:
-                                                    couponController,
+                                                        couponController,
                                                     taxIncluded: taxIncluded,
                                                     tax: tax,
-                                                    deliveryCharge:shippingCharge,
+                                                    deliveryCharge:
+                                                        minimumShippingCharge,
                                                     todayClosed: todayClosed,
                                                     tomorrowClosed:
-                                                    tomorrowClosed,
+                                                        tomorrowClosed,
                                                     orderAmount: orderAmount,
                                                     maxCodOrderAmount:
-                                                    maxCodOrderAmount,
+                                                        maxCodOrderAmount,
                                                     storeId: widget.storeId,
                                                     taxPercent: _taxPercent,
                                                     price: price,
                                                     addOns: addOns,
                                                     isPrescriptionRequired:
-                                                    isPrescriptionRequired,
-                                                    checkoutButton:
-                                                    _orderPlaceButton(
+                                                        isPrescriptionRequired,
+                                                    checkoutButton: _orderPlaceButton(
                                                         checkoutController,
                                                         todayClosed,
                                                         tomorrowClosed,
                                                         orderAmount,
-                                                        deliveryCharge,
+                                                        minimumShippingCharge,
                                                         tax,
                                                         discount,
                                                         total,
                                                         maxCodOrderAmount,
                                                         isPrescriptionRequired,
-                                                        minimumShippingCharge
-                                                    ),
+                                                        minimumShippingCharge),
                                                     referralDiscount:
-                                                    referralDiscount,
+                                                        referralDiscount,
                                                   );
-                                                })
-                ),
+                                                })),
                                           ]),
                                     )
                                   : Column(
@@ -469,7 +481,8 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                             checkoutController:
                                                 checkoutController,
                                             charge: originalCharge,
-                                            deliveryCharge: deliveryCharge,
+                                            deliveryCharge:
+                                                minimumShippingCharge,
                                             addressList: addressList,
                                             tomorrowClosed: tomorrowClosed,
                                             todayClosed: todayClosed,
@@ -513,7 +526,8 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                             couponController: couponController,
                                             taxIncluded: taxIncluded,
                                             tax: tax,
-                                            deliveryCharge: deliveryCharge,
+                                            deliveryCharge:
+                                                minimumShippingCharge,
                                             todayClosed: todayClosed,
                                             tomorrowClosed: tomorrowClosed,
                                             orderAmount: orderAmount,
@@ -526,18 +540,17 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                             isPrescriptionRequired:
                                                 isPrescriptionRequired,
                                             checkoutButton: _orderPlaceButton(
-                                              checkoutController,
-                                              todayClosed,
-                                              tomorrowClosed,
-                                              orderAmount,
-                                              deliveryCharge,
-                                              tax,
-                                              discount,
-                                              total,
-                                              maxCodOrderAmount,
-                                              isPrescriptionRequired,
-                                                minimumShippingCharge
-                                            ),
+                                                checkoutController,
+                                                todayClosed,
+                                                tomorrowClosed,
+                                                orderAmount,
+                                                minimumShippingCharge,
+                                                tax,
+                                                discount,
+                                                total,
+                                                maxCodOrderAmount,
+                                                isPrescriptionRequired,
+                                                minimumShippingCharge),
                                             referralDiscount: referralDiscount,
                                           )
                                         ]),
@@ -592,18 +605,17 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                             ]),
                                       ),
                                       _orderPlaceButton(
-                                        checkoutController,
-                                        todayClosed,
-                                        tomorrowClosed,
-                                        orderAmount,
-                                        deliveryCharge,
-                                        tax,
-                                        discount,
-                                        total,
-                                        maxCodOrderAmount,
-                                        isPrescriptionRequired,
-                                          minimumShippingCharge
-                                      ),
+                                          checkoutController,
+                                          todayClosed,
+                                          tomorrowClosed,
+                                          orderAmount,
+                                          minimumShippingCharge,
+                                          tax,
+                                          discount,
+                                          total,
+                                          maxCodOrderAmount,
+                                          isPrescriptionRequired,
+                                          minimumShippingCharge),
                                     ],
                                   ),
                                 ),
@@ -630,9 +642,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
       double total,
       double? maxCodOrderAmount,
       bool isPrescriptionRequired,
-      double? minimumShippingCharge
-      )
-  {
+      double? minimumShippingCharge) {
     return Container(
       width: Dimensions.webMaxWidth,
       alignment: Alignment.center,
@@ -646,7 +656,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                 ? 'place_order'.tr
                 : 'confirm_order'.tr,
             onPressed: checkoutController.acceptTerms
-                ? () {
+                ? () async {
                     bool isAvailable = true;
                     DateTime scheduleStartDate = DateTime.now();
                     DateTime scheduleEndDate = DateTime.now();
@@ -833,6 +843,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                               .zoneId,
                           email: guestEmailController.text,
                         );
+                        print("finalAddress $finalAddress");
                       }
 
                       if (!isGuestLogIn &&
@@ -855,32 +866,30 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                           }
 
                           List<OrderVariation> variations = [];
+                          // تعديل الفيريشن ليصبح دائمًا صفر
                           if (Get.find<SplashController>()
                               .getModuleConfig(cart.item!.moduleType)
                               .newVariation!) {
-                            for (int i = 0;
-                                i < cart.item!.foodVariations!.length;
-                                i++) {
-                              if (cart.foodVariations![i].contains(true)) {
-                                variations.add(OrderVariation(
-                                    name: cart.item!.foodVariations![i].name,
-                                    values: OrderVariationValue(label: [])));
-                                for (int j = 0;
-                                    j <
-                                        cart.item!.foodVariations![i]
-                                            .variationValues!.length;
-                                    j++) {
-                                  if (cart.foodVariations![i][j]!) {
-                                    variations[variations.length - 1]
-                                        .values!
-                                        .label!
-                                        .add(cart.item!.foodVariations![i]
-                                            .variationValues![j].level);
-                                  }
-                                }
-                              }
-                            }
+                            variations.add(OrderVariation(
+                                name: '',
+                                values: OrderVariationValue(
+                                    label: []))); // الفيريشن بصفر
                           }
+                          //todo add old variation
+                          // if (Get.find<SplashController>().getModuleConfig(cart.item!.moduleType).newVariation!) {
+                          //   for (int i = 0; i < cart.item!.foodVariations!.length; i++) {
+                          //     if (cart.foodVariations![i].contains(true)) {
+                          //       variations.add(OrderVariation(
+                          //           name: cart.item!.foodVariations![i].name,
+                          //           values: OrderVariationValue(label: [])));
+                          //       for (int j = 0; j < cart.item!.foodVariations![i].variationValues!.length; j++) {
+                          //         if (cart.foodVariations![i][j]!) {
+                          //           variations[variations.length - 1].values!.label!.add(cart.item!.foodVariations![i].variationValues![j].level);
+                          //         }
+                          //       }
+                          //     }
+                          //   }
+                          // }
                           carts.add(OnlineCart(
                             cart.id,
                             cart.item!.id,
@@ -922,7 +931,11 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                   : DateConverter.dateToDateAndTime(
                                       scheduleEndDate),
                           orderAmount: total,
-                          orderNote: checkoutController.noteController.text,
+                          orderNote: checkoutController.noteController.text
+                                  .trim()
+                                  .isEmpty
+                              ? addNote.toString()
+                              : "${addNote.toString()} \n \n مذكرة إضافية: ${checkoutController.noteController.text}",
                           orderType: checkoutController.orderType,
                           paymentMethod: checkoutController
                                       .paymentMethodIndex ==
@@ -943,8 +956,12 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                   : null,
                           storeId: _cartList![0]!.item!.storeId,
                           address: finalAddress!.address,
-                          latitude: AddressHelper.getUserAddressFromSharedPref()!.latitude,
-                          longitude: AddressHelper.getUserAddressFromSharedPref()!.longitude,
+                          latitude:
+                              AddressHelper.getUserAddressFromSharedPref()!
+                                  .latitude,
+                          longitude:
+                              AddressHelper.getUserAddressFromSharedPref()!
+                                  .longitude,
                           senderZoneId: null,
                           addressType: finalAddress.addressType,
                           contactPersonName: finalAddress.contactPersonName ??
@@ -999,8 +1016,11 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                           extraPackagingAmount: Get.find<CartController>()
                                   .needExtraPackage
                               ? checkoutController.store!.extraPackagingAmount
-                              : 0, area: AddressHelper.getArea("Area"),
+                              : 0,
+                          area: AddressHelper.getArea("Area"),
                         );
+
+                        print("placeOrderBody $placeOrderBody");
 
                         if (checkoutController.paymentMethodIndex == 3) {
                           Get.toNamed(RouteHelper.getOfflinePaymentScreen(
@@ -1011,7 +1031,12 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                             fromCart: widget.fromCart,
                             isCodActive: _isCashOnDeliveryActive,
                             forParcel: false,
-                          ));
+                          ))!.then((onValue) async {
+                            final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                            await   prefs.remove("addNoteOrder");
+
+                          });
                         } else {
                           checkoutController.placeOrder(
                               placeOrderBody,
@@ -1020,16 +1045,25 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                               maxCodOrderAmount,
                               widget.fromCart,
                               _isCashOnDeliveryActive!,
-                              checkoutController.pickedPrescriptions);
+                              checkoutController.pickedPrescriptions).then((onValue) async {
+                            final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                            await   prefs.remove("addNoteOrder");
+
+                          });
                         }
                       } else {
                         checkoutController.placePrescriptionOrder(
                             widget.storeId,
                             checkoutController.store!.zoneId,
-                           minimumShippingCharge,
-                            AddressHelper.getUserAddressFromSharedPref()!.address.toString(),
-                            AddressHelper.getUserAddressFromSharedPref()!.longitude!,
-                            AddressHelper.getUserAddressFromSharedPref()!.latitude!,
+                            minimumShippingCharge,
+                            AddressHelper.getUserAddressFromSharedPref()!
+                                .address
+                                .toString(),
+                            AddressHelper.getUserAddressFromSharedPref()!
+                                .longitude!,
+                            AddressHelper.getUserAddressFromSharedPref()!
+                                .latitude!,
                             checkoutController.noteController.text,
                             checkoutController.pickedPrescriptions,
                             (checkoutController.orderType == 'take_away' ||
@@ -1044,7 +1078,13 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                             0,
                             0,
                             widget.fromCart,
-                            _isCashOnDeliveryActive!,"bb");
+                            _isCashOnDeliveryActive!,
+                            "bb").then((onValue) async {
+                          final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                          await   prefs.remove("addNoteOrder");
+
+                        });
                       }
                     }
                   }
@@ -1427,7 +1467,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
           .newVariation!;
     }
     if (isFoodVariation) {
-      subTotal = price + addOns + variations;
+      subTotal = price + addOns;
     } else {
       subTotal = price;
     }

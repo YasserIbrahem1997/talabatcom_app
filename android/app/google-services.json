@@ -1,139 +1,26 @@
 {
   "project_info": {
-    "project_number": "544286221908",
-    "project_id": "talabatcom-7f83c",
-    "storage_bucket": "talabatcom-7f83c.appspot.com"
+    "project_number": "359802914118",
+    "project_id": "talabat-e4fdc",
+    "storage_bucket": "talabat-e4fdc.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:544286221908:android:3099ea4a114ca8d279afc1",
+        "mobilesdk_app_id": "1:359802914118:android:ad6d3df4b4f7c468f4d147",
         "android_client_info": {
           "package_name": "com.apmo.talabatcom"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "544286221908-567hhmll799a5dc2q0k7np3g6nk96lvk.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.apmo.talabatcom",
-            "certificate_hash": "73905cbdb71e6120279c6b8e6737209d430eb33d"
-          }
-        },
-        {
-          "client_id": "544286221908-3qhmgve7rv6s32buapis5s50g0krr8pb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBgGEXVy0c5gIJPChGw3BtbEXOigvZX5RE"
+          "current_key": "AIzaSyD2qUeSfo814sKK1SI0OE7eHY7hXC0Ne5w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "544286221908-3qhmgve7rv6s32buapis5s50g0krr8pb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "544286221908-l28lorlfdos2oofee6bhldhtbilk5jf8.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.apmo.talabatcom"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:544286221908:android:e3fb48c0ff52de7e79afc1",
-        "android_client_info": {
-          "package_name": "com.apmo.talabatcomdelv"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "544286221908-cv7tjekcfeh9je1f06n1hi2s2l6sl0ig.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.apmo.talabatcomdelv",
-            "certificate_hash": "73905cbdb71e6120279c6b8e6737209d430eb33d"
-          }
-        },
-        {
-          "client_id": "544286221908-3qhmgve7rv6s32buapis5s50g0krr8pb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBgGEXVy0c5gIJPChGw3BtbEXOigvZX5RE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "544286221908-3qhmgve7rv6s32buapis5s50g0krr8pb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "544286221908-l28lorlfdos2oofee6bhldhtbilk5jf8.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.apmo.talabatcom"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:544286221908:android:75c031784533305d79afc1",
-        "android_client_info": {
-          "package_name": "com.apmo.talabatcomres"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "544286221908-o3hr2gms7cj7an7i7iikt2vchtjrkh0s.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.apmo.talabatcomres",
-            "certificate_hash": "73905cbdb71e6120279c6b8e6737209d430eb33d"
-          }
-        },
-        {
-          "client_id": "544286221908-3qhmgve7rv6s32buapis5s50g0krr8pb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBgGEXVy0c5gIJPChGw3BtbEXOigvZX5RE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "544286221908-3qhmgve7rv6s32buapis5s50g0krr8pb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "544286221908-l28lorlfdos2oofee6bhldhtbilk5jf8.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.apmo.talabatcom"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

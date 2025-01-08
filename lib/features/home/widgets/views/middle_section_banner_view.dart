@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/item/controllers/campaign_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/helper/route_helper.dart';
@@ -101,9 +101,11 @@ class MiddleSectionBannerShimmerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer(
-      duration: const Duration(seconds: 2),
+    return Shimmer.fromColors(
       enabled: true,
+      highlightColor: Colors.white.withAlpha(1),
+      baseColor: Colors.grey.withOpacity(0.5),
+      period: const Duration(seconds: 2),
       child: Column(children: [
 
         Stack(

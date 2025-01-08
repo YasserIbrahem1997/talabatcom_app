@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
@@ -49,8 +49,9 @@ class StoreCardWidget extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-
-                        content:  Text( "\n " + 'مطعم' +" "+ store!.name.toString() +" "+ "مغلق حاليا ,يمكنك اضافة المنتجات الي عربة التسوق وطلبها عند توفر المتجر عند الساعة: 8.00ص"),
+                        content: Text(
+                          "\n"+  store!.name.toString() + " " + "مغلق حاليا، \nيمكنك إضافة المنتجات إلى عربة التسوق وطلبها عند توفر المتجر",
+                        ),
                         actions: <Widget>[
                           TextButton(
                             child: const Text('الغاء '),
@@ -61,18 +62,24 @@ class StoreCardWidget extends StatelessWidget {
                           TextButton(
                             child: const Text('متابعة'),
                             onPressed: () {
-                              if(store != null) {
-                                if(Get.find<SplashController>().moduleList != null) {
-                                  for(ModuleModel module in Get.find<SplashController>().moduleList!) {
-                                    if(module.id == store!.moduleId) {
-                                      Get.find<SplashController>().setModule(module);
+                              if (store != null) {
+                                if (Get.find<SplashController>().moduleList !=
+                                    null) {
+                                  for (ModuleModel module
+                                  in Get.find<SplashController>()
+                                      .moduleList!) {
+                                    if (module.id == store!.moduleId) {
+                                      Get.find<SplashController>()
+                                          .setModule(module);
                                       break;
                                     }
                                   }
                                 }
                                 Get.toNamed(
-                                  RouteHelper.getStoreRoute(id: store!.id, page: 'item'),
-                                  arguments: StoreScreen(store: store, fromModule: false),
+                                  RouteHelper.getStoreRoute(
+                                      id: store!.id, page: 'item'),
+                                  arguments: StoreScreen(
+                                      store: store, fromModule: false),
                                 );
                               }
                             },
@@ -244,8 +251,10 @@ class StoreCardShimmer extends StatelessWidget {
           borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 1)]
       ),
-      child: Shimmer(
-        duration: const Duration(seconds: 2),
+      child: Shimmer.fromColors(
+        highlightColor: Colors.white.withAlpha(1),
+        baseColor: Colors.grey.withOpacity(0.5),
+        period: const Duration(seconds: 2),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
           Container(

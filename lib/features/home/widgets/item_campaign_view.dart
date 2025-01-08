@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/title_widget.dart';
 import 'package:talabatcom/features/item/controllers/campaign_controller.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
@@ -12,7 +13,6 @@ import 'package:talabatcom/common/widgets/discount_tag.dart';
 import 'package:talabatcom/common/widgets/not_available_widget.dart';
 import 'package:talabatcom/common/widgets/rating_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:get/get.dart';
 
 class ItemCampaignView extends StatelessWidget {
@@ -148,8 +148,10 @@ class ItemCampaignShimmer extends StatelessWidget {
               borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
               boxShadow: [BoxShadow(color: Colors.grey[300]!, blurRadius: 10, spreadRadius: 1)]
           ),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             enabled: campaignController.itemCampaignList == null,
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/flash_sale/controllers/flash_sale_controller.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
@@ -123,9 +123,11 @@ class WebFlashSaleShimmerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer(
-      duration: const Duration(seconds: 2),
+    return Shimmer.fromColors(
       enabled: true,
+      highlightColor: Colors.white.withAlpha(1),
+      baseColor: Colors.grey.withOpacity(0.5),
+      period: const Duration(seconds: 2),
       child: Container(
         margin: const EdgeInsets.only(top: Dimensions.paddingSizeDefault),
         width: Get.width, height: 302,

@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/category/controllers/category_controller.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
@@ -9,7 +10,6 @@ import 'package:talabatcom/util/styles.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:talabatcom/common/widgets/hover/text_hover.dart';
 
 class WebCategoryViewWidget extends StatefulWidget {
@@ -439,9 +439,11 @@ class WebFoodCategoryShimmer extends StatelessWidget {
             left: Get.find<LocalizationController>().isLtr ? 0 : Dimensions.paddingSizeDefault,
             right: Get.find<LocalizationController>().isLtr ? Dimensions.paddingSizeDefault : 0,
           ),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
             enabled: true,
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             child: SizedBox(
               width: 120,
               child: Column(children: [
@@ -486,8 +488,10 @@ class WebCategoryShimmer extends StatelessWidget {
               width: 108,
               padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
               margin: const EdgeInsets.only(top: Dimensions.paddingSizeSmall),
-              child: Shimmer(
-                duration: const Duration(seconds: 2),
+              child: Shimmer.fromColors(
+                highlightColor: Colors.white.withAlpha(1),
+                baseColor: Colors.grey.withOpacity(0.5),
+                period: const Duration(seconds: 2),
                 enabled: categoryController.categoryList == null,
                 child: Column(children: [
 
@@ -527,9 +531,11 @@ class WebPharmacyShimmerView extends StatelessWidget {
             left: Get.find<LocalizationController>().isLtr ? 0 : Dimensions.paddingSizeDefault,
             right: Get.find<LocalizationController>().isLtr ? Dimensions.paddingSizeDefault : 0,
           ),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
             enabled: true,
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             child: SizedBox(
               width: 100,
               child: Column(children: [

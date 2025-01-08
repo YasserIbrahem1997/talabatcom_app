@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/util/dimensions.dart';
 
 class WebLandingPageShimmerWidget extends StatelessWidget {
@@ -16,9 +16,11 @@ class WebLandingPageShimmerWidget extends StatelessWidget {
 
             const SizedBox(height: Dimensions.paddingSizeLarge),
 
-            Shimmer(
-              duration: const Duration(seconds: 2),
+            Shimmer.fromColors(
               enabled: true,
+              highlightColor: Colors.white.withAlpha(1),
+              baseColor: Colors.grey.withOpacity(0.5),
+              period: const Duration(seconds: 2),
               child: Container(
                 height: 250,
                 decoration: BoxDecoration(
@@ -51,9 +53,11 @@ class WebLandingPageShimmerWidget extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            Shimmer(
-              duration: const Duration(seconds: 2),
+            Shimmer.fromColors(
               enabled: true,
+              highlightColor: Colors.white.withAlpha(1),
+              baseColor: Colors.grey.withOpacity(0.5),
+              period: const Duration(seconds: 2),
               child: Stack(children: [
                 Container(
                   height: 130,
@@ -145,9 +149,11 @@ class WebLandingPageShimmerWidget extends StatelessWidget {
             ),
             const SizedBox(height: 40),
 
-            Shimmer(
+            Shimmer.fromColors(
               enabled: true,
-              duration: const Duration(seconds: 2),
+              highlightColor: Colors.white.withAlpha(1),
+              baseColor: Colors.grey.withOpacity(0.5),
+              period: const Duration(seconds: 2),
               child: Container(
                 height: 20, width: 200,
                 decoration: BoxDecoration(
@@ -158,9 +164,11 @@ class WebLandingPageShimmerWidget extends StatelessWidget {
             ),
             const SizedBox(height: Dimensions.paddingSizeSmall),
 
-            Shimmer(
+            Shimmer.fromColors(
               enabled: true,
-              duration: const Duration(seconds: 2),
+              highlightColor: Colors.white.withAlpha(1),
+              baseColor: Colors.grey.withOpacity(0.5),
+              period: const Duration(seconds: 2),
               child: Container(
                 height: 15, width: 400,
                 decoration: BoxDecoration(
@@ -172,9 +180,11 @@ class WebLandingPageShimmerWidget extends StatelessWidget {
             const SizedBox(height: 40),
 
 
-            Shimmer(
+            Shimmer.fromColors(
               enabled: true,
-              duration: const Duration(seconds: 2),
+              highlightColor: Colors.white.withAlpha(1),
+              baseColor: Colors.grey.withOpacity(0.5),
+              period: const Duration(seconds: 2),
               child: SizedBox(height: 450, child: Stack(children: [
                   PageView.builder(
                     itemCount: 5,

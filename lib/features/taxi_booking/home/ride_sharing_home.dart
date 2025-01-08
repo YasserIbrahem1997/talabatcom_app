@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/banner/controllers/banner_controller.dart';
 import 'package:talabatcom/features/taxi_booking/controllers/rider_controller.dart';
 import 'package:talabatcom/features/profile/controllers/profile_controller.dart';
@@ -271,8 +271,10 @@ class ParcelShimmer extends StatelessWidget {
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
           ),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             enabled: isEnabled,
             child: Row(children: [
 

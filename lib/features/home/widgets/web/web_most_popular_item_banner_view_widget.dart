@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/item/controllers/campaign_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/item/domain/models/basic_campaign_model.dart';
@@ -7,7 +8,6 @@ import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:talabatcom/features/home/widgets/web/widgets/arrow_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
 
 class WebMostPopularItemBannerViewWidget extends StatelessWidget {
   final CampaignController campaignController;
@@ -129,8 +129,10 @@ class WebBannerShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer(
-      duration: const Duration(seconds: 2),
+    return Shimmer.fromColors(
+      highlightColor: Colors.white.withAlpha(1),
+      baseColor: Colors.grey.withOpacity(0.5),
+      period: const Duration(seconds: 2),
       enabled: campaignController.basicCampaignList == null,
       child: Row(children: [
 

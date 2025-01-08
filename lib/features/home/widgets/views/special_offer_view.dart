@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
 import 'package:talabatcom/helper/route_helper.dart';
@@ -86,9 +86,11 @@ class ItemShimmerView extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault),
-                  child: Shimmer(
-                    duration: const Duration(seconds: 2),
+                  child: Shimmer.fromColors(
                     enabled: true,
+                    highlightColor: Colors.white.withAlpha(1),
+                    baseColor: Colors.grey.withOpacity(0.5),
+                    period: const Duration(seconds: 2),
                     child: Container(
                       height: 285, width: 200,
                       decoration: BoxDecoration(

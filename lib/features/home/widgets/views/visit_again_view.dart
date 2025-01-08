@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/card_design/visit_again_card.dart';
 import 'package:talabatcom/features/store/controllers/store_controller.dart';
 import 'package:talabatcom/features/store/domain/models/store_model.dart';
@@ -91,9 +91,11 @@ class VisitAgainShimmerView extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.only(top: Dimensions.paddingSizeSmall),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
             enabled: true,
+            highlightColor: Colors.white.withAlpha(1),
+            baseColor: Colors.grey.withOpacity(0.5),
+            period: const Duration(seconds: 2),
             child: Column(children: [
 
               Container(

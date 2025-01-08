@@ -169,59 +169,59 @@ class _CartScreenState extends State<CartScreen> {
                                                                             .availableList[index]);
                                                               },
                                                             ),
-                                                            const Divider(
-                                                                thickness: 0.5,
-                                                                height: 5),
-                                                            Padding(
-                                                              padding: const EdgeInsets
-                                                                  .only(
-                                                                  left: Dimensions
-                                                                      .paddingSizeExtraSmall),
-                                                              child: TextButton
-                                                                  .icon(
-                                                                onPressed: () {
-                                                                  cartController.forcefullySetModule(
-                                                                      cartController
-                                                                          .cartList[
-                                                                              0]
-                                                                          .item!
-                                                                          .moduleId!);
-                                                                  Get.toNamed(
-                                                                    RouteHelper.getStoreRoute(
-                                                                        id: cartController
-                                                                            .cartList[
-                                                                                0]
-                                                                            .item!
-                                                                            .storeId,
-                                                                        page:
-                                                                            'item'),
-                                                                    arguments: StoreScreen(
-                                                                        store: Store(
-                                                                            id: cartController
-                                                                                .cartList[
-                                                                                    0]
-                                                                                .item!
-                                                                                .storeId),
-                                                                        fromModule:
-                                                                            false),
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                    Icons
-                                                                        .add_circle_outline_sharp,
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .primaryColor),
-                                                                label: Text(
-                                                                    'add_more_items'
-                                                                        .tr,
-                                                                    style: robotoMedium.copyWith(
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor,
-                                                                        fontSize:
-                                                                            Dimensions.fontSizeDefault)),
-                                                              ),
-                                                            ),
+                                                            // const Divider(
+                                                            //     thickness: 0.5,
+                                                            //     height: 5),
+                                                            // Padding(
+                                                            //   padding: const EdgeInsets
+                                                            //       .only(
+                                                            //       left: Dimensions
+                                                            //           .paddingSizeExtraSmall),
+                                                            //   child: TextButton
+                                                            //       .icon(
+                                                            //     onPressed: () {
+                                                            //       cartController.forcefullySetModule(
+                                                            //           cartController
+                                                            //               .cartList[
+                                                            //                   0]
+                                                            //               .item!
+                                                            //               .moduleId!);
+                                                            //       Get.toNamed(
+                                                            //         RouteHelper.getStoreRoute(
+                                                            //             id: cartController
+                                                            //                 .cartList[
+                                                            //                     0]
+                                                            //                 .item!
+                                                            //                 .storeId,
+                                                            //             page:
+                                                            //                 'item'),
+                                                            //         arguments: StoreScreen(
+                                                            //             store: Store(
+                                                            //                 id: cartController
+                                                            //                     .cartList[
+                                                            //                         0]
+                                                            //                     .item!
+                                                            //                     .storeId),
+                                                            //             fromModule:
+                                                            //                 false),
+                                                            //       );
+                                                            //     },
+                                                            //     icon: Icon(
+                                                            //         Icons
+                                                            //             .add_circle_outline_sharp,
+                                                            //         color: Theme.of(
+                                                            //                 context)
+                                                            //             .primaryColor),
+                                                            //     label: Text(
+                                                            //         'add_more_items'
+                                                            //             .tr,
+                                                            //         style: robotoMedium.copyWith(
+                                                            //             color: Theme.of(context)
+                                                            //                 .primaryColor,
+                                                            //             fontSize:
+                                                            //                 Dimensions.fontSizeDefault)),
+                                                            //   ),
+                                                            // ),
                                                             ExtraPackagingWidget(
                                                                 cartController:
                                                                     cartController),
@@ -333,27 +333,27 @@ class _CartScreenState extends State<CartScreen> {
                                             cartController.variationPrice > 0
                                                 ? Dimensions.paddingSizeSmall
                                                 : 0),
-                                    cartController.variationPrice > 0
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('variations'.tr,
-                                                  style: robotoRegular),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                              cartController.variationPrice==0? "0": '${PriceConverter.convertPrice(cartController.variationPrice)}',
-                                                      style: robotoRegular,
-                                                      textDirection:
-                                                          TextDirection.rtl),
-
-                                                ],
-                                              ),
-
-                                            ],
-                                          )
-                                        : const SizedBox(),
+                                    // cartController.variationPrice > 0
+                                    //     ? Row(
+                                    //         mainAxisAlignment:
+                                    //             MainAxisAlignment.spaceBetween,
+                                    //         children: [
+                                    //           Text('variations'.tr,
+                                    //               style: robotoRegular),
+                                    //           Row(
+                                    //             children: [
+                                    //               Text(
+                                    //           cartController.variationPrice==0? "0": '${PriceConverter.convertPrice(cartController.variationPrice)}',
+                                    //                   style: robotoRegular,
+                                    //                   textDirection:
+                                    //                       TextDirection.rtl),
+                                    //
+                                    //             ],
+                                    //           ),
+                                    //
+                                    //         ],
+                                    //       )
+                                    //     : const SizedBox(),
                                     const SizedBox(
                                         height: Dimensions.paddingSizeSmall),
                                     Row(
@@ -600,7 +600,7 @@ class _CartScreenState extends State<CartScreen> {
                               Text(
                                   ' ${PriceConverter.convertPrice(cartController.variationPrice)}',
                                   style: robotoRegular,
-                                  textDirection: TextDirection.ltr),
+                                  textDirection: TextDirection.rtl),
                             ],
                           )
                         : const SizedBox(),
@@ -639,7 +639,7 @@ class _CartScreenState extends State<CartScreen> {
                               Text(
                                   ' ${PriceConverter.convertPrice(cartController.addOns)}',
                                   style: robotoRegular,
-                                  textDirection: TextDirection.ltr),
+                                  textDirection: TextDirection.rtl),
                             ],
                           )
                         : const SizedBox(),
@@ -797,7 +797,10 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                     percentage < 1)
                 ? Column(children: [
                     Row(children: [
-                      Image.asset(Images.percentTag, height: 20, width: 20),
+                      Text('CompleteCart'.tr,
+                          style: robotoMedium.copyWith(
+                              color: Theme.of(context).disabledColor)),
+                      // Image.asset(Images.percentTag, height: 20, width: 20),
                       const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                       Text(
                         PriceConverter.convertPrice(Get.find<SplashController>()
@@ -806,7 +809,7 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                             widget.cartController.subTotal),
                         style: robotoMedium.copyWith(
                             color: Theme.of(context).primaryColor),
-                        textDirection: TextDirection.ltr,
+                        textDirection: TextDirection.rtl,
                       ),
                       const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                       Text('more_for_free_delivery'.tr,
@@ -962,49 +965,103 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                 ? const SizedBox(height: Dimensions.paddingSizeSmall)
                 : const SizedBox(),
             SafeArea(
-              child: CustomButton(
-                  buttonText: 'Execute_the_request'.tr,
-                  fontSize: ResponsiveHelper.isDesktop(context)
-                      ? Dimensions.fontSizeSmall
-                      : Dimensions.fontSizeLarge,
-                  isBold: ResponsiveHelper.isDesktop(context) ? false : true,
-                  radius: ResponsiveHelper.isDesktop(context)
-                      ? Dimensions.radiusSmall
-                      : Dimensions.radiusDefault,
-                  onPressed: () {
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: CustomButton(
+                        buttonText: 'Execute_the_request'.tr,
+                        fontSize: ResponsiveHelper.isDesktop(context)
+                            ? Dimensions.fontSizeSmall
+                            : Dimensions.fontSizeLarge,
+                        isBold: ResponsiveHelper.isDesktop(context) ? false : true,
+                        radius: ResponsiveHelper.isDesktop(context)
+                            ? Dimensions.radiusSmall
+                            : Dimensions.radiusDefault,
+                        onPressed: () {
 
 
-                    if (!widget.cartController.cartList.first.item!.scheduleOrder! &&
-                        widget.availableList.contains(false)) {
-                      showCustomSnackBar('one_or_more_product_unavailable'.tr);
-                    }
-
-                    /*else if(AuthHelper.isGuestLoggedIn() && !Get.find<SplashController>().configModel!.guestCheckoutStatus!) {
-                    showCustomSnackBar('currently_your_zone_have_no_permission_to_place_any_order'.tr);
-                  }*/
-                    else {
-                      if (Get.find<SplashController>().module == null) {
-                        int i = 0;
-                        for (i = 0;
-                            i < Get.find<SplashController>().moduleList!.length;
-                            i++) {
-                          if (widget.cartController.cartList[0].item!.moduleId ==
-                              Get.find<SplashController>().moduleList![i].id) {
-                            break;
+                          if (!widget.cartController.cartList.first.item!.scheduleOrder! &&
+                              widget.availableList.contains(false)) {
+                            showCustomSnackBar('one_or_more_product_unavailable'.tr);
                           }
-                        }
-                        Get.find<SplashController>().setModule(
-                            Get.find<SplashController>().moduleList![i]);
-                        HomeScreen.loadData(true);
+
+                          /*else if(AuthHelper.isGuestLoggedIn() && !Get.find<SplashController>().configModel!.guestCheckoutStatus!) {
+                          showCustomSnackBar('currently_your_zone_have_no_permission_to_place_any_order'.tr);
+                        }*/
+                          else {
+                            if (Get.find<SplashController>().module == null) {
+                              int i = 0;
+                              for (i = 0;
+                                  i < Get.find<SplashController>().moduleList!.length;
+                                  i++) {
+                                if (widget.cartController.cartList[0].item!.moduleId ==
+                                    Get.find<SplashController>().moduleList![i].id) {
+                                  break;
+                                }
+                              }
+                              Get.find<SplashController>().setModule(
+                                  Get.find<SplashController>().moduleList![i]);
+                              HomeScreen.loadData(true);
+                            }
+                            Get.find<CouponController>().removeCouponData(false);
+
+                            Get.toNamed(RouteHelper.getCheckoutRoute('cart'));
+                          }
+
+                          minimumShippingCharge = 0.0;
+
+                        }),
+                  ),
+                  SizedBox(width: 20,),
+                  Expanded(
+                    flex: 2,
+                    child: CustomButton(
+                        buttonText: 'add_more_items'.tr,
+                        fontSize: ResponsiveHelper.isDesktop(context)
+                            ? Dimensions.fontSizeSmall
+                            : Dimensions.fontSizeSmall,
+                        borderSide: 0.7,
+                        colorBorderSide: Theme.of(context).primaryColor,
+                        isBold: ResponsiveHelper.isDesktop(context) ? false : true,
+                        radius: ResponsiveHelper.isDesktop(context)
+                            ? Dimensions.radiusSmall
+                            : Dimensions.radiusDefault,
+                        color: Colors.transparent,
+
+                        textColor: Theme.of(context)
+            .primaryColor,
+                      onPressed: () {
+                       widget.cartController.forcefullySetModule(
+                          widget.cartController
+                                .cartList[
+                            0]
+                                .item!
+                                .moduleId!);
+                        Get.toNamed(
+                          RouteHelper.getStoreRoute(
+                              id: widget.cartController
+                                  .cartList[
+                              0]
+                                  .item!
+                                  .storeId,
+                              page:
+                              'item'),
+                          arguments: StoreScreen(
+                              store: Store(
+                                  id: widget.cartController
+                                      .cartList[
+                                  0]
+                                      .item!
+                                      .storeId),
+                              fromModule:
+                              false),
+                        );
                       }
-                      Get.find<CouponController>().removeCouponData(false);
-
-                      Get.toNamed(RouteHelper.getCheckoutRoute('cart'));
-                    }
-
-                    minimumShippingCharge = 0.0;
-
-                  }),
+                        ),
+                  ),
+                ],
+              ),
             ),
           ],
         );

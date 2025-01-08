@@ -182,18 +182,30 @@ class Item {
         choiceOptions!.add(ChoiceOptions.fromJson(v));
       });
     }
-    price = json['price'].toDouble();
+
+    // التحقق من الفيرشن هنا
+    if (foodVariations != null && foodVariations!.isNotEmpty) {
+      for (var variation in foodVariations!) {
+        for (var variationValue in variation.variationValues!) {
+          if (variationValue.isSelected == true && variationValue.optionPrice != 0) {
+            price = variationValue.optionPrice; // تعيين سعر الفيرشن
+            break; // الخروج بعد العثور على السعر
+          }
+        }
+      }
+    }
+    price ??= json['price']?.toDouble(); // تعيين السعر الأساسي إذا لم يكن هناك اختيار
     tax = json['tax']?.toDouble();
-    discount = json['discount'].toDouble();
+    discount = json['discount']?.toDouble();
     discountType = json['discount_type'];
     availableTimeStarts = json['available_time_starts'];
     availableTimeEnds = json['available_time_ends'];
     storeId = json['store_id'];
     storeName = json['store_name'];
     zoneId = json['zone_id'];
-    storeDiscount = json['store_discount'].toDouble();
+    storeDiscount = json['store_discount']?.toDouble();
     scheduleOrder = json['schedule_order'];
-    avgRating = json['avg_rating'].toDouble();
+    avgRating = json['avg_rating']?.toDouble();
     ratingCount = json['rating_count'];
     moduleId = json['module_id'];
     moduleType = json['module_type'];
@@ -232,7 +244,9 @@ class Item {
     if (choiceOptions != null) {
       data['choice_options'] = choiceOptions!.map((v) => v.toJson()).toList();
     }
-    data['price'] = price;
+    if (price != null) {
+      data['price'] = price;
+    }
     data['tax'] = tax;
     data['discount'] = discount;
     data['discount_type'] = discountType;
@@ -260,6 +274,8 @@ class Item {
     return data;
   }
 }
+
+
 
 class CategoryIds {
   String? id;
@@ -419,3 +435,283 @@ class VariationValue {
     return variations;
   }
 }
+
+
+//import 'package:get/get.dart';
+// import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
+// import 'package:talabatcom/features/item/domain/models/basic_medicine_model.dart';
+//
+// class ItemModel {
+//   int? totalSize;
+//   String? limit;
+//   int? offset;
+//   List<Item>? items;
+//   List<Categories>? categories;
+//
+//   ItemModel({this.totalSize, this.limit, this.offset, this.items, this.categories});
+//
+//   ItemModel.fromJson(Map<String, dynamic> json) {
+//     totalSize = json['total_size'];
+//     limit = json['limit'].toString();
+//     offset = (json['offset'] != null && json['offset'].toString().trim().isNotEmpty) ? int.parse(json['offset'].toString()) : null;
+//     if (json['products'] != null) {
+//       items = [];
+//       json['products'].forEach((v) {
+//         items!.add(Item.fromJson(v));
+//         // if (v['module_type'] == null ||
+//         //     !Get.find<SplashController>().getModuleConfig(v['module_type']).newVariation! ||
+//         //     v['variations'] == null ||
+//         //     v['variations'].isEmpty ||
+//         //     (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
+//         //   items!.add(Item.fromJson(v));
+//         // }
+//       });
+//     }
+//     if (json['items'] != null) {
+//       items = [];
+//       json['items'].forEach((v) {
+//         if (v['module_type'] == null ||
+//             !Get.find<SplashController>().getModuleConfig(v['module_type']).newVariation! ||
+//             v['variations'] == null ||
+//             v['variations'].isEmpty ||
+//             (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
+//           items!.add(Item.fromJson(v));
+//         }
+//       });
+//     }
+//     if (json['categories'] != null) {
+//       categories = <Categories>[];
+//       json['categories'].forEach((v) {
+//         categories!.add(Categories.fromJson(v));
+//       });
+//     }
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['total_size'] = totalSize;
+//     data['limit'] = limit;
+//     data['offset'] = offset;
+//     if (items != null) {
+//       data['products'] = items!.map((v) => v.toJson()).toList();
+//     }
+//     if (categories != null) {
+//       data['categories'] = categories!.map((v) => v.toJson()).toList();
+//     }
+//     return data;
+//   }
+// }
+//
+// class Item {
+//   int? id;
+//   String? name;
+//   String? description;
+//   String? image;
+//   List<String>? images;
+//   int? categoryId;
+//   List<CategoryIds>? categoryIds;
+//   List<Variation>? variations;
+//   List<FoodVariation>? foodVariations;
+//   List<AddOns>? addOns;
+//   List<ChoiceOptions>? choiceOptions;
+//   double? price;
+//   double? tax;
+//   double? discount;
+//   String? discountType;
+//   String? availableTimeStarts;
+//   String? availableTimeEnds;
+//   int? storeId;
+//   String? storeName;
+//   int? zoneId;
+//   double? storeDiscount;
+//   bool? scheduleOrder;
+//   double? avgRating;
+//   int? ratingCount;
+//   int? veg;
+//   int? moduleId;
+//   String? moduleType;
+//   String? unitType;
+//   int? stock;
+//   String? availableDateStarts;
+//   int? organic;
+//   int? quantityLimit;
+//   int? flashSale;
+//   bool? isStoreHalalActive;
+//   bool? isHalalItem;
+//   bool? isPrescriptionRequired;
+//
+//   Item({
+//     this.id,
+//     this.name,
+//     this.description,
+//     this.image,
+//     this.images,
+//     this.categoryId,
+//     this.categoryIds,
+//     this.variations,
+//     this.foodVariations,
+//     this.addOns,
+//     this.choiceOptions,
+//     this.price,
+//     this.tax,
+//     this.discount,
+//     this.discountType,
+//     this.availableTimeStarts,
+//     this.availableTimeEnds,
+//     this.storeId,
+//     this.storeName,
+//     this.zoneId,
+//     this.storeDiscount,
+//     this.scheduleOrder,
+//     this.avgRating,
+//     this.ratingCount,
+//     this.veg,
+//     this.moduleId,
+//     this.moduleType,
+//     this.unitType,
+//     this.stock,
+//     this.organic,
+//     this.quantityLimit,
+//     this.flashSale,
+//     this.isStoreHalalActive,
+//     this.isHalalItem,
+//     this.isPrescriptionRequired,
+//   });
+//
+//   Item.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     name = json['name'];
+//     description = json['description'];
+//     image = json['image'];
+//     images = json['images'] != null ? json['images'].cast<String>() : [];
+//     categoryId = json['category_id'];
+//     if (json['category_ids'] != null) {
+//       categoryIds = [];
+//       json['category_ids'].forEach((v) {
+//         categoryIds!.add(CategoryIds.fromJson(v));
+//       });
+//     }
+//     variations = [];
+//     if (json['variations'] != null) {
+//       json['variations'].forEach((v) {
+//         variations!.add(Variation.fromJson(v));
+//       });
+//     }
+//     foodVariations = [];
+//     if (json['food_variations'] != null && json['food_variations'].isNotEmpty) {
+//       json['food_variations'].forEach((v) {
+//         foodVariations!.add(FoodVariation.fromJson(v));
+//       });
+//     }
+//     if (json['add_ons'] != null) {
+//       addOns = [];
+//       if (json['add_ons'].length > 0 && json['add_ons'][0] != '[') {
+//         json['add_ons'].forEach((v) {
+//           addOns!.add(AddOns.fromJson(v));
+//         });
+//       } else if (json['addons'] != null) {
+//         json['addons'].forEach((v) {
+//           addOns!.add(AddOns.fromJson(v));
+//         });
+//       }
+//     }
+//     if (json['choice_options'] != null) {
+//       choiceOptions = [];
+//       json['choice_options'].forEach((v) {
+//         choiceOptions!.add(ChoiceOptions.fromJson(v));
+//       });
+//     }
+//     price = json['price'].toDouble();
+//     tax = json['tax']?.toDouble();
+//     discount = json['discount'].toDouble();
+//     discountType = json['discount_type'];
+//     availableTimeStarts = json['available_time_starts'];
+//     availableTimeEnds = json['available_time_ends'];
+//     storeId = json['store_id'];
+//     storeName = json['store_name'];
+//     zoneId = json['zone_id'];
+//     storeDiscount = json['store_discount'].toDouble();
+//     scheduleOrder = json['schedule_order'];
+//     avgRating = json['avg_rating'].toDouble();
+//     ratingCount = json['rating_count'];
+//     moduleId = json['module_id'];
+//     moduleType = json['module_type'];
+//     veg = json['veg'] != null ? int.parse(json['veg'].toString()) : 0;
+//     stock = json['stock'];
+//     unitType = json['unit_type'];
+//     availableDateStarts = json['available_date_starts'];
+//     organic = json['organic'];
+//     quantityLimit = json['maximum_cart_quantity'];
+//     flashSale = json['flash_sale'];
+//     isStoreHalalActive = json['halal_tag_status'] == 1;
+//     isHalalItem = json['is_halal'] == 1;
+//     isPrescriptionRequired = json['is_prescription_required'] == 1;
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['id'] = id;
+//     data['name'] = name;
+//     data['description'] = description;
+//     data['image'] = image;
+//     data['images'] = images;
+//     data['category_id'] = categoryId;
+//     if (categoryIds != null) {
+//       data['category_ids'] = categoryIds!.map((v) => v.toJson()).toList();
+//     }
+//     if (variations != null) {
+//       data['variations'] = variations!.map((v) => v.toJson()).toList();
+//     }
+//     if (foodVariations != null) {
+//       data['food_variations'] = foodVariations!.map((v) => v.toJson()).toList();
+//     }
+//     if (addOns != null) {
+//       data['add_ons'] = addOns!.map((v) => v.toJson()).toList();
+//     }
+//     if (choiceOptions != null) {
+//       data['choice_options'] = choiceOptions!.map((v) => v.toJson()).toList();
+//     }
+//     data['price'] = price;
+//     data['tax'] = tax;
+//     data['discount'] = discount;
+//     data['discount_type'] = discountType;
+//     data['available_time_starts'] = availableTimeStarts;
+//     data['available_time_ends'] = availableTimeEnds;
+//     data['store_id'] = storeId;
+//     data['store_name'] = storeName;
+//     data['zone_id'] = zoneId;
+//     data['store_discount'] = storeDiscount;
+//     data['schedule_order'] = scheduleOrder;
+//     data['avg_rating'] = avgRating;
+//     data['rating_count'] = ratingCount;
+//     data['veg'] = veg;
+//     data['module_id'] = moduleId;
+//     data['module_type'] = moduleType;
+//     data['stock'] = stock;
+//     data['unit_type'] = unitType;
+//     data['available_date_starts'] = availableDateStarts;
+//     data['organic'] = organic;
+//     data['maximum_cart_quantity'] = quantityLimit;
+//     data['flash_sale'] = flashSale;
+//     data['halal_tag_status'] = isStoreHalalActive;
+//     data['is_halal'] = isHalalItem;
+//     data['is_prescription_required'] = isPrescriptionRequired;
+//     return data;
+//   }
+// }
+//
+// class CategoryIds {
+//   String? id;
+//
+//   CategoryIds({this.id});
+//
+//   CategoryIds.fromJson(Map<String, dynamic> json) {
+//     id = json['id'].toString();
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['id'] = id;
+//     return data;
+//   }
+// }

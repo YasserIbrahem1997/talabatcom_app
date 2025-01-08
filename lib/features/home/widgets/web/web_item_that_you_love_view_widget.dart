@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
@@ -400,9 +400,11 @@ class WebItemThatYouLoveForShopShimmer extends StatelessWidget {
           child: Text('item_that_you_love'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
         ),
 
-        Shimmer(
+        Shimmer.fromColors(
           enabled: true,
-          duration: const Duration(seconds: 2),
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           child: Container(
             color: Theme.of(context).cardColor,
             height: 285, width: Get.width,
@@ -497,9 +499,11 @@ class WebItemThatYouLoveShimmerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer(
-      duration: const Duration(seconds: 2),
+    return Shimmer.fromColors(
       enabled: true,
+      highlightColor: Colors.white.withAlpha(1),
+      baseColor: Colors.grey.withOpacity(0.5),
+      period: const Duration(seconds: 2),
       child: Column(children: [
 
         Padding(

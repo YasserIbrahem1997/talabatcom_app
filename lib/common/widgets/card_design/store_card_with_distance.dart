@@ -44,7 +44,7 @@ class StoreCardWithDistance extends StatelessWidget {
     void _showAlertDialog(BuildContext context) {
       // التأكد من وجود مواعيد للمتجر
       String? closingTime;
-      bool storeClosed = Get.find<StoreController>().isStoreClosed(
+      bool? storeClosed = Get.find<StoreController>().isStoreClosed(
         DateTime.now().weekday == DateTime.now().weekday,
         true, // تأكد من أن المتجر نشط
         store.schedules, // قائمة مواعيد العمل
@@ -63,8 +63,8 @@ class StoreCardWithDistance extends StatelessWidget {
 
       // في حالة كان المتجر مغلقًا، نعرض رسالة مخصصة بناءً على وقت الإغلاق
       if (storeClosed) {
-        String closingTimeMessage = closingTime != null
-            ? "يمكنك إضافة المنتجات إلى عربة التسوق وطلبها عند توفر المتجر عند الساعة: $closingTime"
+        String? closingTimeMessage = closingTime != false
+            ? "يمكنك إضافة المنتجات إلى عربة التسوق وطلبها عند توفر المتجر"
             : "يمكنك إضافة المنتجات إلى عربة التسوق وطلبها عند توفر المتجر قريبًا.";
 
         showDialog(
@@ -72,7 +72,7 @@ class StoreCardWithDistance extends StatelessWidget {
           builder: (BuildContext context) {
             return AlertDialog(
               content: Text(
-                "\n " + 'مطعم' + " " + store.name.toString() + " " + "مغلق حاليا، $closingTimeMessage",
+                "\n "  + " " + store.name.toString() + " " + "مغلق حاليا، $closingTimeMessage",
               ),
               actions: <Widget>[
                 TextButton(
@@ -137,54 +137,51 @@ class StoreCardWithDistance extends StatelessWidget {
           ),
           child: CustomInkWell(
             onTap: () {
-              // void _showAlertDialog(BuildContext context) {
-              //   showDialog(
-              //     context: context,
-              //     builder: (BuildContext context) {
-              //       return AlertDialog(
-              //         content: Text("\n " +
-              //             'مطعم' +
-              //             " " +
-              //             store!.name.toString() +
-              //             " " +
-              //             "مغلق حاليا ,يمكنك اضافة المنتجات الي عربة التسوق وطلبها عند توفر المتجر عند الساعة: 8.00ص"),
-              //         actions: <Widget>[
-              //           TextButton(
-              //             child: const Text('الغاء '),
-              //             onPressed: () {
-              //               Navigator.of(context).pop();
-              //             },
-              //           ),
-              //           TextButton(
-              //             child: const Text('متابعة'),
-              //             onPressed: () {
-              //               if (store != null) {
-              //                 if (Get.find<SplashController>().moduleList !=
-              //                     null) {
-              //                   for (ModuleModel module
-              //                       in Get.find<SplashController>()
-              //                           .moduleList!) {
-              //                     if (module.id == store!.moduleId) {
-              //                       Get.find<SplashController>()
-              //                           .setModule(module);
-              //                       break;
-              //                     }
-              //                   }
-              //                 }
-              //                 Get.toNamed(
-              //                   RouteHelper.getStoreRoute(
-              //                       id: store!.id, page: 'item'),
-              //                   arguments: StoreScreen(
-              //                       store: store, fromModule: false),
-              //                 );
-              //               }
-              //             },
-              //           ),
-              //         ],
-              //       );
-              //     },
-              //   );
-              // }
+              void _showAlertDialog(BuildContext context) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Text(
+                       "\n"+  store.name.toString() + " " + "مغلق حاليا، \nيمكنك إضافة المنتجات إلى عربة التسوق وطلبها عند توفر المتجر",
+                      ),
+                         actions: <Widget>[
+                        TextButton(
+                          child: const Text('الغاء '),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('متابعة'),
+                          onPressed: () {
+                            if (store != null) {
+                              if (Get.find<SplashController>().moduleList !=
+                                  null) {
+                                for (ModuleModel module
+                                    in Get.find<SplashController>()
+                                        .moduleList!) {
+                                  if (module.id == store!.moduleId) {
+                                    Get.find<SplashController>()
+                                        .setModule(module);
+                                    break;
+                                  }
+                                }
+                              }
+                              Get.toNamed(
+                                RouteHelper.getStoreRoute(
+                                    id: store!.id, page: 'item'),
+                                arguments: StoreScreen(
+                                    store: store, fromModule: false),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
 
               if (Get.find<StoreController>().isOpenNow(store)) {
                 if (Get.find<SplashController>().moduleList != null) {

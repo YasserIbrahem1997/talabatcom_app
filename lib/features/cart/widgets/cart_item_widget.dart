@@ -1,4 +1,5 @@
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talabatcom/common/widgets/custom_asset_image_widget.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
@@ -18,7 +19,7 @@ import 'package:talabatcom/common/widgets/rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CartItemWidget extends StatelessWidget {
+class CartItemWidget extends StatefulWidget {
   final CartModel cart;
   final int cartIndex;
   final List<AddOns> addOns;
@@ -32,18 +33,37 @@ class CartItemWidget extends StatelessWidget {
       required this.addOns});
 
   @override
-  Widget build(BuildContext context) {
-    double? startingPrice = _calculatePriceWithVariation(item: cart.item);
-    double? endingPrice =
-        _calculatePriceWithVariation(item: cart.item, isStartingPrice: false);
-    String? variationText = _setupVariationText(cart: cart);
-    String addOnText = _setupAddonsText(cart: cart) ?? '';
+  State<CartItemWidget> createState() => _CartItemWidgetState();
+}
 
-    double? discount = cart.item!.storeDiscount == 0
-        ? cart.item!.discount
-        : cart.item!.storeDiscount;
+class _CartItemWidgetState extends State<CartItemWidget> {
+  String? addNote;
+
+@override
+void initState() {
+  super.initState();
+  _loadAddNote();
+}
+Future<void> _loadAddNote() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  setState(() {
+    addNote = prefs.getString('addNoteOrder') ?? "";
+  });
+}
+  @override
+  Widget build(BuildContext context) {
+    double? startingPrice = _calculatePriceWithVariation(item: widget.cart.item);
+    double? endingPrice =
+        _calculatePriceWithVariation(item: widget.cart.item, isStartingPrice: false);
+    String? variationText = _setupVariationText(cart: widget.cart);
+    String addOnText = _setupAddonsText(cart: widget.cart) ?? '';
+
+
+    double? discount = widget.cart.item!.storeDiscount == 0
+        ? widget.cart.item!.discount
+        : widget.cart.item!.storeDiscount;
     String? discountType =
-        cart.item!.storeDiscount == 0 ? cart.item!.discountType : 'percent';
+        widget.cart.item!.storeDiscount == 0 ? widget.cart.item!.discountType : 'percent';
 
     return Padding(
       padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
@@ -56,7 +76,7 @@ class CartItemWidget extends StatelessWidget {
             SlidableAction(
               onPressed: (context) {
                 Get.find<CartController>()
-                    .removeFromCart(cartIndex, item: cart.item);
+                    .removeFromCart(widget.cartIndex, item: widget.cart.item);
               },
               backgroundColor: Theme.of(context).colorScheme.error,
               borderRadius: BorderRadius.horizontal(
@@ -94,15 +114,15 @@ class CartItemWidget extends StatelessWidget {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (con) => ItemBottomSheet(
-                          item: cart.item, cartIndex: cartIndex, cart: cart),
+                          item: widget.cart.item, cartIndex: widget.cartIndex, cart: widget.cart),
                     )
                   : showDialog(
                       context: context,
                       builder: (con) => Dialog(
                             child: ItemBottomSheet(
-                                item: cart.item,
-                                cartIndex: cartIndex,
-                                cart: cart),
+                                item: widget.cart.item,
+                                cartIndex: widget.cartIndex,
+                                cart: widget.cart),
                           ));
             },
             radius: Dimensions.radiusDefault,
@@ -120,13 +140,13 @@ class CartItemWidget extends StatelessWidget {
                             BorderRadius.circular(Dimensions.radiusDefault),
                         child: CustomImage(
                           image:
-                              '${Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl}/${cart.item!.image}',
+                              '${Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl}/${widget.cart.item!.image}',
                           height: ResponsiveHelper.isDesktop(context) ? 90 : 70,
                           width: ResponsiveHelper.isDesktop(context) ? 90 : 70,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      isAvailable
+                      widget.isAvailable
                           ? const SizedBox()
                           : Positioned(
                               top: 0,
@@ -158,7 +178,7 @@ class CartItemWidget extends StatelessWidget {
                           Row(children: [
                             Flexible(
                               child: Text(
-                                cart.item!.name!,
+                                widget.cart.item!.name!,
                                 style: robotoMedium.copyWith(
                                     fontSize: Dimensions.fontSizeSmall),
                                 maxLines: 2,
@@ -172,10 +192,10 @@ class CartItemWidget extends StatelessWidget {
                                             .moduleConfig!
                                             .module!
                                             .unit! &&
-                                        cart.item!.unitType != null &&
+                                        widget.cart.item!.unitType != null &&
                                         !Get.find<SplashController>()
                                             .getModuleConfig(
-                                                cart.item!.moduleType)
+                                                widget.cart.item!.moduleType)
                                             .newVariation!) ||
                                     (Get.find<SplashController>()
                                             .configModel!
@@ -191,7 +211,7 @@ class CartItemWidget extends StatelessWidget {
                                         .module!
                                         .unit!
                                     ? CustomAssetImageWidget(
-                                        cart.item!.veg == 0
+                                        widget.cart.item!.veg == 0
                                             ? Images.nonVegImage
                                             : Images.vegImage,
                                         height: 11,
@@ -211,7 +231,7 @@ class CartItemWidget extends StatelessWidget {
                                               .withOpacity(0.1),
                                         ),
                                         child: Text(
-                                          cart.item!.unitType ?? '',
+                                          widget.cart.item!.unitType ?? '',
                                           style: robotoMedium.copyWith(
                                               fontSize:
                                                   Dimensions.fontSizeExtraSmall,
@@ -221,21 +241,21 @@ class CartItemWidget extends StatelessWidget {
                                       )
                                 : const SizedBox(),
                             SizedBox(
-                                width: cart.item!.isStoreHalalActive! &&
-                                        cart.item!.isHalalItem!
+                                width: widget.cart.item!.isStoreHalalActive! &&
+                                        widget.cart.item!.isHalalItem!
                                     ? Dimensions.paddingSizeExtraSmall
                                     : 0),
-                            cart.item!.isStoreHalalActive! &&
-                                    cart.item!.isHalalItem!
+                            widget.cart.item!.isStoreHalalActive! &&
+                                    widget.cart.item!.isHalalItem!
                                 ? const CustomAssetImageWidget(Images.halalTag,
                                     height: 13, width: 13)
                                 : const SizedBox(),
                           ]),
                           const SizedBox(height: 2),
                           RatingBar(
-                              rating: cart.item!.avgRating,
+                              rating: widget.cart.item!.avgRating,
                               size: 12,
-                              ratingCount: cart.item!.ratingCount),
+                              ratingCount: widget.cart.item!.ratingCount),
                           const SizedBox(height: 5),
                           Wrap(children: [
                             Row(
@@ -267,7 +287,7 @@ class CartItemWidget extends StatelessWidget {
                                   )
                                 : const SizedBox(),
                           ]),
-                          cart.item!.isPrescriptionRequired!
+                          widget.cart.item!.isPrescriptionRequired!
                               ? Padding(
                                   padding: EdgeInsets.symmetric(
                                       vertical:
@@ -345,23 +365,23 @@ class CartItemWidget extends StatelessWidget {
                         onTap: cartController.isLoading
                             ? null
                             : () {
-                                if (cart.quantity! > 1) {
+                                if (widget.cart.quantity! > 1) {
                                   Get.find<CartController>().setQuantity(
                                       false,
-                                      cartIndex,
-                                      cart.stock,
-                                      cart.quantityLimit);
+                                      widget.cartIndex,
+                                      widget.cart.stock,
+                                      widget.cart.quantityLimit);
                                 } else {
                                   Get.find<CartController>().removeFromCart(
-                                      cartIndex,
-                                      item: cart.item);
+                                      widget.cartIndex,
+                                      item: widget.cart.item);
                                 }
                               },
                         isIncrement: false,
-                        showRemoveIcon: cart.quantity! == 1,
+                        showRemoveIcon: widget.cart.quantity! == 1,
                       ),
                       Text(
-                        cart.quantity.toString(),
+                        widget.cart.quantity.toString(),
                         style: robotoMedium.copyWith(
                             fontSize: Dimensions.fontSizeExtraLarge),
                       ),
@@ -375,7 +395,7 @@ class CartItemWidget extends StatelessWidget {
                                         .item!
                                         .moduleId!);
                                 Get.find<CartController>().setQuantity(true,
-                                    cartIndex, cart.stock, cart.quantityLimit);
+                                    widget.cartIndex, widget.cart.stock, widget.cart.quantityLimit);
                               },
                         isIncrement: true,
                         color: cartController.isLoading
@@ -416,7 +436,7 @@ class CartItemWidget extends StatelessWidget {
                     : const SizedBox(),
                 !ResponsiveHelper.isDesktop(context)
                     ? variationText!.isNotEmpty
-                        ? Padding(
+                        ?addNote!.isEmpty?SizedBox.shrink(): Padding(
                             padding: const EdgeInsets.only(
                                 top: Dimensions.paddingSizeExtraSmall),
                             child: Row(children: [
@@ -427,12 +447,12 @@ class CartItemWidget extends StatelessWidget {
                               Text(
                                   ResponsiveHelper.isDesktop(context)
                                       ? ''
-                                      : '${'variations'.tr}: ',
+                                      : '${'hint'.tr}: ',
                                   style: robotoMedium.copyWith(
                                       fontSize: Dimensions.fontSizeSmall)),
                               Flexible(
                                   child: Text(
-                                variationText,
+                                    addNote.toString(),
                                 style: robotoRegular.copyWith(
                                     fontSize: Dimensions.fontSizeSmall,
                                     color: Theme.of(context).disabledColor),

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/helper/responsive_helper.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/common/widgets/title_widget.dart';
@@ -16,8 +16,10 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       child: ResponsiveHelper.isMobile(context) ? Column(children: [
 
-        Shimmer(
-          duration: const Duration(seconds: 2),
+        Shimmer.fromColors(
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           enabled: true,
           child: Container(
             height: 200,
@@ -29,9 +31,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
         ),
         const SizedBox(height: Dimensions.paddingSizeSmall),
 
-        Shimmer(
-          duration: const Duration(seconds: 2),
+        Shimmer.fromColors(
           enabled: true,
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           child: Container(
             height: 110,
             padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
@@ -87,9 +91,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
         ),
         const SizedBox(height: Dimensions.paddingSizeSmall),
 
-        Shimmer(
-          duration: const Duration(seconds: 2),
+        Shimmer.fromColors(
           enabled: true,
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           child: Container(
             color: Colors.grey[300],
             padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
@@ -146,9 +152,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
-              child: Shimmer(
-                duration: const Duration(seconds: 2),
+              child: Shimmer.fromColors(
                 enabled: true,
+                highlightColor: Colors.white.withAlpha(1),
+                baseColor: Colors.grey.withOpacity(0.5),
+                period: const Duration(seconds: 2),
                 child: Container(
                   height: 90,
                   padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
@@ -205,9 +213,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
         ),
       ]) : Column(children: [
 
-        Shimmer(
-          duration: const Duration(seconds: 2),
+        Shimmer.fromColors(
           enabled: true,
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           child: Container(
             height: 250,
             color: Colors.black54,
@@ -232,9 +242,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
                     Expanded(
                       child: Column(children: [
 
-                        Shimmer(
-                          duration: const Duration(seconds: 2),
+                        Shimmer.fromColors(
                           enabled: true,
+                          highlightColor: Colors.white.withAlpha(1),
+                          baseColor: Colors.grey.withOpacity(0.5),
+                          period: const Duration(seconds: 2),
                           child: Container(
                             height: 110,
                             padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
@@ -287,9 +299,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
                         ),
                         const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                        Shimmer(
-                          duration: const Duration(seconds: 2),
+                        Shimmer.fromColors(
                           enabled: true,
+                          highlightColor: Colors.white.withAlpha(1),
+                          baseColor: Colors.grey.withOpacity(0.5),
+                          period: const Duration(seconds: 2),
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
                             child: Column(children: [
@@ -345,9 +359,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
           ),
         ),
 
-        Shimmer(
-          duration: const Duration(seconds: 2),
+        Shimmer.fromColors(
           enabled: true,
+          highlightColor: Colors.white.withAlpha(1),
+          baseColor: Colors.grey.withOpacity(0.5),
+          period: const Duration(seconds: 2),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeLarge),
             color: Theme.of(context).primaryColor.withOpacity(0.1),
@@ -443,9 +459,11 @@ class StoreDetailsScreenShimmerWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault),
-                  child: Shimmer(
-                    duration: const Duration(seconds: 2),
-                    enabled: true,
+                  child: Shimmer.fromColors(
+                      enabled: true,
+                      highlightColor: Colors.white.withAlpha(1),
+                      baseColor: Colors.grey.withOpacity(0.5),
+                      period: const Duration(seconds: 2),
                     child: Container(
                       height: 285, width: 200,
                       decoration: BoxDecoration(

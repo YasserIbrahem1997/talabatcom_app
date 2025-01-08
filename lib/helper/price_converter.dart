@@ -12,7 +12,7 @@ class PriceConverter {
       bool isFoodVariation = false}) {
     if (discount != null && discountType != null) {
       if (discountType == 'amount' && !isFoodVariation) {
-        price = price! - discount;
+        price = price! - (discount??0);
       } else if (discountType == 'percent') {
         price = price! - ((discount / 100) * price);
       }

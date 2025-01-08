@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/common/widgets/card_design/store_card.dart';
 import 'package:talabatcom/common/widgets/card_design/store_card_with_distance.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
@@ -531,9 +531,11 @@ class BestStoreNearbyShimmer extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: Dimensions.paddingSizeDefault,
                       top: Dimensions.paddingSizeSmall),
-                  child: Shimmer(
-                    duration: const Duration(seconds: 2),
+                  child: Shimmer.fromColors(
                     enabled: true,
+                    highlightColor: Colors.white.withAlpha(1),
+                    baseColor: Colors.grey.withOpacity(0.5),
+                    period: const Duration(seconds: 2),
                     child: Container(
                       width: 300,
                       padding:
@@ -706,9 +708,11 @@ class BestStoreNearbyShimmer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: Dimensions.paddingSizeSmall),
                         child: Stack(children: [
-                          Shimmer(
-                            duration: const Duration(seconds: 2),
+                          Shimmer.fromColors(
                             enabled: true,
+                            highlightColor: Colors.white.withAlpha(1),
+                            baseColor: Colors.grey.withOpacity(0.5),
+                            period: const Duration(seconds: 2),
                             child: Container(
                               width: 260,
                               decoration: BoxDecoration(
@@ -883,9 +887,11 @@ class BestStoreNearbyShimmer extends StatelessWidget {
                           right: Dimensions.paddingSizeDefault,
                           top: Dimensions.paddingSizeDefault),
                       child: Stack(clipBehavior: Clip.none, children: [
-                        Shimmer(
-                          duration: const Duration(seconds: 2),
+                        Shimmer.fromColors(
                           enabled: true,
+                          highlightColor: Colors.white.withAlpha(1),
+                          baseColor: Colors.grey.withOpacity(0.5),
+                          period: const Duration(seconds: 2),
                           child: Container(
                             height: 155,
                             width: 250,

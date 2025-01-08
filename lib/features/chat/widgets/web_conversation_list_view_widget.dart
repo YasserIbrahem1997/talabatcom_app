@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/chat/controllers/chat_controller.dart';
 import 'package:talabatcom/features/chat/enums/user_type_enum.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
@@ -224,9 +224,11 @@ class ConversationShimmer extends StatelessWidget {
             color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
             boxShadow: [BoxShadow(color: Colors.grey[Get.isDarkMode ? 800 : 200]!, spreadRadius: 1, blurRadius: 5)],
           ),
-          child: Shimmer(
-            duration: const Duration(seconds: 2),
+          child: Shimmer.fromColors(
             enabled: true,
+            highlightColor: Colors.transparent,
+            baseColor: Colors.transparent,
+            period: const Duration(seconds: 2),
             child: Padding(
               padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               child: Column(

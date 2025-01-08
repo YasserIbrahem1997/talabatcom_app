@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
 import 'package:talabatcom/features/home/widgets/components/item_that_you_love_card_widget.dart';
@@ -185,9 +185,11 @@ class _ItemThatYouLoveShimmerViewState extends State<ItemThatYouLoveShimmerView>
                     margin: EdgeInsets.zero,
                     child: Padding(
                       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-                      child: Shimmer(
-                        duration: const Duration(seconds: 2),
+                      child: Shimmer.fromColors(
                         enabled: true,
+                        highlightColor: Colors.white.withAlpha(1),
+                        baseColor: Colors.grey.withOpacity(0.5),
+                        period: const Duration(seconds: 2),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey[300],
@@ -228,9 +230,11 @@ class _ItemThatYouLoveShimmerViewState extends State<ItemThatYouLoveShimmerView>
                       child: Hero(
                         tag: "image$index",
                         child: GestureDetector(
-                          child:  Shimmer(
-                            duration: const Duration(seconds: 2),
+                          child:  Shimmer.fromColors(
                             enabled: true,
+                            highlightColor: Colors.white.withAlpha(1),
+                            baseColor: Colors.grey.withOpacity(0.5),
+                            period: const Duration(seconds: 2),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
