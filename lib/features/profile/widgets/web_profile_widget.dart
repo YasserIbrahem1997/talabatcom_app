@@ -106,7 +106,8 @@ class WebProfileWidget extends StatelessWidget {
                       const SizedBox(height: Dimensions.paddingSizeSmall),
 
                       Text(
-                        DateConverter.containTAndZToUTCFormat(profileController.userInfoModel!.createdAt!), textDirection: TextDirection.ltr,
+                        DateConverter.containTAndZToUTCFormat(profileController.userInfoModel!.createdAt!),
+                        // textDirection: TextDirection.ltr,
                         style: robotoMedium.copyWith(fontSize: ResponsiveHelper.isDesktop(context) ? Dimensions.fontSizeDefault : Dimensions.fontSizeExtraLarge),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeSmall),

@@ -1,12 +1,18 @@
-import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
-import 'package:talabatcom/features/item/domain/models/basic_medicine_model.dart';
-import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
-import 'package:talabatcom/features/item/domain/models/common_condition_model.dart';
-import 'package:talabatcom/features/item/domain/models/item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:talabatcom/common/widgets/cart_snackbar.dart';
+import 'package:talabatcom/common/widgets/confirmation_dialog.dart';
+import 'package:talabatcom/common/widgets/custom_snackbar.dart';
+import 'package:talabatcom/common/widgets/item_bottom_sheet.dart';
+import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
+import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
+import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
+import 'package:talabatcom/features/item/domain/models/basic_medicine_model.dart';
+import 'package:talabatcom/features/item/domain/models/common_condition_model.dart';
+import 'package:talabatcom/features/item/domain/models/item_model.dart';
+import 'package:talabatcom/features/item/domain/services/item_service_interface.dart';
+import 'package:talabatcom/features/item/screens/item_details_screen.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/helper/date_converter.dart';
 import 'package:talabatcom/helper/module_helper.dart';
 import 'package:talabatcom/helper/price_converter.dart';
@@ -14,12 +20,6 @@ import 'package:talabatcom/helper/responsive_helper.dart';
 import 'package:talabatcom/helper/route_helper.dart';
 import 'package:talabatcom/util/app_constants.dart';
 import 'package:talabatcom/util/images.dart';
-import 'package:talabatcom/common/widgets/cart_snackbar.dart';
-import 'package:talabatcom/common/widgets/confirmation_dialog.dart';
-import 'package:talabatcom/common/widgets/custom_snackbar.dart';
-import 'package:talabatcom/common/widgets/item_bottom_sheet.dart';
-import 'package:talabatcom/features/item/screens/item_details_screen.dart';
-import 'package:talabatcom/features/item/domain/services/item_service_interface.dart';
 
 class ItemController extends GetxController implements GetxService {
   final ItemServiceInterface itemServiceInterface;
@@ -551,6 +551,7 @@ class ItemController extends GetxController implements GetxService {
         [],
         isCampaign,
         item.stock,
+        item.note,
         item,
         item.quantityLimit,
       );
@@ -568,6 +569,7 @@ class ItemController extends GetxController implements GetxService {
         [],
         [],
         'Item',
+        "",
       );
       if (Get.find<SplashController>()
               .configModel!

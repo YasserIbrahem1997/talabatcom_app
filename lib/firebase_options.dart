@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -43,39 +40,47 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBLFJsorOHaFc4nrRNtZ-eGpaq5CyqJbDs',
+    appId: '1:1064328943216:web:fbec53c91c90c793e306b5',
+    messagingSenderId: '1064328943216',
+    projectId: 'talabatcom-b7817',
+    authDomain: 'talabatcom-b7817.firebaseapp.com',
+    storageBucket: 'talabatcom-b7817.firebasestorage.app',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD2qUeSfo814sKK1SI0OE7eHY7hXC0Ne5w',
-    appId: '1:359802914118:android:ad6d3df4b4f7c468f4d147',
-    messagingSenderId: '359802914118',
-    projectId: 'talabat-e4fdc',
-    storageBucket: 'talabat-e4fdc.firebasestorage.app',
+    apiKey: 'AIzaSyC6U26DfQp32fOnvhHudjiBWI5Cvc4s_vo',
+    appId: '1:1064328943216:android:33352f456399bb84e306b5',
+    messagingSenderId: '1064328943216',
+    projectId: 'talabatcom-b7817',
+    storageBucket: 'talabatcom-b7817.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC6M6RRE_j3saHlPAD7AtDuv74NT3V-tIU',
-    appId: '1:359802914118:ios:686c4cec920691b9f4d147',
-    messagingSenderId: '359802914118',
-    projectId: 'talabat-e4fdc',
-    storageBucket: 'talabat-e4fdc.firebasestorage.app',
+    apiKey: 'AIzaSyBA9SYjBOlSI85dxtaln_K1CrBSmJi4kAA',
+    appId: '1:1064328943216:ios:5f8815f365d90c00e306b5',
+    messagingSenderId: '1064328943216',
+    projectId: 'talabatcom-b7817',
+    storageBucket: 'talabatcom-b7817.firebasestorage.app',
     iosBundleId: 'com.sixamtech.sixamMart',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC6M6RRE_j3saHlPAD7AtDuv74NT3V-tIU',
-    appId: '1:359802914118:ios:49f6e2e91bbea9c1f4d147',
-    messagingSenderId: '359802914118',
-    projectId: 'talabat-e4fdc',
-    storageBucket: 'talabat-e4fdc.firebasestorage.app',
-    iosBundleId: 'com.apmo.talabatcom',
+    apiKey: 'AIzaSyBA9SYjBOlSI85dxtaln_K1CrBSmJi4kAA',
+    appId: '1:1064328943216:ios:0e37dc2fad7c7e5ce306b5',
+    messagingSenderId: '1064328943216',
+    projectId: 'talabatcom-b7817',
+    storageBucket: 'talabatcom-b7817.firebasestorage.app',
+    iosBundleId: 'com.yasser.talabatcom',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBQTVXxHD_LWQRgcaRgCK8qpNhMBdhryqk',
-    appId: '1:359802914118:web:b556bc4d7390c6cff4d147',
-    messagingSenderId: '359802914118',
-    projectId: 'talabat-e4fdc',
-    authDomain: 'talabat-e4fdc.firebaseapp.com',
-    storageBucket: 'talabat-e4fdc.firebasestorage.app',
-    measurementId: 'G-G95T1YT477',
+    apiKey: 'AIzaSyBLFJsorOHaFc4nrRNtZ-eGpaq5CyqJbDs',
+    appId: '1:1064328943216:web:4c012742981da0fde306b5',
+    messagingSenderId: '1064328943216',
+    projectId: 'talabatcom-b7817',
+    authDomain: 'talabatcom-b7817.firebaseapp.com',
+    storageBucket: 'talabatcom-b7817.firebasestorage.app',
   );
 }

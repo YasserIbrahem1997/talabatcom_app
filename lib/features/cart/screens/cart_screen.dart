@@ -1,22 +1,8 @@
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
-import 'package:talabatcom/features/cart/widgets/extra_packaging_widget.dart';
-import 'package:talabatcom/features/cart/widgets/not_available_bottom_sheet_widget.dart';
-import 'package:talabatcom/features/coupon/controllers/coupon_controller.dart';
-import 'package:talabatcom/features/profile/controllers/profile_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/store/controllers/store_controller.dart';
-import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
-import 'package:talabatcom/features/item/domain/models/item_model.dart';
-import 'package:talabatcom/features/store/domain/models/store_model.dart';
-import 'package:talabatcom/helper/price_converter.dart';
-import 'package:talabatcom/helper/responsive_helper.dart';
-import 'package:talabatcom/helper/route_helper.dart';
-import 'package:talabatcom/util/dimensions.dart';
-import 'package:talabatcom/util/images.dart';
-import 'package:talabatcom/util/styles.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:talabatcom/common/widgets/custom_app_bar.dart';
 import 'package:talabatcom/common/widgets/custom_button.dart';
 import 'package:talabatcom/common/widgets/custom_snackbar.dart';
@@ -26,13 +12,27 @@ import 'package:talabatcom/common/widgets/menu_drawer.dart';
 import 'package:talabatcom/common/widgets/no_data_screen.dart';
 import 'package:talabatcom/common/widgets/web_constrained_box.dart';
 import 'package:talabatcom/common/widgets/web_page_title_widget.dart';
+import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
+import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
 import 'package:talabatcom/features/cart/widgets/cart_item_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:talabatcom/features/cart/widgets/extra_packaging_widget.dart';
+import 'package:talabatcom/features/cart/widgets/not_available_bottom_sheet_widget.dart';
 import 'package:talabatcom/features/cart/widgets/web_cart_items_widget.dart';
 import 'package:talabatcom/features/cart/widgets/web_suggested_item_view_widget.dart';
+import 'package:talabatcom/features/coupon/controllers/coupon_controller.dart';
 import 'package:talabatcom/features/home/screens/home_screen.dart';
+import 'package:talabatcom/features/item/domain/models/item_model.dart';
+import 'package:talabatcom/features/profile/controllers/profile_controller.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
+import 'package:talabatcom/features/store/controllers/store_controller.dart';
+import 'package:talabatcom/features/store/domain/models/store_model.dart';
 import 'package:talabatcom/features/store/screens/store_screen.dart';
+import 'package:talabatcom/helper/price_converter.dart';
+import 'package:talabatcom/helper/responsive_helper.dart';
+import 'package:talabatcom/helper/route_helper.dart';
+import 'package:talabatcom/util/dimensions.dart';
+import 'package:talabatcom/util/images.dart';
+import 'package:talabatcom/util/styles.dart';
 
 import '../../checkout/domain/repositories/checkout_repository.dart';
 
@@ -53,7 +53,6 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     initCall();
-
   }
 
   Future<void> initCall() async {
@@ -64,6 +63,7 @@ class _CartScreenState extends State<CartScreen> {
       if (kDebugMode) {
         print(
             '----cart item : ${Get.find<CartController>().cartList[0].toJson()}');
+        // print('----cart item Tow : ${Get.find<CartItemWidget>().cart[0].}');
       }
       if (Get.find<CartController>().addCutlery) {
         Get.find<CartController>().updateCutlery(willUpdate: false);
@@ -245,6 +245,9 @@ class _CartScreenState extends State<CartScreen> {
                                                                 .cartList[0]
                                                                 .item!)
                                                         : const SizedBox(),
+                                                    SizedBox(
+                                                      height: 120,
+                                                    )
                                                   ]),
                                             ),
                                       ResponsiveHelper.isDesktop(context)
@@ -254,7 +257,7 @@ class _CartScreenState extends State<CartScreen> {
                                           : const SizedBox(),
                                       ResponsiveHelper.isDesktop(context)
                                           ? Expanded(
-                                              flex: 4,
+                                              flex: 3,
                                               child: pricingView(
                                                   cartController,
                                                   cartController
@@ -276,7 +279,6 @@ class _CartScreenState extends State<CartScreen> {
                       expandableContent: isDesktop
                           ? const SizedBox()
                           : Container(
-
                               width: context.width,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).cardColor,
@@ -396,8 +398,7 @@ class _CartScreenState extends State<CartScreen> {
                                               Text('addons'.tr,
                                                   style: robotoRegular),
                                               Row(children: [
-                                                Text('',
-                                                    style: robotoRegular),
+                                                Text('', style: robotoRegular),
                                                 PriceConverter
                                                     .convertAnimationPrice(
                                                         cartController.addOns,
@@ -759,15 +760,18 @@ class CheckoutButton extends StatefulWidget {
 
 class _CheckoutButtonState extends State<CheckoutButton> {
   late ShippingController shippingController;
+
   @override
   void initState() {
     super.initState();
     shippingController = Get.find<ShippingController>();
   }
+
   @override
   Widget build(BuildContext context) {
     double percentage = 0;
-    double minimumShippingCharge = shippingController.minimumShippingCharge.value;
+    double minimumShippingCharge =
+        shippingController.minimumShippingCharge.value;
 
     return Container(
       width: Dimensions.webMaxWidth,
@@ -839,9 +843,11 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                           color: ResponsiveHelper.isDesktop(context)
                               ? Theme.of(context).textTheme.bodyLarge!.color
                               : Theme.of(context).primaryColor)),
-                  PriceConverter.convertAnimationPrice(widget.cartController.subTotal,
-                      textStyle: robotoRegular.copyWith(
-                          color: Theme.of(context).primaryColor)),
+                  PriceConverter.convertAnimationPrice(
+                    widget.cartController.subTotal,
+                    textStyle: robotoRegular.copyWith(
+                        color: Theme.of(context).primaryColor),
+                  ),
                   // Text(
                   //   PriceConverter.convertPrice(cartController.subTotal),
                   //   style: robotoMedium.copyWith(color: ResponsiveHelper.isDesktop(context) ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).primaryColor), textDirection: TextDirection.ltr,
@@ -944,16 +950,17 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                         widget.cartController.notAvailableIndex != -1
                             ? Row(children: [
                                 Text(
-                                    widget.cartController
-                                        .notAvailableList[
-                                            widget.cartController.notAvailableIndex]
+                                    widget
+                                        .cartController
+                                        .notAvailableList[widget
+                                            .cartController.notAvailableIndex]
                                         .tr,
                                     style: robotoMedium.copyWith(
                                         fontSize: Dimensions.fontSizeSmall,
                                         color: Theme.of(context).primaryColor)),
                                 IconButton(
-                                  onPressed: () =>
-                                      widget.cartController.setAvailableIndex(-1),
+                                  onPressed: () => widget.cartController
+                                      .setAvailableIndex(-1),
                                   icon: const Icon(Icons.clear, size: 18),
                                 )
                               ])
@@ -974,16 +981,17 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                         fontSize: ResponsiveHelper.isDesktop(context)
                             ? Dimensions.fontSizeSmall
                             : Dimensions.fontSizeLarge,
-                        isBold: ResponsiveHelper.isDesktop(context) ? false : true,
+                        isBold:
+                            ResponsiveHelper.isDesktop(context) ? false : true,
                         radius: ResponsiveHelper.isDesktop(context)
                             ? Dimensions.radiusSmall
                             : Dimensions.radiusDefault,
                         onPressed: () {
-
-
-                          if (!widget.cartController.cartList.first.item!.scheduleOrder! &&
+                          if (!widget.cartController.cartList.first.item!
+                                  .scheduleOrder! &&
                               widget.availableList.contains(false)) {
-                            showCustomSnackBar('one_or_more_product_unavailable'.tr);
+                            showCustomSnackBar(
+                                'one_or_more_product_unavailable'.tr);
                           }
 
                           /*else if(AuthHelper.isGuestLoggedIn() && !Get.find<SplashController>().configModel!.guestCheckoutStatus!) {
@@ -993,10 +1001,16 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                             if (Get.find<SplashController>().module == null) {
                               int i = 0;
                               for (i = 0;
-                                  i < Get.find<SplashController>().moduleList!.length;
+                                  i <
+                                      Get.find<SplashController>()
+                                          .moduleList!
+                                          .length;
                                   i++) {
-                                if (widget.cartController.cartList[0].item!.moduleId ==
-                                    Get.find<SplashController>().moduleList![i].id) {
+                                if (widget.cartController.cartList[0].item!
+                                        .moduleId ==
+                                    Get.find<SplashController>()
+                                        .moduleList![i]
+                                        .id) {
                                   break;
                                 }
                               }
@@ -1004,16 +1018,18 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                                   Get.find<SplashController>().moduleList![i]);
                               HomeScreen.loadData(true);
                             }
-                            Get.find<CouponController>().removeCouponData(false);
+                            Get.find<CouponController>()
+                                .removeCouponData(false);
 
                             Get.toNamed(RouteHelper.getCheckoutRoute('cart'));
                           }
 
                           minimumShippingCharge = 0.0;
-
                         }),
                   ),
-                  SizedBox(width: 20,),
+                  SizedBox(
+                    width: 20,
+                  ),
                   Expanded(
                     flex: 2,
                     child: CustomButton(
@@ -1023,42 +1039,28 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                             : Dimensions.fontSizeSmall,
                         borderSide: 0.7,
                         colorBorderSide: Theme.of(context).primaryColor,
-                        isBold: ResponsiveHelper.isDesktop(context) ? false : true,
+                        isBold:
+                            ResponsiveHelper.isDesktop(context) ? false : true,
                         radius: ResponsiveHelper.isDesktop(context)
                             ? Dimensions.radiusSmall
                             : Dimensions.radiusDefault,
                         color: Colors.transparent,
-
-                        textColor: Theme.of(context)
-            .primaryColor,
-                      onPressed: () {
-                       widget.cartController.forcefullySetModule(
-                          widget.cartController
-                                .cartList[
-                            0]
-                                .item!
-                                .moduleId!);
-                        Get.toNamed(
-                          RouteHelper.getStoreRoute(
-                              id: widget.cartController
-                                  .cartList[
-                              0]
-                                  .item!
-                                  .storeId,
-                              page:
-                              'item'),
-                          arguments: StoreScreen(
-                              store: Store(
-                                  id: widget.cartController
-                                      .cartList[
-                                  0]
-                                      .item!
-                                      .storeId),
-                              fromModule:
-                              false),
-                        );
-                      }
-                        ),
+                        textColor: Theme.of(context).primaryColor,
+                        onPressed: () {
+                          widget.cartController.forcefullySetModule(widget
+                              .cartController.cartList[0].item!.moduleId!);
+                          Get.toNamed(
+                            RouteHelper.getStoreRoute(
+                                id: widget
+                                    .cartController.cartList[0].item!.storeId,
+                                page: 'item'),
+                            arguments: StoreScreen(
+                                store: Store(
+                                    id: widget.cartController.cartList[0].item!
+                                        .storeId),
+                                fromModule: false),
+                          );
+                        }),
                   ),
                 ],
               ),

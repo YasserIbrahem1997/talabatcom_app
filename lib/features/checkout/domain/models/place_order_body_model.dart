@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:talabatcom/features/address/domain/models/address_model.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
 
@@ -114,38 +115,71 @@ class PlaceOrderBodyModel {
   }
 
   List<OnlineCart>? get cart => _cart;
+
   double? get couponDiscountAmount => _couponDiscountAmount;
+
   double? get orderAmount => _orderAmount;
+
   String? get orderType => _orderType;
+
   String? get paymentMethod => _paymentMethod;
+
   String? get orderNote => _orderNote;
+
   String? get couponCode => _couponCode;
+
   int? get storeId => _storeId;
+
   double? get distance => _distance;
+
   String? get scheduleAt => _scheduleAt;
+
   double? get discountAmount => _discountAmount;
+
   double? get taxAmount => _taxAmount;
+
   String? get address => _address;
+
   AddressModel? get receiverDetails => _receiverDetails;
+
   String? get latitude => _latitude;
+
   String? get longitude => _longitude;
+
   int? get senderZoneId => _senderZoneId;
+
   String? get contactPersonName => _contactPersonName;
+
   String? get contactPersonNumber => _contactPersonNumber;
+
   String? get parcelCategoryId => _parcelCategoryId;
+
   String? get chargePayer => _chargePayer;
+
   String? get streetNumber => _streetNumber;
+
   String? get house => _house;
+
   String? get floor => _floor;
+
   String? get dmTips => _dmTips;
+
   String? get unavailableItemNote => _unavailableItemNote;
+
   String? get deliveryInstruction => _deliveryInstruction;
+
   int? get cutlery => _cutlery;
+
   int? get partialPayment => _partialPayment;
+
   int? get guestId => _guestId;
+
   int? get isBuyNow => _isBuyNow;
+
   String? get guestEmail => _guestEmail;
+
   String? get area => _area;
+
   double? get extraPackagingAmount => _extraPackagingAmount;
 
   PlaceOrderBodyModel.fromJson(Map<String, dynamic> json) {
@@ -155,23 +189,31 @@ class PlaceOrderBodyModel {
         _cart!.add(OnlineCart.fromJson(v));
       });
     }
-    _couponDiscountAmount = double.parse(json['coupon_discount_amount'] ?? 0.toString());
+    _couponDiscountAmount =
+        double.parse(json['coupon_discount_amount'] ?? 0.toString());
     _orderAmount = double.parse(json['order_amount'].toString());
     _orderType = json['order_type'];
     _paymentMethod = json['payment_method'];
     _orderNote = json['order_note'];
     _couponCode = json['coupon_code'];
-    _storeId = json['store_id'] != null ? int.parse(json['store_id'].toString()) : null;
+    _storeId = json['store_id'] != null
+        ? int.parse(json['store_id'].toString())
+        : null;
     _distance = double.parse(json['distance'].toString());
     _scheduleAt = json['schedule_at'];
     _discountAmount = double.parse(json['discount_amount'].toString());
     _taxAmount = double.parse(json['tax_amount'].toString());
     _address = json['address'];
-    _receiverDetails = json['receiver_details'] != null ? AddressModel.fromJson(json['receiver_details'] is String ? jsonDecode(json['receiver_details'])
-        : json['receiver_details']) : null;
+    _receiverDetails = json['receiver_details'] != null
+        ? AddressModel.fromJson(json['receiver_details'] is String
+            ? jsonDecode(json['receiver_details'])
+            : json['receiver_details'])
+        : null;
     _latitude = json['latitude'];
     _longitude = json['longitude'];
-    _senderZoneId = json['sender_zone_id'] != null ? int.parse(json['sender_zone_id'].toString()) : null;
+    _senderZoneId = json['sender_zone_id'] != null
+        ? int.parse(json['sender_zone_id'].toString())
+        : null;
     _contactPersonName = json['contact_person_name'];
     _contactPersonNumber = json['contact_person_number'];
     _addressType = json['address_type'];
@@ -184,12 +226,19 @@ class PlaceOrderBodyModel {
     _dmTips = json['dm_tips'];
     _unavailableItemNote = json['unavailable_item_note'];
     _deliveryInstruction = json['delivery_instruction'];
-    _cutlery = json['cutlery'] != null ? int.parse(json['cutlery'].toString()) : null;
-    _partialPayment = json['partial_payment'] != null ? int.parse(json['partial_payment'].toString()) : null;
-    _guestId = json['guest_id'] != null ? int.parse(json['guest_id'].toString()) : null;
+    _cutlery =
+        json['cutlery'] != null ? int.parse(json['cutlery'].toString()) : null;
+    _partialPayment = json['partial_payment'] != null
+        ? int.parse(json['partial_payment'].toString())
+        : null;
+    _guestId = json['guest_id'] != null
+        ? int.parse(json['guest_id'].toString())
+        : null;
     _isBuyNow = int.parse(json['is_buy_now'].toString());
     _guestEmail = json['contact_person_email'];
-    _extraPackagingAmount = json['extra_packaging_amount'] != null ? double.parse(json['extra_packaging_amount'].toString()) : null;
+    _extraPackagingAmount = json['extra_packaging_amount'] != null
+        ? double.parse(json['extra_packaging_amount'].toString())
+        : null;
   }
 
   Map<String, String> toJson() {
@@ -272,22 +321,24 @@ class OnlineCart {
   List<AddOns>? _addOns;
   List<int?>? _addOnQtys;
   String? _model;
+  String? _note;
   String? _itemType;
 
   OnlineCart(
-    int? cartId,
-    int? itemId,
-    int? itemCampaignId,
-    String price,
-    String variant,
-    List<Variation>? variation,
-    List<OrderVariation>? variations,
-    int? quantity,
-    List<int?> addOnIds,
-    List<AddOns>? addOns,
-    List<int?> addOnQtys,
-    String model,
-    {String? itemType}){
+      int? cartId,
+      int? itemId,
+      int? itemCampaignId,
+      String price,
+      String variant,
+      List<Variation>? variation,
+      List<OrderVariation>? variations,
+      int? quantity,
+      List<int?> addOnIds,
+      List<AddOns>? addOns,
+      List<int?> addOnQtys,
+      String model,
+      String? note,
+      {String? itemType}) {
     _cartId = cartId;
     _itemId = itemId;
     _itemCampaignId = itemCampaignId;
@@ -300,20 +351,33 @@ class OnlineCart {
     _addOns = addOns;
     _addOnQtys = addOnQtys;
     _model = model;
+    _note = note;
     _itemType = itemType;
   }
 
   int? get cartId => _cartId;
+
   int? get itemId => _itemId;
+
   int? get itemCampaignId => _itemCampaignId;
+
   String? get price => _price;
+
   String? get variant => _variant;
+
   List<Variation>? get variation => _variation;
+
   int? get quantity => _quantity;
+
   List<int?>? get addOnIds => _addOnIds;
+
   List<AddOns>? get addOns => _addOns;
+
   List<int?>? get addOnQtys => _addOnQtys;
+
   String? get model => _model;
+  String? get note => _note;
+
   String? get itemType => _itemType;
 
   OnlineCart.fromJson(Map<String, dynamic> json) {
@@ -322,7 +386,9 @@ class OnlineCart {
     _itemCampaignId = json['item_campaign_id'];
     _price = json['price'];
     _variant = json['variant'];
-    if (json['variation'] != null && json['variation'].isNotEmpty && json['variation'][0]['price'] != null) {
+    if (json['variation'] != null &&
+        json['variation'].isNotEmpty &&
+        json['variation'][0]['price'] != null) {
       _variation = [];
       json['variation'].forEach((v) {
         _variation!.add(Variation.fromJson(v));
@@ -343,6 +409,7 @@ class OnlineCart {
     }
     _addOnQtys = json['add_on_qtys'].cast<int>();
     _model = json['model'];
+    _note = json['note'];
     if (json['item_type'] != null && json['item_type'] != 'null') {
       _itemType = json['item_type'];
     }
@@ -367,6 +434,7 @@ class OnlineCart {
     }
     data['add_on_qtys'] = _addOnQtys;
     data['model'] = _model;
+    data['note'] = _note;
     if (_itemType != null) {
       data['item_type'] = _itemType;
     }
@@ -382,7 +450,9 @@ class OrderVariation {
 
   OrderVariation.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    values = json['values'] != null ? OrderVariationValue.fromJson(json['values']) : null;
+    values = json['values'] != null
+        ? OrderVariationValue.fromJson(json['values'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

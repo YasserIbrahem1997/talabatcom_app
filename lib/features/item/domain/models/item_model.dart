@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/item/domain/models/basic_medicine_model.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 
 class ItemModel {
   int? totalSize;
@@ -66,6 +66,7 @@ class ItemModel {
 class Item {
   int? id;
   String? name;
+  String? note;
   String? description;
   String? image;
   List<String>? images;
@@ -104,6 +105,7 @@ class Item {
   Item({
     this.id,
     this.name,
+    this.note,
     this.description,
     this.image,
     this.images,
@@ -142,6 +144,7 @@ class Item {
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    note = json['note'];
     description = json['description'];
     image = json['image'];
     images = json['images'] != null ? json['images'].cast<String>() : [];
@@ -225,6 +228,7 @@ class Item {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['note'] = note;
     data['description'] = description;
     data['image'] = image;
     data['images'] = images;

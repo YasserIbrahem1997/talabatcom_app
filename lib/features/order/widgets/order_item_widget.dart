@@ -111,7 +111,7 @@ class OrderItemWidget extends StatelessWidget {
                     child: Text(
                   PriceConverter.convertPrice(orderDetails.price),
                   style: robotoMedium,
-                  textDirection: TextDirection.ltr,
+                  // textDirection: TextDirection.ltr,
                 )),
                 ((Get.find<SplashController>()
                                 .configModel!

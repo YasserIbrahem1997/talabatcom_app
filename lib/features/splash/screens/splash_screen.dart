@@ -1,21 +1,21 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:talabatcom/common/widgets/no_internet_screen.dart';
 import 'package:talabatcom/features/auth/controllers/auth_controller.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
-import 'package:talabatcom/features/location/controllers/location_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
+import 'package:talabatcom/features/location/controllers/location_controller.dart';
 import 'package:talabatcom/features/notification/domain/models/notification_body_model.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/helper/address_helper.dart';
 import 'package:talabatcom/helper/auth_helper.dart';
 import 'package:talabatcom/helper/route_helper.dart';
 import 'package:talabatcom/util/app_constants.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/images.dart';
-import 'package:talabatcom/common/widgets/no_internet_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   final NotificationBodyModel? body;
@@ -164,7 +164,12 @@ class SplashScreenState extends State<SplashScreen> {
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(Images.logoSplash, width: 350),
+                    Image.asset(
+                      Images.logoSplash,
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height / 1.020,
+                      fit: BoxFit.fill,
+                    ),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
                     // Text("talabatcom_has_become_easier".tr,
                     //     style: robotoMedium.copyWith(

@@ -73,7 +73,7 @@ class MedicineItemCard extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'not_available_now_break'.tr, textAlign: TextAlign.center,
+                        'not_available_now'.tr, textAlign: TextAlign.center,
                         style: robotoMedium.copyWith(color: Colors.white, fontSize: 12),
                       ),
                     ),

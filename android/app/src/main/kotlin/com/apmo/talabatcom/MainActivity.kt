@@ -1,4 +1,4 @@
-package com.apmo.talabatcom
+package com.yasser.talabatcom
 
 import io.flutter.embedding.android.FlutterActivity
 

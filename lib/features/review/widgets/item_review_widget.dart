@@ -61,7 +61,9 @@ class _ItemReviewWidgetState extends State<ItemReviewWidget> {
                       children: [
                         Text(widget.orderDetailsList[index].itemDetails!.name!, style: robotoMedium, maxLines: 2, overflow: TextOverflow.ellipsis),
                         const SizedBox(height: 10),
-                        Text(PriceConverter.convertPrice(widget.orderDetailsList[index].itemDetails!.price), style: robotoBold, textDirection: TextDirection.ltr),
+                        Text(PriceConverter.convertPrice(widget.orderDetailsList[index].itemDetails!.price), style: robotoBold,
+                            // textDirection: TextDirection.ltr
+                          ),
                       ],
                     )),
                     Row(children: [

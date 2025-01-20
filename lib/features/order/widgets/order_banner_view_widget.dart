@@ -38,7 +38,8 @@ class OrderBannerViewWidget extends StatelessWidget {
               DateConverter.differenceInMinute(order.store!.deliveryTime, order.createdAt, order.processingTime, order.scheduleAt) < 5 ? '1 - 5'
                   : '${DateConverter.differenceInMinute(order.store!.deliveryTime, order.createdAt, order.processingTime, order.scheduleAt)-5} '
                   '- ${DateConverter.differenceInMinute(order.store!.deliveryTime, order.createdAt, order.processingTime, order.scheduleAt)}',
-              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeExtraLarge), textDirection: TextDirection.ltr,
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
+              // textDirection: TextDirection.ltr,
             ),
             const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 

@@ -1,20 +1,33 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talabatcom/common/models/config_model.dart';
 import 'package:talabatcom/common/widgets/address_widget.dart';
+import 'package:talabatcom/common/widgets/custom_app_bar.dart';
+import 'package:talabatcom/common/widgets/custom_button.dart';
+import 'package:talabatcom/common/widgets/custom_dropdown.dart';
+import 'package:talabatcom/common/widgets/custom_snackbar.dart';
+import 'package:talabatcom/common/widgets/footer_view.dart';
+import 'package:talabatcom/common/widgets/menu_drawer.dart';
+import 'package:talabatcom/common/widgets/not_logged_in_screen.dart';
 import 'package:talabatcom/features/address/controllers/address_controller.dart';
+import 'package:talabatcom/features/address/domain/models/address_model.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
+import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
+import 'package:talabatcom/features/checkout/controllers/checkout_controller.dart';
+import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
+import 'package:talabatcom/features/checkout/widgets/bottom_section.dart';
+import 'package:talabatcom/features/checkout/widgets/checkout_screen_shimmer_view.dart';
+import 'package:talabatcom/features/checkout/widgets/payment_method_bottom_sheet.dart';
+import 'package:talabatcom/features/checkout/widgets/top_section.dart';
 import 'package:talabatcom/features/coupon/controllers/coupon_controller.dart';
 import 'package:talabatcom/features/home/controllers/home_controller.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/profile/controllers/profile_controller.dart';
-import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
-import 'package:talabatcom/features/address/domain/models/address_model.dart';
-import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
-import 'package:talabatcom/common/models/config_model.dart';
 import 'package:talabatcom/features/location/domain/models/zone_response_model.dart';
-import 'package:talabatcom/features/checkout/controllers/checkout_controller.dart';
+import 'package:talabatcom/features/profile/controllers/profile_controller.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/store/domain/models/store_model.dart';
 import 'package:talabatcom/helper/address_helper.dart';
 import 'package:talabatcom/helper/auth_helper.dart';
@@ -25,19 +38,6 @@ import 'package:talabatcom/helper/route_helper.dart';
 import 'package:talabatcom/util/app_constants.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/styles.dart';
-import 'package:talabatcom/common/widgets/custom_app_bar.dart';
-import 'package:talabatcom/common/widgets/custom_button.dart';
-import 'package:talabatcom/common/widgets/custom_dropdown.dart';
-import 'package:talabatcom/common/widgets/custom_snackbar.dart';
-import 'package:talabatcom/common/widgets/footer_view.dart';
-import 'package:talabatcom/common/widgets/menu_drawer.dart';
-import 'package:talabatcom/common/widgets/not_logged_in_screen.dart';
-import 'package:talabatcom/features/checkout/widgets/checkout_screen_shimmer_view.dart';
-import 'package:talabatcom/features/checkout/widgets/payment_method_bottom_sheet.dart';
-import 'package:get/get.dart';
-import 'package:talabatcom/features/checkout/widgets/bottom_section.dart';
-import 'package:talabatcom/features/checkout/widgets/top_section.dart';
-import 'package:flutter/material.dart';
 
 import '../domain/repositories/checkout_repository.dart';
 
@@ -91,15 +91,52 @@ class CheckoutScreenState extends State<CheckoutScreen> {
     // Future.delayed(const Duration(seconds: 3), () {
     //   _showCashBackMessage = true;
     // });
-    _loadAddNote();
+    // _loadAddNote();
+    // deleteNoteForOrder(widget.storeId!.toInt());
   }
 
-  Future<void> _loadAddNote() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      addNote = prefs.getString('addNoteOrder') ?? "";
-    });
-  }
+  // Future<String?> getNoteForOrder(int orderId) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //
+  //   // الحصول على البيانات الحالية (إذا كانت موجودة)
+  //   String? notesJson = prefs.getString("orderNotes");
+  //   if (notesJson != null) {
+  //     Map<String, String> orderNotes =
+  //         Map<String, String>.from(json.decode(notesJson));
+  //     return orderNotes[orderId.toString()]; // إعادة الملاحظة للطلب
+  //   }
+  //
+  //   return null; // لا توجد ملاحظة للطلب
+  // }
+  //
+  // Future<void> deleteNoteForOrder(int orderId) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //
+  //   // استرجاع البيانات الحالية
+  //   String? notesJson = prefs.getString("orderNotes");
+  //   if (notesJson != null) {
+  //     Map<String, String> orderNotes =
+  //         Map<String, String>.from(json.decode(notesJson));
+  //
+  //     // حذف الملاحظة الخاصة بـ orderId
+  //     if (orderNotes.containsKey(orderId.toString())) {
+  //       orderNotes.remove(orderId.toString());
+  //
+  //       // تحديث البيانات في SharedPreferences
+  //       prefs.setString("orderNotes", json.encode(orderNotes));
+  //       print("Deleted note for Order ID $orderId");
+  //     } else {
+  //       print("No note found for Order ID $orderId");
+  //     }
+  //   }
+  // }
+  //
+  // Future<void> _loadAddNote() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     addNote = prefs.getString('addNoteOrder') ?? "";
+  //   });
+  // }
 
   Future<void> initCall() async {
     bool isLoggedIn = AuthHelper.isLoggedIn();
@@ -890,6 +927,9 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                           //     }
                           //   }
                           // }
+                          // String? orderNote =
+                          //     await getNoteForOrder(widget.storeId!);
+
                           carts.add(OnlineCart(
                             cart.id,
                             cart.item!.id,
@@ -911,6 +951,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                             cart.addOns,
                             addOnQtyList,
                             'Item',
+                            "",
                             itemType: !widget.fromCart
                                 ? "AppModelsItemCampaign"
                                 : null,
@@ -931,11 +972,8 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                   : DateConverter.dateToDateAndTime(
                                       scheduleEndDate),
                           orderAmount: total,
-                          orderNote: checkoutController.noteController.text
-                                  .trim()
-                                  .isEmpty
-                              ? addNote.toString()
-                              : "${addNote.toString()} \n \n مذكرة إضافية: ${checkoutController.noteController.text}",
+                          orderNote:
+                              checkoutController.noteController.text.trim(),
                           orderType: checkoutController.orderType,
                           paymentMethod: checkoutController
                                       .paymentMethodIndex ==
@@ -1031,59 +1069,66 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                             fromCart: widget.fromCart,
                             isCodActive: _isCashOnDeliveryActive,
                             forParcel: false,
-                          ))!.then((onValue) async {
-                            final SharedPreferences prefs = await SharedPreferences.getInstance();
+                          ))!
+                              .then((onValue) async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
 
-                            await   prefs.remove("addNoteOrder");
-
+                            await prefs.remove("addNoteOrder");
                           });
                         } else {
-                          checkoutController.placeOrder(
-                              placeOrderBody,
-                              checkoutController.store!.zoneId,
-                              total,
-                              maxCodOrderAmount,
-                              widget.fromCart,
-                              _isCashOnDeliveryActive!,
-                              checkoutController.pickedPrescriptions).then((onValue) async {
-                            final SharedPreferences prefs = await SharedPreferences.getInstance();
+                          checkoutController
+                              .placeOrder(
+                                  placeOrderBody,
+                                  checkoutController.store!.zoneId,
+                                  total,
+                                  maxCodOrderAmount,
+                                  widget.fromCart,
+                                  _isCashOnDeliveryActive!,
+                                  checkoutController.pickedPrescriptions)
+                              .then((onValue) async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
 
-                            await   prefs.remove("addNoteOrder");
-
+                            await prefs.remove("addNoteOrder");
+                            // await deleteNoteForOrder(widget.storeId!);
                           });
                         }
                       } else {
-                        checkoutController.placePrescriptionOrder(
-                            widget.storeId,
-                            checkoutController.store!.zoneId,
-                            minimumShippingCharge,
-                            AddressHelper.getUserAddressFromSharedPref()!
-                                .address
-                                .toString(),
-                            AddressHelper.getUserAddressFromSharedPref()!
-                                .longitude!,
-                            AddressHelper.getUserAddressFromSharedPref()!
-                                .latitude!,
-                            checkoutController.noteController.text,
-                            checkoutController.pickedPrescriptions,
-                            (checkoutController.orderType == 'take_away' ||
-                                    checkoutController.tipController.text ==
-                                        'not_now')
-                                ? ''
-                                : checkoutController.tipController.text.trim(),
-                            checkoutController.selectedInstruction != -1
-                                ? AppConstants.deliveryInstructionList[
-                                    checkoutController.selectedInstruction]
-                                : '',
-                            0,
-                            0,
-                            widget.fromCart,
-                            _isCashOnDeliveryActive!,
-                            "bb").then((onValue) async {
-                          final SharedPreferences prefs = await SharedPreferences.getInstance();
+                        checkoutController
+                            .placePrescriptionOrder(
+                                widget.storeId,
+                                checkoutController.store!.zoneId,
+                                minimumShippingCharge,
+                                AddressHelper.getUserAddressFromSharedPref()!
+                                    .address
+                                    .toString(),
+                                AddressHelper.getUserAddressFromSharedPref()!
+                                    .longitude!,
+                                AddressHelper.getUserAddressFromSharedPref()!
+                                    .latitude!,
+                                checkoutController.noteController.text,
+                                checkoutController.pickedPrescriptions,
+                                (checkoutController.orderType == 'take_away' ||
+                                        checkoutController.tipController.text ==
+                                            'not_now')
+                                    ? ''
+                                    : checkoutController.tipController.text
+                                        .trim(),
+                                checkoutController.selectedInstruction != -1
+                                    ? AppConstants.deliveryInstructionList[
+                                        checkoutController.selectedInstruction]
+                                    : '',
+                                0,
+                                0,
+                                widget.fromCart,
+                                _isCashOnDeliveryActive!,
+                                "bb")
+                            .then((onValue) async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
 
-                          await   prefs.remove("addNoteOrder");
-
+                          await prefs.remove("addNoteOrder");
                         });
                       }
                     }

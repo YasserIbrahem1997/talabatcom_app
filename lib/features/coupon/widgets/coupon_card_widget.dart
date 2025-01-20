@@ -76,7 +76,8 @@ class CouponCardWidget extends StatelessWidget {
 
               Text(
                 '${coupon.title}',
-                style: robotoRegular, textDirection: TextDirection.ltr,
+                style: robotoRegular,
+                // textDirection: TextDirection.ltr,
                 maxLines: 1, overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
@@ -97,7 +98,8 @@ class CouponCardWidget extends StatelessWidget {
                 Text(
                   PriceConverter.convertPrice(coupon.minPurchase),
                   style: robotoMedium.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeExtraSmall),
-                  maxLines: 1, overflow: TextOverflow.ellipsis, textDirection: TextDirection.ltr,
+                  maxLines: 1, overflow: TextOverflow.ellipsis,
+                  // textDirection: TextDirection.ltr,
                 ),
               ]),
             ]),

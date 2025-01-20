@@ -1,16 +1,16 @@
 import 'package:get/get_utils/get_utils.dart';
-import 'package:talabatcom/common/widgets/custom_snackbar.dart';
-import 'package:talabatcom/features/item/domain/models/item_model.dart';
 import 'package:talabatcom/common/models/module_model.dart';
+import 'package:talabatcom/common/widgets/custom_snackbar.dart';
 import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
 import 'package:talabatcom/features/cart/domain/models/online_cart_model.dart';
 import 'package:talabatcom/features/cart/domain/repositories/cart_repository_interface.dart';
 import 'package:talabatcom/features/cart/domain/services/cart_service_interface.dart';
 import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
-import 'package:talabatcom/helper/module_helper.dart';
-import 'package:talabatcom/helper/price_converter.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart'
     as item_variation;
+import 'package:talabatcom/features/item/domain/models/item_model.dart';
+import 'package:talabatcom/helper/module_helper.dart';
+import 'package:talabatcom/helper/price_converter.dart';
 
 class CartService implements CartServiceInterface {
   final CartRepositoryInterface cartRepositoryInterface;
@@ -365,6 +365,7 @@ class CartService implements CartServiceInterface {
           addOnsList,
           false,
           stock,
+          "",
           cart.item,
           quantityLimit,
         ),

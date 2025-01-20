@@ -24,7 +24,8 @@ class ProfileCardWidget extends StatelessWidget {
         const SizedBox(height: Dimensions.paddingSizeSmall),
 
         Text(
-          data, textDirection: TextDirection.ltr,
+          data,
+          // textDirection: TextDirection.ltr,
           style: robotoMedium.copyWith(fontSize: ResponsiveHelper.isDesktop(context) ? Dimensions.fontSizeDefault : Dimensions.fontSizeExtraLarge),
         ),
         const SizedBox(height: Dimensions.paddingSizeSmall),

@@ -160,7 +160,7 @@ class ItemTitleViewWidget extends StatelessWidget {
               child: Text(
                 '${PriceConverter.convertPrice(startingPrice)}'
                     '${endingPrice!= null ? ' - ${PriceConverter.convertPrice(endingPrice)}' : ''}',
-                textDirection: TextDirection.ltr,
+                // textDirection: TextDirection.ltr,
                 style: robotoRegular.copyWith(
                   color: Theme.of(context).disabledColor, decoration: TextDecoration.lineThrough,
                   fontSize: Dimensions.fontSizeExtraSmall,
@@ -172,7 +172,8 @@ class ItemTitleViewWidget extends StatelessWidget {
             Text(
               '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
                   '${endingPrice!= null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
-              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge), textDirection: TextDirection.ltr,
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge),
+              // textDirection: TextDirection.ltr,
             ),
           ]),
 
@@ -256,13 +257,15 @@ class ItemTitleViewWidget extends StatelessWidget {
                 Text(
                   '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
                       '${endingPrice!= null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
-                  style: robotoMedium.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge), textDirection: TextDirection.ltr,
+                  style: robotoMedium.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge),
+                  // textDirection: TextDirection.ltr,
                 ),
                 const SizedBox(height: 5),
 
                 discount! > 0 ? Text(
                   '${PriceConverter.convertPrice(startingPrice)}'
-                      '${endingPrice!= null ? ' - ${PriceConverter.convertPrice(endingPrice)}' : ''}', textDirection: TextDirection.ltr,
+                      '${endingPrice!= null ? ' - ${PriceConverter.convertPrice(endingPrice)}' : ''}',
+                  // textDirection: TextDirection.ltr,
                   style: robotoRegular.copyWith(color: Theme.of(context).hintColor, decoration: TextDecoration.lineThrough),
                 ) : const SizedBox(),
                 SizedBox(height: discount > 0 ? 5 : 0),

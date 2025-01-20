@@ -24,12 +24,12 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.apmo.talabatcom"
+    namespace = "com.yasser.talabatcom"
     compileSdk = 34 // Compile SDK version
     ndkVersion = "25.1.8937393" // NDK version
 
     defaultConfig {
-        applicationId "com.apmo.talabatcom"
+        applicationId "com.yasser.talabatcom"
         minSdk = 23 // Minimum SDK version
         targetSdk = 34 // Target SDK version
         versionCode flutterVersionCode.toInteger()

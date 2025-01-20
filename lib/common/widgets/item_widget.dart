@@ -369,14 +369,14 @@ class ItemWidget extends StatelessWidget {
                                             discountType: discountType),
                                         style: robotoMedium.copyWith(
                                             fontSize: Dimensions.fontSizeSmall),
-                                        textDirection: TextDirection.ltr,
+                                        // textDirection: TextDirection.ltr,
                                       ),
-                                      Text(
-                                        "ج.م ",
-                                        style: robotoMedium.copyWith(
-                                            fontSize: Dimensions.fontSizeSmall),
-                                        textDirection: TextDirection.ltr,
-                                      ),
+                                      // Text(
+                                      //   "ج.م ",
+                                      //   style: robotoMedium.copyWith(
+                                      //       fontSize: Dimensions.fontSizeSmall),
+                                      //   textDirection: TextDirection.ltr,
+                                      // ),
                                     ],
                                   ),
                                   SizedBox(
@@ -397,20 +397,20 @@ class ItemWidget extends StatelessWidget {
                                                 decoration:
                                                     TextDecoration.lineThrough,
                                               ),
-                                              textDirection: TextDirection.ltr,
+                                              // textDirection: TextDirection.ltr,
                                             ),
-                                            Text(
-                                              "ج.م ",
-                                              style: robotoMedium.copyWith(
-                                                fontSize: Dimensions
-                                                    .fontSizeExtraSmall,
-                                                color: Theme.of(context)
-                                                    .disabledColor,
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                              ),
-                                              textDirection: TextDirection.ltr,
-                                            ),
+                                            // Text(
+                                            //   "ج.م ",
+                                            //   style: robotoMedium.copyWith(
+                                            //     fontSize: Dimensions
+                                            //         .fontSizeExtraSmall,
+                                            //     color: Theme.of(context)
+                                            //         .disabledColor,
+                                            //     decoration:
+                                            //         TextDecoration.lineThrough,
+                                            //   ),
+                                            //   textDirection: TextDirection.ltr,
+                                            // ),
                                           ],
                                         )
                                       : const SizedBox(),

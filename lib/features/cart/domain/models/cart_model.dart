@@ -1,5 +1,6 @@
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
 
+/// todo
 class CartModel {
   int? _id;
   double? _price;
@@ -12,25 +13,27 @@ class CartModel {
   List<AddOns>? _addOns;
   bool? _isCampaign;
   int? _stock;
+  String? _note;
   Item? _item;
   int? _quantityLimit;
   bool? _isLoading;
 
   CartModel(
-    int? id,
-    double? price,
-    double discountedPrice,
-    List<Variation> variation,
-    List<List<bool?>> foodVariations,
-    double discountAmount,
-    int? quantity,
-    List<AddOn> addOnIds,
-    List<AddOns> addOns,
-    bool isCampaign,
-    int? stock,
-    Item? item,
-    int? quantityLimit,
-    {bool isLoading = false}) {
+      int? id,
+      double? price,
+      double discountedPrice,
+      List<Variation> variation,
+      List<List<bool?>> foodVariations,
+      double discountAmount,
+      int? quantity,
+      List<AddOn> addOnIds,
+      List<AddOns> addOns,
+      bool isCampaign,
+      int? stock,
+      String? note,
+      Item? item,
+      int? quantityLimit,
+      {bool isLoading = false}) {
     _id = id;
     _price = price;
     _discountedPrice = discountedPrice;
@@ -42,6 +45,7 @@ class CartModel {
     _addOns = addOns;
     _isCampaign = isCampaign;
     _stock = stock;
+    _note = note;
     _item = item;
     _quantityLimit = quantityLimit;
     _isLoading = isLoading;
@@ -61,6 +65,7 @@ class CartModel {
   List<AddOns>? get addOns => _addOns;
   bool? get isCampaign => _isCampaign;
   int? get stock => _stock;
+  String? get note => _note;
   Item? get item => _item;
   int? get quantityLimit => _quantityLimit;
   // ignore: unnecessary_getters_setters
@@ -89,6 +94,7 @@ class CartModel {
     _discountAmount = json['discount_amount']?.toDouble();
     _quantity = json['quantity'];
     _stock = json['stock'];
+    _note = json['note'];
     if (json['add_on_ids'] != null) {
       _addOnIds = [];
       json['add_on_ids'].forEach((v) {
@@ -131,6 +137,7 @@ class CartModel {
     }
     data['is_campaign'] = _isCampaign;
     data['stock'] = _stock;
+    data['note'] = _note;
     data['item'] = _item!.toJson();
     data['quantity_limit'] = _quantityLimit?.toString();
     // data['is_loading'] = _isLoading?? false;

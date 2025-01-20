@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "359802914118",
-    "project_id": "talabat-e4fdc",
-    "storage_bucket": "talabat-e4fdc.firebasestorage.app"
+    "project_number": "1064328943216",
+    "project_id": "talabatcom-b7817",
+    "storage_bucket": "talabatcom-b7817.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:359802914118:android:ad6d3df4b4f7c468f4d147",
+        "mobilesdk_app_id": "1:1064328943216:android:33352f456399bb84e306b5",
         "android_client_info": {
-          "package_name": "com.apmo.talabatcom"
+          "package_name": "com.yasser.talabatcom"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD2qUeSfo814sKK1SI0OE7eHY7hXC0Ne5w"
+          "current_key": "AIzaSyC6U26DfQp32fOnvhHudjiBWI5Cvc4s_vo"
         }
       ],
       "services": {

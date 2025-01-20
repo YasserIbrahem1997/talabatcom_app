@@ -1,14 +1,25 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talabatcom/common/widgets/confirmation_dialog.dart';
 import 'package:talabatcom/common/widgets/custom_asset_image_widget.dart';
+import 'package:talabatcom/common/widgets/custom_button.dart';
+import 'package:talabatcom/common/widgets/custom_image.dart';
+import 'package:talabatcom/common/widgets/custom_snackbar.dart';
 import 'package:talabatcom/common/widgets/custom_tool_tip_widget.dart';
+import 'package:talabatcom/common/widgets/discount_tag.dart';
+import 'package:talabatcom/common/widgets/quantity_button.dart';
+import 'package:talabatcom/common/widgets/rating_bar.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
-import 'package:talabatcom/features/item/controllers/item_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
-import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
 import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
+import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
+import 'package:talabatcom/features/checkout/screens/checkout_screen.dart';
+import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
+import 'package:talabatcom/features/item/controllers/item_controller.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
-import 'package:talabatcom/common/models/module_model.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/helper/auth_helper.dart';
 import 'package:talabatcom/helper/date_converter.dart';
 import 'package:talabatcom/helper/price_converter.dart';
@@ -17,16 +28,6 @@ import 'package:talabatcom/helper/route_helper.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/images.dart';
 import 'package:talabatcom/util/styles.dart';
-import 'package:talabatcom/common/widgets/confirmation_dialog.dart';
-import 'package:talabatcom/common/widgets/custom_button.dart';
-import 'package:talabatcom/common/widgets/custom_image.dart';
-import 'package:talabatcom/common/widgets/custom_snackbar.dart';
-import 'package:talabatcom/common/widgets/discount_tag.dart';
-import 'package:talabatcom/common/widgets/quantity_button.dart';
-import 'package:talabatcom/common/widgets/rating_bar.dart';
-import 'package:talabatcom/features/checkout/screens/checkout_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'cart_snackbar.dart';
 
@@ -52,11 +53,11 @@ class ItemBottomSheet extends StatefulWidget {
 class _ItemBottomSheetState extends State<ItemBottomSheet> {
   bool _newVariation = false;
   TextEditingController textNote = TextEditingController();
-String? addNote;
+  String? addNote;
+
   @override
   void initState() {
     super.initState();
-
     if (Get.find<SplashController>().module == null) {
       if (Get.find<SplashController>().cacheModule != null) {
         Get.find<SplashController>()
@@ -68,13 +69,33 @@ String? addNote;
             .newVariation ??
         false;
     Get.find<ItemController>().initData(widget.item, widget.cart);
-    _loadAddNote();
   }
-  Future<void> _loadAddNote() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      addNote = prefs.getString('addNoteOrder') ?? "";
-    });
+
+// الدالة الخاصة بحفظ الملاحظات
+  Future<void> saveNoteForOrder(int orderId, String note) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // الحصول على البيانات الحالية (إذا كانت موجودة)
+    String? notesJson = prefs.getString("orderNotes");
+    Map<String, String> orderNotes = {};
+
+    if (notesJson != null) {
+      orderNotes = Map<String, String>.from(json.decode(notesJson));
+    }
+
+    // تحديث الملاحظة للطلب المحدد
+    if (note.isNotEmpty) {
+      orderNotes[orderId.toString()] = note; // تحويل orderId إلى String
+    } else {
+      orderNotes
+          .remove(orderId.toString()); // حذف الطلب إذا كانت الملاحظة فارغة
+    }
+
+    // حفظ البيانات في SharedPreferences
+    prefs.setString("orderNotes", json.encode(orderNotes));
+
+    // طباعة الملاحظات المحدثة
+    print("Updated Notes: ${prefs.getString("orderNotes")}");
   }
 
   @override
@@ -114,17 +135,17 @@ String? addNote;
         double variationPrice = 0;
         Variation? variation;
         double? initialDiscount =
-        (widget.isCampaign || widget.item!.storeDiscount == 0)
-            ? widget.item!.discount
-            : widget.item!.storeDiscount;
+            (widget.isCampaign || widget.item!.storeDiscount == 0)
+                ? widget.item!.discount
+                : widget.item!.storeDiscount;
         double? discount =
-        (widget.isCampaign || widget.item!.storeDiscount == 0)
-            ? widget.item!.discount
-            : widget.item!.storeDiscount;
+            (widget.isCampaign || widget.item!.storeDiscount == 0)
+                ? widget.item!.discount
+                : widget.item!.storeDiscount;
         String? discountType =
-        (widget.isCampaign || widget.item!.storeDiscount == 0)
-            ? widget.item!.discountType
-            : 'percent';
+            (widget.isCampaign || widget.item!.storeDiscount == 0)
+                ? widget.item!.discountType
+                : 'percent';
         int? stock = widget.item!.stock ?? 0;
 
 // احتساب الخصم إذا كان نوع الخصم "مبلغ محدد"
@@ -134,23 +155,31 @@ String? addNote;
 
 // منطق اختيار الفيريشن وتحديث السعر
         if (_newVariation) {
-          for (int index = 0; index < widget.item!.foodVariations!.length; index++) {
-            for (int i = 0; i < widget.item!.foodVariations![index].variationValues!.length; i++) {
+          for (int index = 0;
+              index < widget.item!.foodVariations!.length;
+              index++) {
+            for (int i = 0;
+                i < widget.item!.foodVariations![index].variationValues!.length;
+                i++) {
               if (itemController.selectedVariations[index][i]!) {
                 if (i == 0) {
                   // إذا كان الفيريشن الأول، يبقى السعر الأساسي كما هو
                   variationPrice = 0;
                 } else {
                   // إذا كان الفيريشن الثاني أو الثالث، يتم استبدال السعر الأساسي بسعر الفيريشن
-                  price = widget.item!.foodVariations![index].variationValues![i].optionPrice!;
-                  variationPrice = 0; // لا يتم إضافة فرق السعر لأن السعر الأساسي تم تغييره بالفعل
+                  price = widget.item!.foodVariations![index]
+                      .variationValues![i].optionPrice!;
+                  variationPrice =
+                      0; // لا يتم إضافة فرق السعر لأن السعر الأساسي تم تغييره بالفعل
                 }
               }
             }
           }
         } else {
           List<String> variationList = [];
-          for (int index = 0; index < widget.item!.choiceOptions!.length; index++) {
+          for (int index = 0;
+              index < widget.item!.choiceOptions!.length;
+              index++) {
             variationList.add(widget.item!.choiceOptions![index]
                 .options![itemController.variationIndex![index]]
                 .replaceAll(' ', ''));
@@ -180,7 +209,8 @@ String? addNote;
 // حساب السعر النهائي بعد الخصم
         price = price! + variationPrice;
 
-        double priceWithDiscount = PriceConverter.convertWithDiscount(price, discount, discountType)!;
+        double priceWithDiscount =
+            PriceConverter.convertWithDiscount(price, discount, discountType)!;
 
         double addonsCost = 0;
         List<AddOn> addOnIdList = [];
@@ -635,7 +665,7 @@ String? addNote;
                                     maxLines: 4,
                                     // Allows multiple lines (at least 2 as you need)
                                     decoration: InputDecoration(
-                                      hintText:textNote.text.isNotEmpty ? "Write_your_notes_here".tr: addNote.toString(),
+                                      hintText: "Write_your_notes_here".tr,
                                       filled: true,
                                       // Adds a background color
                                       fillColor: Colors.white,
@@ -807,36 +837,57 @@ String? addNote;
                                       : null,
                                   isLoading: cartController.isLoading,
                                   buttonText: (Get.find<SplashController>()
-                                      .configModel!
-                                      .moduleConfig!
-                                      .module!
-                                      .stock! &&
-                                      stock! <= 0)
+                                              .configModel!
+                                              .moduleConfig!
+                                              .module!
+                                              .stock! &&
+                                          stock! <= 0)
                                       ? 'out_of_stock'.tr
                                       : widget.isCampaign
-                                      ? 'order_now'.tr
-                                      : (widget.cart != null || itemController.cartIndex != -1)
-                                      ? 'update_in_cart'.tr
-                                      : 'add_to_cart'.tr,
+                                          ? 'order_now'.tr
+                                          : (widget.cart != null ||
+                                                  itemController.cartIndex !=
+                                                      -1)
+                                              ? 'update_in_cart'.tr
+                                              : 'add_to_cart'.tr,
                                   onPressed: () async {
                                     String? invalid;
-                                    final SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
                                     if (_newVariation) {
-                                      for (int index = 0; index < widget.item!.foodVariations!.length; index++) {
-                                        if (!widget.item!.foodVariations![index].multiSelect! &&
-                                            widget.item!.foodVariations![index].required! &&
-                                            !itemController.selectedVariations[index].contains(true)) {
+                                      for (int index = 0;
+                                          index <
+                                              widget
+                                                  .item!.foodVariations!.length;
+                                          index++) {
+                                        if (!widget.item!.foodVariations![index]
+                                                .multiSelect! &&
+                                            widget.item!.foodVariations![index]
+                                                .required! &&
+                                            !itemController
+                                                .selectedVariations[index]
+                                                .contains(true)) {
                                           invalid =
-                                          '${'choose_a_variation_from'.tr} ${widget.item!.foodVariations![index].name}';
+                                              '${'choose_a_variation_from'.tr} ${widget.item!.foodVariations![index].name}';
                                           break;
-                                        } else if (widget.item!.foodVariations![index].multiSelect! &&
-                                            (widget.item!.foodVariations![index].required! ||
-                                                itemController.selectedVariations[index].contains(true)) &&
-                                            widget.item!.foodVariations![index].min! >
-                                                itemController.selectedVariationLength(
-                                                    itemController.selectedVariations, index)) {
+                                        } else if (widget
+                                                .item!
+                                                .foodVariations![index]
+                                                .multiSelect! &&
+                                            (widget.item!.foodVariations![index]
+                                                    .required! ||
+                                                itemController
+                                                    .selectedVariations[index]
+                                                    .contains(true)) &&
+                                            widget.item!.foodVariations![index]
+                                                    .min! >
+                                                itemController
+                                                    .selectedVariationLength(
+                                                        itemController
+                                                            .selectedVariations,
+                                                        index)) {
                                           invalid =
-                                          '${'select_minimum'.tr} ${widget.item!.foodVariations![index].min} '
+                                              '${'select_minimum'.tr} ${widget.item!.foodVariations![index].min} '
                                               '${'and_up_to'.tr} ${widget.item!.foodVariations![index].max} ${'options_from'.tr}'
                                               ' ${widget.item!.foodVariations![index].name} ${'variation'.tr}';
                                           break;
@@ -845,96 +896,136 @@ String? addNote;
                                     }
 
                                     if (invalid != null) {
-                                      showCustomSnackBar(invalid, getXSnackBar: true);
+                                      showCustomSnackBar(invalid,
+                                          getXSnackBar: true);
                                     } else {
                                       CartModel cartModel = CartModel(
                                         null,
                                         price,
                                         priceWithDiscountAndAddons,
-                                        variation != null ? [variation] : [], // التأكد من إرسال الفيرشن هنا
+                                        variation != null ? [variation] : [],
+                                        // التأكد من إرسال الفيرشن هنا
                                         itemController.selectedVariations,
-                                        (price! - PriceConverter.convertWithDiscount(
-                                            price, discount, discountType)!),
+                                        (price! -
+                                            PriceConverter.convertWithDiscount(
+                                                price,
+                                                discount,
+                                                discountType)!),
                                         itemController.quantity,
                                         addOnIdList,
                                         addOnsList,
                                         widget.isCampaign,
                                         stock,
+                                        textNote.text.trim(),
                                         widget.item,
                                         widget.item?.quantityLimit,
                                       );
 
+                                      print("this cart mode ${cartModel.note}");
+
                                       // إرسال الفيرشن إلى العربة في حالة كانت قيمته صفر
-                                      List<OrderVariation> variations = _getSelectedVariations(
-                                        isFoodVariation: Get.find<SplashController>()
-                                            .getModuleConfig(widget.item!.moduleType)
-                                            .newVariation!,
-                                        foodVariations: widget.item!.foodVariations!,
-                                        selectedVariations: itemController.selectedVariations,
+                                      List<OrderVariation> variations =
+                                          _getSelectedVariations(
+                                        isFoodVariation:
+                                            Get.find<SplashController>()
+                                                .getModuleConfig(
+                                                    widget.item!.moduleType)
+                                                .newVariation!,
+                                        foodVariations:
+                                            widget.item!.foodVariations!,
+                                        selectedVariations:
+                                            itemController.selectedVariations,
                                       );
-                                      List<int?> listOfAddOnId = _getSelectedAddonIds(addOnIdList: addOnIdList);
+                                      List<int?> listOfAddOnId =
+                                          _getSelectedAddonIds(
+                                              addOnIdList: addOnIdList);
                                       List<int?> listOfAddOnQty =
-                                      _getSelectedAddonQtnList(addOnIdList: addOnIdList);
+                                          _getSelectedAddonQtnList(
+                                              addOnIdList: addOnIdList);
 
                                       OnlineCart onlineCart = OnlineCart(
-                                        widget.cart?.id,
-                                        widget.isCampaign ? null : widget.item!.id,
-                                        widget.isCampaign ? widget.item!.id : null,
-                                        priceWithDiscountAndAddons.toString(),
-                                        '',
-                                        variation != null ? [variation] : null, // التأكد من إرسال الفيرشن هنا
-                                        Get.find<SplashController>()
-                                            .getModuleConfig(widget.item!.moduleType)
-                                            .newVariation!
-                                            ? variations
-                                            : null,
-                                        itemController.quantity,
-                                        listOfAddOnId,
-                                        addOnsList,
-                                        listOfAddOnQty,
-                                        'Item',
-                                      );
+                                          widget.cart?.id,
+                                          widget.isCampaign
+                                              ? null
+                                              : widget.item!.id,
+                                          widget.isCampaign
+                                              ? widget.item!.id
+                                              : null,
+                                          priceWithDiscountAndAddons.toString(),
+                                          '',
+                                          variation != null
+                                              ? [variation]
+                                              : null,
+                                          // التأكد من إرسال الفيرشن هنا
+                                          Get.find<SplashController>()
+                                                  .getModuleConfig(
+                                                      widget.item!.moduleType)
+                                                  .newVariation!
+                                              ? variations
+                                              : null,
+                                          itemController.quantity,
+                                          listOfAddOnId,
+                                          addOnsList,
+                                          listOfAddOnQty,
+                                          'Item',
+                                          textNote.text.trim());
+                                      print(
+                                          "this cart model online  ${onlineCart.note}");
 
                                       if (widget.isCampaign) {
-                                        Get.toNamed(RouteHelper.getCheckoutRoute('campaign'),
+                                        Get.toNamed(
+                                            RouteHelper.getCheckoutRoute(
+                                                'campaign'),
                                             arguments: CheckoutScreen(
                                               storeId: null,
                                               fromCart: false,
                                               cartList: [cartModel],
                                             ));
                                       } else {
-                                        if (Get.find<CartController>().existAnotherStoreItem(
+                                        if (Get.find<CartController>()
+                                            .existAnotherStoreItem(
                                           cartModel.item!.storeId,
-                                          Get.find<SplashController>().module != null
-                                              ? Get.find<SplashController>().module!.id
-                                              : Get.find<SplashController>().cacheModule!.id,
+                                          Get.find<SplashController>().module !=
+                                                  null
+                                              ? Get.find<SplashController>()
+                                                  .module!
+                                                  .id
+                                              : Get.find<SplashController>()
+                                                  .cacheModule!
+                                                  .id,
                                         )) {
-                                          Get.dialog(ConfirmationDialog(
-                                            icon: Images.warning,
-                                            title: 'are_you_sure_to_reset'.tr,
-                                            description: Get.find<SplashController>()
-                                                .configModel!
-                                                .moduleConfig!
-                                                .module!
-                                                .showRestaurantText!
-                                                ? 'if_you_continue'.tr
-                                                : 'if_you_continue_without_another_store'.tr,
-                                            onYesPressed: () {
-                                              Get.back();
-                                              Get.find<CartController>().clearCartOnline().then(
-                                                      (success) async {
+                                          Get.dialog(
+                                              ConfirmationDialog(
+                                                icon: Images.warning,
+                                                title:
+                                                    'are_you_sure_to_reset'.tr,
+                                                description: Get.find<
+                                                            SplashController>()
+                                                        .configModel!
+                                                        .moduleConfig!
+                                                        .module!
+                                                        .showRestaurantText!
+                                                    ? 'if_you_continue'.tr
+                                                    : 'if_you_continue_without_another_store'
+                                                        .tr,
+                                                onYesPressed: () {
+                                                  Get.back();
+                                                  Get.find<CartController>()
+                                                      .clearCartOnline()
+                                                      .then((success) async {
                                                     if (success) {
-                                                      await Get.find<CartController>().addToCartOnline(onlineCart);
+                                                      await Get.find<
+                                                              CartController>()
+                                                          .addToCartOnline(
+                                                              onlineCart);
                                                       Get.back();
                                                       showCartSnackBar();
                                                     }
                                                   });
-                                            },
-                                          ),
+                                                },
+                                              ),
                                               barrierDismissible: false);
-
-                                        } else
-                                        {
+                                        } else {
                                           await Get.find<CartController>()
                                               .addToCartOnline(onlineCart)
                                               .then((success) {
@@ -946,14 +1037,14 @@ String? addNote;
                                         }
                                       }
                                     }
-                                    textNote.text.isEmpty?null:  prefs.setString("addNoteOrder", textNote.text.trim());
 
-
-                                  var prints=  prefs.getString("addNoteOrder");
-                                  print(prints);
+                                    textNote.text.isEmpty
+                                        ? null
+                                        : saveNoteForOrder(
+                                            widget.item!.id!, textNote.text);
                                   },
                                 );
-                                  })),
+                              })),
                             ]),
                           ),
                         ]),
@@ -1522,37 +1613,43 @@ class NewVariationView extends StatelessWidget {
                                       width: showOriginalPrice
                                           ? Dimensions.paddingSizeExtraSmall
                                           : 0),
-                                  item!.foodVariations![index].variationValues![i].optionPrice!=0?  Text(
-                                    '${PriceConverter.convertPrice(item!.foodVariations![index].variationValues![i].optionPrice, discount: discount, discountType: discountType, isFoodVariation: true)}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textDirection: TextDirection.rtl,
-                                    style: itemController
-                                            .selectedVariations[index][i]!
-                                        ? robotoMedium.copyWith(
-                                            fontSize:
-                                                Dimensions.fontSizeExtraSmall)
-                                        : robotoRegular.copyWith(
-                                            fontSize:
-                                                Dimensions.fontSizeExtraSmall,
-                                            color: Theme.of(context)
-                                                .disabledColor),
-                                  ):Text(
-                                    "${PriceConverter.convertPrice(item!.price)}",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    textDirection: TextDirection.rtl,
-                                    style: itemController
-                                        .selectedVariations[index][i]!
-                                        ? robotoMedium.copyWith(
-                                        fontSize:
-                                        Dimensions.fontSizeExtraSmall)
-                                        : robotoRegular.copyWith(
-                                        fontSize:
-                                        Dimensions.fontSizeExtraSmall,
-                                        color: Theme.of(context)
-                                            .disabledColor),
-                                  ),
+                                  item!
+                                              .foodVariations![index]
+                                              .variationValues![i]
+                                              .optionPrice !=
+                                          0
+                                      ? Text(
+                                          '${PriceConverter.convertPrice(item!.foodVariations![index].variationValues![i].optionPrice, discount: discount, discountType: discountType, isFoodVariation: true)}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textDirection: TextDirection.rtl,
+                                          style: itemController
+                                                  .selectedVariations[index][i]!
+                                              ? robotoMedium.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeExtraSmall)
+                                              : robotoRegular.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeExtraSmall,
+                                                  color: Theme.of(context)
+                                                      .disabledColor),
+                                        )
+                                      : Text(
+                                          "${PriceConverter.convertPrice(item!.price)}",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textDirection: TextDirection.rtl,
+                                          style: itemController
+                                                  .selectedVariations[index][i]!
+                                              ? robotoMedium.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeExtraSmall)
+                                              : robotoRegular.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeExtraSmall,
+                                                  color: Theme.of(context)
+                                                      .disabledColor),
+                                        ),
                                 ]),
                               ),
                             );

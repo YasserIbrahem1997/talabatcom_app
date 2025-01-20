@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:talabatcom/common/widgets/custom_button.dart';
-import 'package:talabatcom/features/store/controllers/store_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
+import 'package:get/get.dart';
+import 'package:talabatcom/common/widgets/custom_image.dart';
+import 'package:talabatcom/common/widgets/custom_snackbar.dart';
 import 'package:talabatcom/features/address/domain/models/address_model.dart';
+import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
+import 'package:talabatcom/features/store/controllers/store_controller.dart';
 import 'package:talabatcom/features/store/domain/models/store_model.dart';
-import 'package:talabatcom/features/store/widgets/add_order_note_widget.dart';
 import 'package:talabatcom/helper/auth_helper.dart';
 import 'package:talabatcom/helper/price_converter.dart';
 import 'package:talabatcom/helper/responsive_helper.dart';
@@ -13,13 +15,7 @@ import 'package:talabatcom/helper/route_helper.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/images.dart';
 import 'package:talabatcom/util/styles.dart';
-import 'package:talabatcom/common/widgets/custom_image.dart';
-import 'package:talabatcom/common/widgets/custom_snackbar.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as html;
-
-import '../../../common/widgets/custom_ink_well.dart';
 
 class StoreDescriptionViewWidget extends StatelessWidget {
   final Store? store;
@@ -214,7 +210,7 @@ class StoreDescriptionViewWidget extends StatelessWidget {
                       Expanded(
                           child: Text(
                         PriceConverter.convertPrice(store!.minimumOrder),
-                        textDirection: TextDirection.ltr,
+                        // textDirection: TextDirection.ltr,
                         style: robotoMedium.copyWith(
                             fontSize: Dimensions.fontSizeExtraSmall,
                             color: Theme.of(context).primaryColor),
@@ -406,28 +402,28 @@ class StoreDescriptionViewWidget extends StatelessWidget {
       SizedBox(
         height: 15,
       ),
-      CustomInkWell(
-        child: Container(
-          width: 350,
-          height: 50,
-          decoration: BoxDecoration(
-              color: Color(0xFFD6324A),
-              borderRadius: BorderRadius.circular(10)),
-          child: Center(
-            child: Text("كتابة طلب",
-                style: robotoMedium.copyWith(
-                  fontSize: Dimensions.fontSizeSmall,
-                  color: Colors.white,
-                )),
-          ),
-        ),
-        onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => AddOrderNoteWidget(store: store)),
-          // );
-        },
-      )
+      // CustomInkWell(
+      //   child: Container(
+      //     width: 350,
+      //     height: 50,
+      //     decoration: BoxDecoration(
+      //         color: Color(0xFFD6324A),
+      //         borderRadius: BorderRadius.circular(10)),
+      //     child: Center(
+      //       child: Text("كتابة طلب",
+      //           style: robotoMedium.copyWith(
+      //             fontSize: Dimensions.fontSizeSmall,
+      //             color: Colors.white,
+      //           )),
+      //     ),
+      //   ),
+      //   onTap: () {
+      //     // Navigator.push(
+      //     //   context,
+      //     //   MaterialPageRoute(builder: (context) => AddOrderNoteWidget(store: store)),
+      //     // );
+      //   },
+      // )
     ]);
   }
 }

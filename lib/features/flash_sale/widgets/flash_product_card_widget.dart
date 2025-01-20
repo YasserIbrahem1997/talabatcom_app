@@ -116,7 +116,8 @@ class FlashProductCardWidget extends StatelessWidget {
                       style: robotoMedium.copyWith(
                         fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor,
                         decoration: TextDecoration.lineThrough,
-                      ), textDirection: TextDirection.ltr,
+                      ),
+                      // textDirection: TextDirection.ltr,
                     ) : const SizedBox(),
                     SizedBox(width: product.item!.discount != null && product.item!.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
 
@@ -125,7 +126,8 @@ class FlashProductCardWidget extends StatelessWidget {
                         Get.find<ItemController>().getStartingPrice(product.item!), discount: product.item!.discount,
                         discountType: product.item!.discountType,
                       ),
-                      textDirection: TextDirection.ltr, style: robotoMedium,
+                      // textDirection: TextDirection.ltr,
+                      style: robotoMedium,
                     ),
 
                   ]),

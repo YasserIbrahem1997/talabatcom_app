@@ -1,25 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:talabatcom/common/models/config_model.dart';
-import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
-import 'package:talabatcom/features/category/controllers/category_controller.dart';
-import 'package:talabatcom/features/item/controllers/item_controller.dart';
-import 'package:talabatcom/features/language/controllers/language_controller.dart';
-import 'package:talabatcom/features/store/controllers/store_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
-import 'package:talabatcom/features/category/domain/models/category_model.dart';
-import 'package:talabatcom/features/item/domain/models/item_model.dart';
-import 'package:talabatcom/features/store/domain/models/store_model.dart';
-import 'package:talabatcom/helper/auth_helper.dart';
-import 'package:talabatcom/helper/date_converter.dart';
-import 'package:talabatcom/helper/price_converter.dart';
-import 'package:talabatcom/helper/responsive_helper.dart';
-import 'package:talabatcom/helper/route_helper.dart';
-import 'package:talabatcom/util/app_constants.dart';
-import 'package:talabatcom/util/dimensions.dart';
-import 'package:talabatcom/util/images.dart';
-import 'package:talabatcom/util/styles.dart';
 import 'package:talabatcom/common/widgets/custom_button.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:talabatcom/common/widgets/custom_snackbar.dart';
@@ -32,14 +14,31 @@ import 'package:talabatcom/common/widgets/veg_filter_widget.dart';
 import 'package:talabatcom/common/widgets/web_item_view.dart';
 import 'package:talabatcom/common/widgets/web_item_widget.dart';
 import 'package:talabatcom/common/widgets/web_menu_bar.dart';
+import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
+import 'package:talabatcom/features/category/controllers/category_controller.dart';
+import 'package:talabatcom/features/category/domain/models/category_model.dart';
 import 'package:talabatcom/features/checkout/screens/checkout_screen.dart';
+import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
+import 'package:talabatcom/features/item/controllers/item_controller.dart';
+import 'package:talabatcom/features/item/domain/models/item_model.dart';
+import 'package:talabatcom/features/language/controllers/language_controller.dart';
 import 'package:talabatcom/features/search/widgets/custom_check_box_widget.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
+import 'package:talabatcom/features/store/controllers/store_controller.dart';
+import 'package:talabatcom/features/store/domain/models/store_model.dart';
 import 'package:talabatcom/features/store/widgets/customizable_space_bar_widget.dart';
 import 'package:talabatcom/features/store/widgets/store_banner_widget.dart';
 import 'package:talabatcom/features/store/widgets/store_description_view_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:talabatcom/features/store/widgets/store_details_screen_shimmer_widget.dart';
+import 'package:talabatcom/helper/auth_helper.dart';
+import 'package:talabatcom/helper/date_converter.dart';
+import 'package:talabatcom/helper/price_converter.dart';
+import 'package:talabatcom/helper/responsive_helper.dart';
+import 'package:talabatcom/helper/route_helper.dart';
+import 'package:talabatcom/util/app_constants.dart';
+import 'package:talabatcom/util/dimensions.dart';
+import 'package:talabatcom/util/images.dart';
+import 'package:talabatcom/util/styles.dart';
 
 import '../widgets/bottom_cart_widget.dart';
 
@@ -1111,46 +1110,51 @@ class _StoreScreenState extends State<StoreScreen> {
                           : const SliverToBoxAdapter(child: SizedBox()),
                       // todo this text written_orders
 
-                      (widget.store!.showFooterText == 1) ?
-                      SliverToBoxAdapter(
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 12,),
-
-                            decoration: BoxDecoration(
-                              color: Colors.cyan.withOpacity(0.125),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.black12,
-                              )
-
-                            ),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-
+                      (widget.store!.showFooterText == 1)
+                          ? SliverToBoxAdapter(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 12,
                                   ),
-                                 Image.asset("assets/image/announcement.png",width: 25,),
-                                  SizedBox(
-                                    width: 15,
-
+                                  decoration: BoxDecoration(
+                                      color: Colors.cyan.withOpacity(0.125),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.black12,
+                                      )),
+                                  child: Center(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Image.asset(
+                                          "assets/image/announcement.png",
+                                          width: 25,
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Text(
+                                          widget.store!.footerText == null
+                                              ? "لايوجد اعلان"
+                                              : widget.store!.footerText
+                                                  .toString(),
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                 widget.store!.footerText == null ? "لايوجد اعلان": widget.store!.footerText.toString(),
-                                    style: const TextStyle(color: Colors.black,fontSize: 10),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ):  SliverToBoxAdapter(
-                        child: SizedBox()
-                      ),
+                            )
+                          : SliverToBoxAdapter(child: SizedBox()),
                       // todo this rating and  location and time and button
                       ResponsiveHelper.isDesktop(context)
                           ? const SliverToBoxAdapter(child: SizedBox())
@@ -1163,8 +1167,11 @@ class _StoreScreenState extends State<StoreScreen> {
                               color: Theme.of(context).cardColor,
                               child: Column(children: [
                                 ResponsiveHelper.isDesktop(context)
+                                    //todo start rating and  location and time and button
                                     ? const SizedBox()
                                     : StoreDescriptionViewWidget(store: store),
+                                //todo end rating and  location and time and button
+
                                 const SizedBox(
                                     height: Dimensions.paddingSizeSmall),
                                 store.announcementActive!
@@ -1494,15 +1501,12 @@ class _StoreScreenState extends State<StoreScreen> {
         floatingActionButton:
             GetBuilder<StoreController>(builder: (storeController) {
           return Visibility(
-            visible:
-
-            storeController.showFavButton &&
+            visible: storeController.showFavButton &&
                 Get.find<SplashController>()
                     .configModel!
                     .moduleConfig!
                     .module!
                     .orderAttachment! &&
-
                 Get.find<SplashController>().configModel!.prescriptionStatus!,
             child: Container(
               decoration: BoxDecoration(

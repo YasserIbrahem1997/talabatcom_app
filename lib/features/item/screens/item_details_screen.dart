@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
-import 'package:talabatcom/features/item/controllers/item_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
-import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
-import 'package:talabatcom/features/item/domain/models/item_model.dart';
-import 'package:talabatcom/helper/price_converter.dart';
-import 'package:talabatcom/helper/responsive_helper.dart';
-import 'package:talabatcom/helper/route_helper.dart';
-import 'package:talabatcom/util/dimensions.dart';
-import 'package:talabatcom/util/images.dart';
-import 'package:talabatcom/util/styles.dart';
 import 'package:talabatcom/common/widgets/cart_snackbar.dart';
 import 'package:talabatcom/common/widgets/confirmation_dialog.dart';
 import 'package:talabatcom/common/widgets/custom_app_bar.dart';
 import 'package:talabatcom/common/widgets/custom_button.dart';
 import 'package:talabatcom/common/widgets/custom_snackbar.dart';
 import 'package:talabatcom/common/widgets/menu_drawer.dart';
+import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
+import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
+import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
 import 'package:talabatcom/features/checkout/screens/checkout_screen.dart';
+import 'package:talabatcom/features/item/controllers/item_controller.dart';
+import 'package:talabatcom/features/item/domain/models/item_model.dart';
 import 'package:talabatcom/features/item/widgets/details_app_bar_widget.dart';
 import 'package:talabatcom/features/item/widgets/details_web_view_widget.dart';
 import 'package:talabatcom/features/item/widgets/item_image_view_widget.dart';
 import 'package:talabatcom/features/item/widgets/item_title_view_widget.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
+import 'package:talabatcom/helper/price_converter.dart';
+import 'package:talabatcom/helper/responsive_helper.dart';
+import 'package:talabatcom/helper/route_helper.dart';
+import 'package:talabatcom/util/dimensions.dart';
+import 'package:talabatcom/util/images.dart';
+import 'package:talabatcom/util/styles.dart';
 
 class ItemDetailsScreen extends StatefulWidget {
   final Item? item;
@@ -50,7 +50,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController textNote =TextEditingController();
+    TextEditingController textNote = TextEditingController();
     return GetBuilder<CartController>(builder: (cartController) {
       return GetBuilder<ItemController>(
         builder: (itemController) {
@@ -137,6 +137,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                 addOnsList,
                 itemController.item!.availableDateStarts != null,
                 stock,
+                textNote.text.trim(),
                 itemController.item,
                 itemController.item?.quantityLimit);
 
@@ -159,7 +160,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                 listOfAddOnId,
                 addOnsList,
                 listOfAddOnQty,
-                'Item');
+                'Item',
+                textNote.text.trim());
             priceWithAddons = priceWithQuantity +
                 (Get.find<SplashController>()
                         .configModel!
@@ -188,7 +190,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                             cart: cart,
                           )
                         : Column(children: [
-                          // todo : thi details screen
+                            // todo : thi details screen
                             Expanded(
                                 child: SingleChildScrollView(
                                     padding: const EdgeInsets.all(
@@ -506,8 +508,6 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                                 itemController
                                                                     .cartIndex])
                                                         : priceWithAddons),
-                                                    textDirection:
-                                                        TextDirection.ltr,
                                                     style: robotoBold.copyWith(
                                                         color: Theme.of(context)
                                                             .primaryColor,
@@ -585,31 +585,49 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
 
                                                 TextFormField(
                                                   controller: textNote,
-                                                  maxLines: 4, // Allows multiple lines (at least 2 as you need)
+                                                  maxLines:
+                                                      4, // Allows multiple lines (at least 2 as you need)
                                                   decoration: InputDecoration(
-                                                    hintText: "Write_your_notes_here".tr,
-                                                    filled: true, // Adds a background color
-                                                    fillColor: Colors.white, // Background color
-                                                    enabledBorder: OutlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.red.shade200), // Light red border
-                                                      borderRadius: BorderRadius.circular(10), // Border radius
+                                                    hintText:
+                                                        "Write_your_notes_here"
+                                                            .tr,
+                                                    filled:
+                                                        true, // Adds a background color
+                                                    fillColor: Colors
+                                                        .white, // Background color
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.red
+                                                              .shade200), // Light red border
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10), // Border radius
                                                     ),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.grey.shade400), // Slightly darker red when focused
-                                                      borderRadius: BorderRadius.circular(10), // Border radius
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.grey
+                                                              .shade400), // Slightly darker red when focused
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10), // Border radius
                                                     ),
                                                     border: OutlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.red.shade200),
-                                                      borderRadius: BorderRadius.circular(10),
+                                                      borderSide: BorderSide(
+                                                          color: Colors
+                                                              .red.shade200),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
                                                     ),
                                                   ),
-                                                  style: TextStyle(color: Colors.black), // Text color inside the field
+                                                  style: TextStyle(
+                                                      color: Colors
+                                                          .black), // Text color inside the field
                                                 )
                                               ],
-                                            )
-                                        )
-                                    )
-                                )),
+                                            ))))),
 
                             // todo : this button add to cart
                             GetBuilder<CartController>(

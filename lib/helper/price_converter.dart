@@ -12,7 +12,7 @@ class PriceConverter {
       bool isFoodVariation = false}) {
     if (discount != null && discountType != null) {
       if (discountType == 'amount' && !isFoodVariation) {
-        price = price! - (discount??0);
+        price = price! - (discount ?? 0);
       } else if (discountType == 'percent') {
         price = price! - ((discount / 100) * price);
       }
@@ -20,17 +20,17 @@ class PriceConverter {
     bool isRightSide =
         Get.find<SplashController>().configModel!.currencySymbolDirection ==
             'right';
-    return
-        " "+'${toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
-        + " "+"ج.م";
+    return " " +
+        '${toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}' +
+        " " +
+        "ج.م";
   }
 
   static Widget convertAnimationPrice(double? price,
       {double? discount,
       String? discountType,
       bool forDM = false,
-      TextStyle? textStyle})
-  {
+      TextStyle? textStyle}) {
     if (discount != null && discountType != null) {
       if (discountType == 'amount') {
         price = price! - discount;
@@ -38,11 +38,16 @@ class PriceConverter {
         price = price! - ((discount / 100) * price);
       }
     }
+    TextDirection textDirection =
+        Get.find<SplashController>().configModel!.currencySymbolDirection ==
+                'right'
+            ? TextDirection.ltr
+            : TextDirection.rtl;
     bool isRightSide =
         Get.find<SplashController>().configModel!.currencySymbolDirection ==
             'right';
     return Directionality(
-      textDirection: TextDirection.ltr,
+      textDirection: textDirection,
       child: AnimatedFlipCounter(
         duration: const Duration(milliseconds: 500),
         value: toFixed(price!),
@@ -50,10 +55,20 @@ class PriceConverter {
         fractionDigits: forDM
             ? 0
             : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
-        prefix: "ج.م ",
-        suffix: isRightSide
-            ? ''
-            : Get.find<SplashController>().configModel!.currencySymbol!,
+        prefix:
+            Get.find<SplashController>().configModel!.currencySymbolDirection ==
+                    'right'
+                ? "ج.م "
+                : isRightSide
+                    ? ' '
+                    : Get.find<SplashController>().configModel!.currencySymbol!,
+        suffix:
+            Get.find<SplashController>().configModel!.currencySymbolDirection ==
+                    'right'
+                ? isRightSide
+                    ? ' '
+                    : Get.find<SplashController>().configModel!.currencySymbol!
+                : " ج.م ",
       ),
     );
   }

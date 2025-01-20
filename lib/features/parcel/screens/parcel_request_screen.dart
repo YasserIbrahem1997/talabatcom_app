@@ -268,7 +268,7 @@ class _ParcelRequestScreenState extends State<ParcelRequestScreen> {
                                                 Text(
                                                    " "+"${parcelControllerNew
                                                       .receiverPrice.value
-                                                      .toString()}" +" "+ "ج.م",
+                                                      .toString()}",
                                                   style: robotoBold.copyWith(
                                                       color: Theme.of(context)
                                                           .primaryColor),

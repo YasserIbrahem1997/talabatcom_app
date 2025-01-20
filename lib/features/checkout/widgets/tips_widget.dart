@@ -35,7 +35,8 @@ class TipsWidget extends StatelessWidget {
                     left: Dimensions.paddingSizeSmall, right: Dimensions.paddingSizeSmall,
                 ) : EdgeInsets.zero,
                 child: Text(
-                  title, textDirection: TextDirection.ltr,
+                  title,
+                  // textDirection: TextDirection.ltr,
                   style: robotoRegular.copyWith(
                     color: isSelected ? Theme.of(context).cardColor : ResponsiveHelper.isDesktop(context)
                         ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,

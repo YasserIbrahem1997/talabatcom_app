@@ -82,7 +82,8 @@ class _WebFlashSaleViewWidgetState extends State<WebFlashSaleViewWidget> {
               style: robotoMedium.copyWith(
                 fontSize: Dimensions.fontSizeExtraSmall, color: Theme.of(context).disabledColor,
                 decoration: TextDecoration.lineThrough,
-              ), textDirection: TextDirection.ltr,
+              ),
+              // textDirection: TextDirection.ltr,
             )) : const SizedBox(),
             SizedBox(width: item.discount != null && item.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
 
@@ -91,7 +92,8 @@ class _WebFlashSaleViewWidgetState extends State<WebFlashSaleViewWidget> {
                 Get.find<ItemController>().getStartingPrice(item), discount: item.discount,
                 discountType: item.discountType,
               ),
-              textDirection: TextDirection.ltr, style: robotoMedium,
+              // textDirection: TextDirection.ltr,
+              style: robotoMedium,
             )),
           ]),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),

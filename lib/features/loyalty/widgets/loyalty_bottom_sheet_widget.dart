@@ -59,7 +59,8 @@ class _LoyaltyBottomSheetWidgetState extends State<LoyaltyBottomSheetWidget> {
                   style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault),
                 ),
                 Text(
-                  PriceConverter.convertPrice(1), textDirection: TextDirection.ltr,
+                  PriceConverter.convertPrice(1),
+                  // textDirection: TextDirection.ltr,
                   style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault),
                 ),
               ]),

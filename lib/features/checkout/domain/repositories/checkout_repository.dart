@@ -1,12 +1,10 @@
 import 'package:get/get.dart';
-import 'package:get/get_connect/connect.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talabatcom/api/api_client.dart';
-import 'package:talabatcom/features/payment/domain/models/offline_method_model.dart';
 import 'package:talabatcom/features/checkout/domain/models/place_order_body_model.dart';
 import 'package:talabatcom/features/checkout/domain/repositories/checkout_repository_interface.dart';
+import 'package:talabatcom/features/payment/domain/models/offline_method_model.dart';
 import 'package:talabatcom/util/app_constants.dart';
 
 import '../../../location/domain/models/zone_response_model.dart';

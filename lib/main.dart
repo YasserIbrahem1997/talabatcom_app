@@ -1,15 +1,23 @@
 import 'dart:async';
 import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:meta_seo/meta_seo.dart';
+import 'package:talabatcom/common/controllers/theme_controller.dart';
 import 'package:talabatcom/features/auth/controllers/auth_controller.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
+import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
+import 'package:talabatcom/features/home/widgets/cookies_view.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
+import 'package:talabatcom/features/notification/domain/models/notification_body_model.dart';
 import 'package:talabatcom/features/parcel/controllers/parcel_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/common/controllers/theme_controller.dart';
-import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
-import 'package:talabatcom/features/notification/domain/models/notification_body_model.dart';
 import 'package:talabatcom/helper/address_helper.dart';
 import 'package:talabatcom/helper/auth_helper.dart';
 import 'package:talabatcom/helper/notification_helper.dart';
@@ -19,14 +27,8 @@ import 'package:talabatcom/theme/dark_theme.dart';
 import 'package:talabatcom/theme/light_theme.dart';
 import 'package:talabatcom/util/app_constants.dart';
 import 'package:talabatcom/util/messages.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
-import 'package:talabatcom/features/home/widgets/cookies_view.dart';
 import 'package:url_strategy/url_strategy.dart';
+
 import 'features/checkout/domain/repositories/checkout_repository.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/splashOne/screenOne.dart';
@@ -56,7 +58,7 @@ Future<void> main() async {
 
   if (GetPlatform.isWeb) {
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+      options: DefaultFirebaseOptions.web,
     );
     // await Firebase.initializeApp(
     //     options: const FirebaseOptions(
@@ -71,7 +73,7 @@ Future<void> main() async {
     MetaSEO().config();
   } else if (GetPlatform.isAndroid) {
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+      options: DefaultFirebaseOptions.android,
     );
     // await Firebase.initializeApp(
     //   options: const FirebaseOptions(
@@ -102,7 +104,7 @@ Future<void> main() async {
 
   if (ResponsiveHelper.isWeb()) {
     await FacebookAuth.instance.webAndDesktopInitialize(
-      appId: "359802914118",
+      appId: "1:1064328943216:web:fbec53c91c90c793e306b5",
       cookie: true,
       xfbml: true,
       version: "v15.0",
@@ -162,7 +164,6 @@ class _MyAppState extends State<MyApp> {
       }
     });
     Get.put(ParcelControllerNew());
-
   }
 
   @override
@@ -188,40 +189,50 @@ class _MyAppState extends State<MyApp> {
                   fallbackLocale: Locale(
                       AppConstants.languages[0].languageCode!,
                       AppConstants.languages[0].countryCode),
-            initialRoute: '/splashOne', // Updated initial route
-            getPages: [
-              GetPage(name: '/splashOne', page: () => const SplashOne()),
-              GetPage(name: '/splashScreen', page: () => SplashScreen(body: widget.body,)),
-              ...RouteHelper.routes, // Existing routes
-            ],
+                  initialRoute: '/splashOne', // Updated initial route
+                  getPages: [
+                    GetPage(name: '/splashOne', page: () => const SplashOne()),
+                    GetPage(
+                        name: '/splashScreen',
+                        page: () => SplashScreen(
+                              body: widget.body,
+                            )),
+                    ...RouteHelper.routes, // Existing routes
+                  ],
                   defaultTransition: Transition.topLevel,
                   transitionDuration: const Duration(milliseconds: 500),
                   builder: (BuildContext context, widget) {
-                    return MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(textScaler: const TextScaler.linear(1)),
-                        child: Material(
-                          child: Stack(children: [
-                            widget!,
-                            GetBuilder<SplashController>(
-                                builder: (splashController) {
-                              if (!splashController.savedCookiesData &&
-                                  !splashController.getAcceptCookiesStatus(
-                                      splashController.configModel != null
-                                          ? splashController
-                                              .configModel!.cookiesText!
-                                          : '')) {
-                                return ResponsiveHelper.isWeb()
-                                    ? const Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: CookiesView())
-                                    : const SizedBox();
-                              } else {
-                                return const SizedBox();
-                              }
-                            })
-                          ]),
-                        ));
+                    return Directionality(
+                      textDirection:
+                          localizeController.locale.languageCode == 'ar'
+                              ? TextDirection.rtl
+                              : TextDirection.ltr,
+                      child: MediaQuery(
+                          data: MediaQuery.of(context)
+                              .copyWith(textScaler: const TextScaler.linear(1)),
+                          child: Material(
+                            child: Stack(children: [
+                              widget!,
+                              GetBuilder<SplashController>(
+                                  builder: (splashController) {
+                                if (!splashController.savedCookiesData &&
+                                    !splashController.getAcceptCookiesStatus(
+                                        splashController.configModel != null
+                                            ? splashController
+                                                .configModel!.cookiesText!
+                                            : '')) {
+                                  return ResponsiveHelper.isWeb()
+                                      ? const Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: CookiesView())
+                                      : const SizedBox();
+                                } else {
+                                  return const SizedBox();
+                                }
+                              })
+                            ]),
+                          )),
+                    );
                   },
                 );
         });

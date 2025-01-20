@@ -1,23 +1,25 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talabatcom/common/widgets/custom_asset_image_widget.dart';
+import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
+import 'package:talabatcom/common/widgets/item_bottom_sheet.dart';
+import 'package:talabatcom/common/widgets/quantity_button.dart';
+import 'package:talabatcom/common/widgets/rating_bar.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
-import 'package:talabatcom/features/language/controllers/language_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
 import 'package:talabatcom/features/item/domain/models/item_model.dart';
+import 'package:talabatcom/features/language/controllers/language_controller.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/helper/price_converter.dart';
 import 'package:talabatcom/helper/responsive_helper.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/images.dart';
 import 'package:talabatcom/util/styles.dart';
-import 'package:talabatcom/common/widgets/custom_image.dart';
-import 'package:talabatcom/common/widgets/item_bottom_sheet.dart';
-import 'package:talabatcom/common/widgets/quantity_button.dart';
-import 'package:talabatcom/common/widgets/rating_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CartItemWidget extends StatefulWidget {
   final CartModel cart;
@@ -37,33 +39,44 @@ class CartItemWidget extends StatefulWidget {
 }
 
 class _CartItemWidgetState extends State<CartItemWidget> {
-  String? addNote;
+  @override
+  void initState() {
+    super.initState();
+    print("this cart in item ${widget.cart.note.toString()}");
+  }
 
-@override
-void initState() {
-  super.initState();
-  _loadAddNote();
-}
-Future<void> _loadAddNote() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  setState(() {
-    addNote = prefs.getString('addNoteOrder') ?? "";
-  });
-}
+// استرجاع الملاحظة لطلب معين
+
+// الدالة الخاصة بإظهار الملاحظة للطلب
+  Future<String?> getNoteForOrder(int orderId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // الحصول على البيانات الحالية (إذا كانت موجودة)
+    String? notesJson = prefs.getString("orderNotes");
+    if (notesJson != null) {
+      Map<String, String> orderNotes =
+          Map<String, String>.from(json.decode(notesJson));
+      return orderNotes[orderId.toString()]; // إعادة الملاحظة للطلب
+    }
+
+    return null; // لا توجد ملاحظة للطلب
+  }
+
   @override
   Widget build(BuildContext context) {
-    double? startingPrice = _calculatePriceWithVariation(item: widget.cart.item);
-    double? endingPrice =
-        _calculatePriceWithVariation(item: widget.cart.item, isStartingPrice: false);
+    double? startingPrice =
+        _calculatePriceWithVariation(item: widget.cart.item);
+    double? endingPrice = _calculatePriceWithVariation(
+        item: widget.cart.item, isStartingPrice: false);
     String? variationText = _setupVariationText(cart: widget.cart);
     String addOnText = _setupAddonsText(cart: widget.cart) ?? '';
-
 
     double? discount = widget.cart.item!.storeDiscount == 0
         ? widget.cart.item!.discount
         : widget.cart.item!.storeDiscount;
-    String? discountType =
-        widget.cart.item!.storeDiscount == 0 ? widget.cart.item!.discountType : 'percent';
+    String? discountType = widget.cart.item!.storeDiscount == 0
+        ? widget.cart.item!.discountType
+        : 'percent';
 
     return Padding(
       padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault),
@@ -114,7 +127,9 @@ Future<void> _loadAddNote() async {
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                       builder: (con) => ItemBottomSheet(
-                          item: widget.cart.item, cartIndex: widget.cartIndex, cart: widget.cart),
+                          item: widget.cart.item,
+                          cartIndex: widget.cartIndex,
+                          cart: widget.cart),
                     )
                   : showDialog(
                       context: context,
@@ -267,7 +282,6 @@ Future<void> _loadAddNote() async {
                                       fontSize: Dimensions.fontSizeSmall),
                                   textDirection: TextDirection.rtl,
                                 ),
-
                               ],
                             ),
                             SizedBox(
@@ -394,8 +408,11 @@ Future<void> _loadAddNote() async {
                                         .cartList[0]
                                         .item!
                                         .moduleId!);
-                                Get.find<CartController>().setQuantity(true,
-                                    widget.cartIndex, widget.cart.stock, widget.cart.quantityLimit);
+                                Get.find<CartController>().setQuantity(
+                                    true,
+                                    widget.cartIndex,
+                                    widget.cart.stock,
+                                    widget.cart.quantityLimit);
                               },
                         isIncrement: true,
                         color: cartController.isLoading
@@ -434,30 +451,58 @@ Future<void> _loadAddNote() async {
                           )
                         : const SizedBox()
                     : const SizedBox(),
+                Text(widget.cart.note.toString(),
+                    style: TextStyle(color: Colors.black87)),
                 !ResponsiveHelper.isDesktop(context)
                     ? variationText!.isNotEmpty
-                        ?addNote!.isEmpty?SizedBox.shrink(): Padding(
+                        ? // الجزء الخاص بـ FutureBuilder لعرض الملاحظة
+                        Padding(
                             padding: const EdgeInsets.only(
                                 top: Dimensions.paddingSizeExtraSmall),
-                            child: Row(children: [
-                              SizedBox(
-                                  width: ResponsiveHelper.isDesktop(context)
-                                      ? 100
-                                      : 80),
-                              Text(
-                                  ResponsiveHelper.isDesktop(context)
-                                      ? ''
-                                      : '${'hint'.tr}: ',
-                                  style: robotoMedium.copyWith(
-                                      fontSize: Dimensions.fontSizeSmall)),
-                              Flexible(
-                                  child: Text(
-                                    addNote.toString(),
-                                style: robotoRegular.copyWith(
-                                    fontSize: Dimensions.fontSizeSmall,
-                                    color: Theme.of(context).disabledColor),
-                              )),
-                            ]),
+                            child: Flexible(
+                              child: FutureBuilder<String?>(
+                                future: getNoteForOrder(widget.cart.item!.id!
+                                    .toInt()), // استدعاء الملاحظة بناءً على الطلب
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const CircularProgressIndicator(); // مؤشر تحميل أثناء الانتظار
+                                  } else if (snapshot.hasError) {
+                                    return Text("يوجد مشكله في حفظ الملاحظات ",
+                                        style: robotoRegular.copyWith(
+                                            fontSize: Dimensions.fontSizeSmall,
+                                            color: Theme.of(context)
+                                                .disabledColor));
+                                  } else if (!snapshot.hasData ||
+                                      snapshot.data == null ||
+                                      snapshot.data!.isEmpty) {
+                                    return const SizedBox
+                                        .shrink(); // لا توجد ملاحظة
+                                  } else {
+                                    return Row(children: [
+                                      SizedBox(
+                                          width: ResponsiveHelper.isDesktop(
+                                                  context)
+                                              ? 100
+                                              : 80),
+                                      Text(
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? ''
+                                              : '${'hint'.tr}: ',
+                                          style: robotoMedium.copyWith(
+                                              fontSize:
+                                                  Dimensions.fontSizeSmall)),
+                                      Text(snapshot.data!,
+                                          style: robotoRegular.copyWith(
+                                              fontSize:
+                                                  Dimensions.fontSizeSmall,
+                                              color: Theme.of(context)
+                                                  .disabledColor)),
+                                    ]);
+                                  }
+                                },
+                              ),
+                            ),
                           )
                         : const SizedBox()
                     : const SizedBox(),

@@ -127,7 +127,7 @@ class ItemCard extends StatelessWidget {
                                     Radius.circular(Dimensions.radiusLarge),
                               ),
                             ),
-                            child: Text('out_of_stock'.tr,
+                            child: Text('not_available_now'.tr,
                                 style: robotoRegular.copyWith(
                                     color: Theme.of(context).cardColor,
                                     fontSize: Dimensions.fontSizeSmall)),
@@ -262,7 +262,7 @@ class ItemCard extends StatelessWidget {
                                     color: Theme.of(context).disabledColor,
                                     decoration: TextDecoration.lineThrough,
                                   ),
-                                  textDirection: TextDirection.ltr,
+                                  // textDirection: TextDirection.ltr,
                                 )
                               : const SizedBox(),
                           // SizedBox(height: item.discount != null && item.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
@@ -273,7 +273,7 @@ class ItemCard extends StatelessWidget {
                               discount: item.discount,
                               discountType: item.discountType,
                             ),
-                            textDirection: TextDirection.ltr,
+                            // textDirection: TextDirection.ltr,
                             style: robotoMedium,
                           ),
 

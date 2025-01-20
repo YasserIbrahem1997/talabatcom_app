@@ -194,7 +194,9 @@ class DetailsWebViewWidget extends StatelessWidget {
                               const SizedBox(width: Dimensions.paddingSizeExtraSmall),
                               Text(PriceConverter.convertPrice(itemController.cartIndex != -1
                                   ? _getItemDetailsDiscountPrice(cart: Get.find<CartController>().cartList[itemController.cartIndex])
-                                  : priceWithAddOns), textDirection: TextDirection.ltr, style: robotoBold.copyWith(
+                                  : priceWithAddOns),
+                                  // textDirection: TextDirection.ltr,
+                                  style: robotoBold.copyWith(
                                 color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeLarge,
                               )),
                             ]);
