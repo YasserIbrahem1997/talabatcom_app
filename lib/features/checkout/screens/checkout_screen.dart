@@ -224,12 +224,6 @@ class CheckoutScreenState extends State<CheckoutScreen> {
 
     double minimumShippingCharge =
         shippingController.minimumShippingCharge.value;
-// Function to update the shipping charge
-    void updateMinimumShippingCharge(double newCharge) {
-      setState(() {
-        minimumShippingCharge = newCharge;
-      });
-    }
 
     return Scaffold(
       appBar: CustomAppBar(title: 'checkout'.tr),
@@ -344,7 +338,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
 
                 double total = _calculateTotal(
                   subTotal: subTotal,
-                  deliveryCharge: minimumShippingCharge,
+                  deliveryCharge: 0,
                   discount: discount,
                   couponDiscount: couponDiscount,
                   taxIncluded: taxIncluded,
@@ -416,7 +410,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                 child: TopSection(
                                                   checkoutController:
                                                       checkoutController,
-                                                  charge: originalCharge,
+                                                  charge: minimumShippingCharge,
                                                   deliveryCharge:
                                                       minimumShippingCharge,
                                                   addressList: addressList,
@@ -466,7 +460,8 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                           ShippingController>()
                                                       .minimumShippingCharge
                                                       .value;
-
+                                                  print(
+                                                      "this  sss ${shippingCharge}");
                                                   return BottomSection(
                                                     checkoutController:
                                                         checkoutController,
@@ -517,7 +512,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                           TopSection(
                                             checkoutController:
                                                 checkoutController,
-                                            charge: originalCharge,
+                                            charge: minimumShippingCharge,
                                             deliveryCharge:
                                                 minimumShippingCharge,
                                             addressList: addressList,
@@ -628,17 +623,23 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                                     color: Theme.of(context)
                                                         .primaryColor),
                                               ),
-                                              PriceConverter
-                                                  .convertAnimationPrice(
-                                                checkoutController
-                                                    .viewTotalPrice,
-                                                textStyle:
-                                                    robotoMedium.copyWith(
-                                                        fontSize: Dimensions
-                                                            .fontSizeLarge,
-                                                        color: Theme.of(context)
-                                                            .primaryColor),
-                                              ),
+                                              Obx(
+                                                () => PriceConverter
+                                                    .convertAnimationPrice(
+                                                  checkoutController
+                                                          .viewTotalPrice! +
+                                                      shippingController
+                                                          .minimumShippingCharge
+                                                          .value,
+                                                  textStyle:
+                                                      robotoMedium.copyWith(
+                                                          fontSize: Dimensions
+                                                              .fontSizeLarge,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColor),
+                                                ),
+                                              )
                                             ]),
                                       ),
                                       _orderPlaceButton(
@@ -649,7 +650,9 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                           minimumShippingCharge,
                                           tax,
                                           discount,
-                                          total,
+                                          total +
+                                              shippingController
+                                                  .minimumShippingCharge.value,
                                           maxCodOrderAmount,
                                           isPrescriptionRequired,
                                           minimumShippingCharge),
@@ -777,6 +780,7 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                               totalPrice: total,
                               isOfflinePaymentActive: _isOfflinePaymentActive,
                             )));
+                        shippingController.minimumShippingCharge.value = 0.0;
                       } else {
                         showModalBottomSheet(
                           context: context,
@@ -912,6 +916,8 @@ class CheckoutScreenState extends State<CheckoutScreen> {
                                 values: OrderVariationValue(
                                     label: []))); // الفيريشن بصفر
                           }
+                          shippingController.minimumShippingCharge.value = 0.0;
+
                           //todo add old variation
                           // if (Get.find<SplashController>().getModuleConfig(cart.item!.moduleType).newVariation!) {
                           //   for (int i = 0; i < cart.item!.foodVariations!.length; i++) {

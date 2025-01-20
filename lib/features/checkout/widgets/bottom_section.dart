@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:talabatcom/common/models/config_model.dart';
 import 'package:talabatcom/features/cart/controllers/cart_controller.dart';
+import 'package:talabatcom/features/checkout/controllers/checkout_controller.dart';
+import 'package:talabatcom/features/checkout/widgets/condition_check_box.dart';
+import 'package:talabatcom/features/checkout/widgets/coupon_section.dart';
+import 'package:talabatcom/features/checkout/widgets/note_prescription_section.dart';
+import 'package:talabatcom/features/checkout/widgets/partial_pay_view.dart';
 import 'package:talabatcom/features/checkout/widgets/prescription_image_picker_widget.dart';
 import 'package:talabatcom/features/coupon/controllers/coupon_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/profile/controllers/profile_controller.dart';
-import 'package:talabatcom/common/models/config_model.dart';
-import 'package:talabatcom/features/checkout/controllers/checkout_controller.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/helper/auth_helper.dart';
 import 'package:talabatcom/helper/price_converter.dart';
 import 'package:talabatcom/helper/responsive_helper.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/styles.dart';
-import 'package:talabatcom/features/checkout/widgets/condition_check_box.dart';
-import 'package:talabatcom/features/checkout/widgets/coupon_section.dart';
-import 'package:talabatcom/features/checkout/widgets/note_prescription_section.dart';
-import 'package:talabatcom/features/checkout/widgets/partial_pay_view.dart';
 
 import '../domain/repositories/checkout_repository.dart';
 
@@ -70,17 +70,17 @@ class BottomSection extends StatefulWidget {
 
 class _BottomSectionState extends State<BottomSection> {
   final shippingController = Get.find<ShippingController>();
-  final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
-
+  final shippingCharge =
+      Get.find<ShippingController>().minimumShippingCharge.value;
 
   @override
   Widget build(BuildContext context) {
     bool takeAway = widget.checkoutController.orderType == 'take_away';
     bool isDesktop = ResponsiveHelper.isDesktop(context);
     bool isGuestLoggedIn = AuthHelper.isGuestLoggedIn();
-    var totalStat ;
+    var totalStat;
     setState(() {
-      totalStat =widget.checkoutController.viewTotalPrice;
+      totalStat = widget.checkoutController.viewTotalPrice;
     });
 
     return Container(
@@ -408,22 +408,25 @@ class _BottomSectionState extends State<BottomSection> {
                                 style:
                                     robotoRegular.copyWith(color: Colors.red),
                               )
-                            : (widget.deliveryCharge == 0 ||
-                                    (widget.couponController.coupon != null &&
-                                        widget.couponController.coupon!
-                                                .couponType ==
-                                            'free_delivery'))
+                            : ((widget.couponController.coupon != null &&
+                                    widget.couponController.coupon!
+                                            .couponType ==
+                                        'free_delivery'))
                                 ? Text(
-                                    'free'.tr,
+                                    '0',
                                     style: robotoRegular.copyWith(
                                         color: Theme.of(context).primaryColor),
                                   )
                                 : Row(
                                     children: [
                                       Obx(() {
-                                        final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
+                                        final shippingCharge =
+                                            Get.find<ShippingController>()
+                                                .minimumShippingCharge
+                                                .value;
                                         return Text(
-                                          '${PriceConverter.convertPrice(shippingCharge)}',
+                                          PriceConverter.convertPrice(
+                                              shippingCharge),
                                           style: robotoRegular,
                                           textDirection: TextDirection.rtl,
                                         );

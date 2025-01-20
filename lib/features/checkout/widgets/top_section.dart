@@ -1,21 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compression/flutter_image_compression.dart';
 import 'package:get/get.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
-import 'package:talabatcom/features/checkout/domain/repositories/checkout_repository.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
+import 'package:talabatcom/common/models/config_model.dart';
+import 'package:talabatcom/common/widgets/custom_dropdown.dart';
 import 'package:talabatcom/features/address/domain/models/address_model.dart';
 import 'package:talabatcom/features/cart/domain/models/cart_model.dart';
-import 'package:talabatcom/common/models/config_model.dart';
-import 'package:talabatcom/features/checkout/controllers/checkout_controller.dart';
-import 'package:talabatcom/helper/auth_helper.dart';
-import 'package:talabatcom/helper/price_converter.dart';
-import 'package:talabatcom/helper/responsive_helper.dart';
-import 'package:talabatcom/util/dimensions.dart';
-import 'package:talabatcom/util/styles.dart';
-import 'package:talabatcom/common/widgets/custom_dropdown.dart';
 import 'package:talabatcom/features/cart/widgets/delivery_option_button_widget.dart';
+import 'package:talabatcom/features/checkout/controllers/checkout_controller.dart';
+import 'package:talabatcom/features/checkout/domain/repositories/checkout_repository.dart';
 import 'package:talabatcom/features/checkout/widgets/coupon_section.dart';
 import 'package:talabatcom/features/checkout/widgets/delivery_instruction_view.dart';
 import 'package:talabatcom/features/checkout/widgets/delivery_section.dart';
@@ -24,8 +20,13 @@ import 'package:talabatcom/features/checkout/widgets/partial_pay_view.dart';
 import 'package:talabatcom/features/checkout/widgets/payment_section.dart';
 import 'package:talabatcom/features/checkout/widgets/time_slot_section.dart';
 import 'package:talabatcom/features/checkout/widgets/web_delivery_instruction_view.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
 import 'package:talabatcom/features/store/widgets/camera_button_sheet_widget.dart';
-import 'dart:io';
+import 'package:talabatcom/helper/auth_helper.dart';
+import 'package:talabatcom/helper/price_converter.dart';
+import 'package:talabatcom/helper/responsive_helper.dart';
+import 'package:talabatcom/util/dimensions.dart';
+import 'package:talabatcom/util/styles.dart';
 
 class TopSection extends StatefulWidget {
   final CheckoutController checkoutController;
@@ -367,18 +368,17 @@ class _TopSectionState extends State<TopSection> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text('${'delivery_charge'.tr}: '),
-                Obx((){
-                  return  Text(
+                Obx(() {
+                  return Text(
                     widget.checkoutController.store!.freeDelivery!
                         ? 'free'.tr
                         : widget.checkoutController.distance != -1
-                        ? PriceConverter.convertPrice(
-                        shippingController.minimumShippingCharge.value)
-                        : 'calculating'.tr,
+                            ? PriceConverter.convertPrice(
+                                shippingController.minimumShippingCharge.value)
+                            : 'calculating'.tr,
                     textDirection: TextDirection.rtl,
                   );
                 })
-
               ]))
             : const SizedBox(),
         SizedBox(
@@ -387,23 +387,24 @@ class _TopSectionState extends State<TopSection> {
                 : 0),
 
         ///delivery section
-        Obx((){
-          final shippingCharge = Get.find<ShippingController>().minimumShippingCharge.value;
-          return  DeliverySection(
+        Obx(() {
+          final shippingCharge =
+              Get.find<ShippingController>().minimumShippingCharge.value;
+          return DeliverySection(
             checkoutController: widget.checkoutController,
             address: widget.address,
             addressList: widget.addressList,
-            guestNameTextEditingController: widget.guestNameTextEditingController,
+            guestNameTextEditingController:
+                widget.guestNameTextEditingController,
             guestNumberTextEditingController:
-            widget.guestNumberTextEditingController,
+                widget.guestNumberTextEditingController,
             guestNumberNode: widget.guestNumberNode,
             guestEmailController: widget.guestEmailController,
             guestEmailNode: widget.guestEmailNode,
-            onShippingChargeChanged:
-            shippingController.setMinimumShippingCharge, // Pass the callback
+            onShippingChargeChanged: shippingController
+                .setMinimumShippingCharge, // Pass the callback
           );
         }),
-
 
         SizedBox(
             height: !takeAway
