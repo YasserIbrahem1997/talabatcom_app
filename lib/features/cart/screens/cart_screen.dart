@@ -99,319 +99,331 @@ class _CartScreenState extends State<CartScreen> {
         return GetBuilder<CartController>(builder: (cartController) {
           return cartController.cartList.isNotEmpty
               ? Column(children: [
-                  Expanded(
-                    child: ExpandableBottomSheet(
-                      enableToggle: true,
-                      background: Column(children: [
-                        WebScreenTitleWidget(title: 'cart_list'.tr),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            controller: scrollController,
-                            padding: ResponsiveHelper.isDesktop(context)
-                                ? const EdgeInsets.only(
-                                    top: Dimensions.paddingSizeSmall,
-                                  )
-                                : EdgeInsets.zero,
-                            child: FooterView(
-                              child: SizedBox(
-                                width: Dimensions.webMaxWidth,
-                                child: Column(children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ResponsiveHelper.isDesktop(context)
-                                          ? WebCardItemsWidget(
-                                              cartList: cartController.cartList)
-                                          : Expanded(
-                                              flex: 7,
-                                              child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    WebConstrainedBox(
-                                                      dataLength: cartController
-                                                          .cartList.length,
-                                                      minLength: 5,
-                                                      minHeight: 0.6,
-                                                      child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            ListView.builder(
-                                                              physics:
-                                                                  const NeverScrollableScrollPhysics(),
-                                                              shrinkWrap: true,
-                                                              itemCount:
+                  Flexible(
+                    child: Expanded(
+                      child: ExpandableBottomSheet(
+                        enableToggle: true,
+                        background: Column(children: [
+                          WebScreenTitleWidget(title: 'cart_list'.tr),
+                          SizedBox(
+                            child: Expanded(
+                              child: SingleChildScrollView(
+                                controller: scrollController,
+                                padding: ResponsiveHelper.isDesktop(context)
+                                    ? const EdgeInsets.only(
+                                        top: Dimensions.paddingSizeSmall,
+                                      )
+                                    : EdgeInsets.zero,
+                                child: FooterView(
+                                  child: SizedBox(
+                                    width: Dimensions.webMaxWidth,
+                                    child: Column(children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? WebCardItemsWidget(
+                                                  cartList:
+                                                      cartController.cartList)
+                                              : Container(
+                                                  child: Expanded(
+                                                    flex: 7,
+                                                    child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          WebConstrainedBox(
+                                                            dataLength:
+                                                                cartController
+                                                                    .cartList
+                                                                    .length,
+                                                            minLength: 5,
+                                                            minHeight: 0.6,
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  ListView
+                                                                      .builder(
+                                                                    physics:
+                                                                        const NeverScrollableScrollPhysics(),
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    itemCount: cartController
+                                                                        .cartList
+                                                                        .length,
+                                                                    padding: const EdgeInsets
+                                                                        .all(
+                                                                        Dimensions
+                                                                            .paddingSizeDefault),
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return CartItemWidget(
+                                                                          cart: cartController.cartList[
+                                                                              index],
+                                                                          cartIndex:
+                                                                              index,
+                                                                          addOns: cartController.addOnsList[
+                                                                              index],
+                                                                          isAvailable:
+                                                                              cartController.availableList[index]);
+                                                                    },
+                                                                  ),
+                                                                  // const Divider(
+                                                                  //     thickness: 0.5,
+                                                                  //     height: 5),
+                                                                  // Padding(
+                                                                  //   padding: const EdgeInsets
+                                                                  //       .only(
+                                                                  //       left: Dimensions
+                                                                  //           .paddingSizeExtraSmall),
+                                                                  //   child: TextButton
+                                                                  //       .icon(
+                                                                  //     onPressed: () {
+                                                                  //       cartController.forcefullySetModule(
+                                                                  //           cartController
+                                                                  //               .cartList[
+                                                                  //                   0]
+                                                                  //               .item!
+                                                                  //               .moduleId!);
+                                                                  //       Get.toNamed(
+                                                                  //         RouteHelper.getStoreRoute(
+                                                                  //             id: cartController
+                                                                  //                 .cartList[
+                                                                  //                     0]
+                                                                  //                 .item!
+                                                                  //                 .storeId,
+                                                                  //             page:
+                                                                  //                 'item'),
+                                                                  //         arguments: StoreScreen(
+                                                                  //             store: Store(
+                                                                  //                 id: cartController
+                                                                  //                     .cartList[
+                                                                  //                         0]
+                                                                  //                     .item!
+                                                                  //                     .storeId),
+                                                                  //             fromModule:
+                                                                  //                 false),
+                                                                  //       );
+                                                                  //     },
+                                                                  //     icon: Icon(
+                                                                  //         Icons
+                                                                  //             .add_circle_outline_sharp,
+                                                                  //         color: Theme.of(
+                                                                  //                 context)
+                                                                  //             .primaryColor),
+                                                                  //     label: Text(
+                                                                  //         'add_more_items'
+                                                                  //             .tr,
+                                                                  //         style: robotoMedium.copyWith(
+                                                                  //             color: Theme.of(context)
+                                                                  //                 .primaryColor,
+                                                                  //             fontSize:
+                                                                  //                 Dimensions.fontSizeDefault)),
+                                                                  //   ),
+                                                                  // ),
+                                                                  ExtraPackagingWidget(
+                                                                      cartController:
+                                                                          cartController),
+                                                                  !ResponsiveHelper
+                                                                          .isDesktop(
+                                                                              context)
+                                                                      ? suggestedItemView(
+                                                                          cartController
+                                                                              .cartList)
+                                                                      : const SizedBox(),
+                                                                ]),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: Dimensions
+                                                                  .paddingSizeSmall),
+                                                          !ResponsiveHelper
+                                                                  .isDesktop(
+                                                                      context)
+                                                              ? pricingView(
+                                                                  cartController,
                                                                   cartController
-                                                                      .cartList
-                                                                      .length,
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(
-                                                                      Dimensions
-                                                                          .paddingSizeDefault),
-                                                              itemBuilder:
-                                                                  (context,
-                                                                      index) {
-                                                                return CartItemWidget(
-                                                                    cart: cartController
-                                                                            .cartList[
-                                                                        index],
-                                                                    cartIndex:
-                                                                        index,
-                                                                    addOns: cartController
-                                                                            .addOnsList[
-                                                                        index],
-                                                                    isAvailable:
-                                                                        cartController
-                                                                            .availableList[index]);
-                                                              },
-                                                            ),
-                                                            // const Divider(
-                                                            //     thickness: 0.5,
-                                                            //     height: 5),
-                                                            // Padding(
-                                                            //   padding: const EdgeInsets
-                                                            //       .only(
-                                                            //       left: Dimensions
-                                                            //           .paddingSizeExtraSmall),
-                                                            //   child: TextButton
-                                                            //       .icon(
-                                                            //     onPressed: () {
-                                                            //       cartController.forcefullySetModule(
-                                                            //           cartController
-                                                            //               .cartList[
-                                                            //                   0]
-                                                            //               .item!
-                                                            //               .moduleId!);
-                                                            //       Get.toNamed(
-                                                            //         RouteHelper.getStoreRoute(
-                                                            //             id: cartController
-                                                            //                 .cartList[
-                                                            //                     0]
-                                                            //                 .item!
-                                                            //                 .storeId,
-                                                            //             page:
-                                                            //                 'item'),
-                                                            //         arguments: StoreScreen(
-                                                            //             store: Store(
-                                                            //                 id: cartController
-                                                            //                     .cartList[
-                                                            //                         0]
-                                                            //                     .item!
-                                                            //                     .storeId),
-                                                            //             fromModule:
-                                                            //                 false),
-                                                            //       );
-                                                            //     },
-                                                            //     icon: Icon(
-                                                            //         Icons
-                                                            //             .add_circle_outline_sharp,
-                                                            //         color: Theme.of(
-                                                            //                 context)
-                                                            //             .primaryColor),
-                                                            //     label: Text(
-                                                            //         'add_more_items'
-                                                            //             .tr,
-                                                            //         style: robotoMedium.copyWith(
-                                                            //             color: Theme.of(context)
-                                                            //                 .primaryColor,
-                                                            //             fontSize:
-                                                            //                 Dimensions.fontSizeDefault)),
-                                                            //   ),
-                                                            // ),
-                                                            ExtraPackagingWidget(
-                                                                cartController:
-                                                                    cartController),
-                                                            !ResponsiveHelper
-                                                                    .isDesktop(
-                                                                        context)
-                                                                ? suggestedItemView(
-                                                                    cartController
-                                                                        .cartList)
-                                                                : const SizedBox(),
-                                                          ]),
-                                                    ),
-                                                    const SizedBox(
-                                                        height: Dimensions
-                                                            .paddingSizeSmall),
-                                                    !ResponsiveHelper.isDesktop(
-                                                            context)
-                                                        ? pricingView(
-                                                            cartController,
-                                                            cartController
-                                                                .cartList[0]
-                                                                .item!)
-                                                        : const SizedBox(),
-                                                    SizedBox(
-                                                      height: 120,
-                                                    )
-                                                  ]),
-                                            ),
+                                                                      .cartList[
+                                                                          0]
+                                                                      .item!)
+                                                              : const SizedBox(),
+                                                          SizedBox(
+                                                            height: 120,
+                                                          )
+                                                        ]),
+                                                  ),
+                                                ),
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? const SizedBox(
+                                                  width: Dimensions
+                                                      .paddingSizeSmall)
+                                              : const SizedBox(),
+                                          ResponsiveHelper.isDesktop(context)
+                                              ? Expanded(
+                                                  flex: 3,
+                                                  child: pricingView(
+                                                      cartController,
+                                                      cartController
+                                                          .cartList[0].item!))
+                                              : const SizedBox(),
+                                        ],
+                                      ),
                                       ResponsiveHelper.isDesktop(context)
-                                          ? const SizedBox(
-                                              width:
-                                                  Dimensions.paddingSizeSmall)
+                                          ? WebSuggestedItemViewWidget(
+                                              cartList: cartController.cartList)
                                           : const SizedBox(),
-                                      ResponsiveHelper.isDesktop(context)
-                                          ? Expanded(
-                                              flex: 3,
-                                              child: pricingView(
-                                                  cartController,
-                                                  cartController
-                                                      .cartList[0].item!))
-                                          : const SizedBox(),
-                                    ],
+                                    ]),
                                   ),
-                                  ResponsiveHelper.isDesktop(context)
-                                      ? WebSuggestedItemViewWidget(
-                                          cartList: cartController.cartList)
-                                      : const SizedBox(),
-                                ]),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ]),
-                      persistentContentHeight: isDesktop ? 0 : 150,
-                      expandableContent: isDesktop
-                          ? const SizedBox()
-                          : Container(
-                              width: context.width,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(
-                                        Dimensions.radiusDefault),
-                                    topRight: Radius.circular(
-                                        Dimensions.radiusDefault)),
-                              ),
-                              child: Column(children: [
-                                Container(
-                                  width: context.width,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .disabledColor
-                                        .withOpacity(0.5),
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(
-                                            Dimensions.radiusDefault),
-                                        topRight: Radius.circular(
-                                            Dimensions.radiusDefault)),
-                                  ),
-                                  child: Icon(Icons.drag_handle,
-                                      color: Theme.of(context).disabledColor,
-                                      size: 25),
+                        ]),
+                        persistentContentHeight: isDesktop ? 0 : 150,
+                        expandableContent: isDesktop
+                            ? const SizedBox()
+                            : Container(
+                                width: context.width,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(
+                                          Dimensions.radiusDefault),
+                                      topRight: Radius.circular(
+                                          Dimensions.radiusDefault)),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                    left: Dimensions.paddingSizeSmall,
-                                    right: Dimensions.paddingSizeSmall,
-                                    top: Dimensions.paddingSizeSmall,
+                                child: Column(children: [
+                                  Container(
+                                    width: context.width,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .disabledColor
+                                          .withOpacity(0.5),
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(
+                                              Dimensions.radiusDefault),
+                                          topRight: Radius.circular(
+                                              Dimensions.radiusDefault)),
+                                    ),
+                                    child: Icon(Icons.drag_handle,
+                                        color: Theme.of(context).disabledColor,
+                                        size: 25),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).cardColor,
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(
-                                            Dimensions.radiusDefault),
-                                        topRight: Radius.circular(
-                                            Dimensions.radiusDefault)),
-                                  ),
-                                  child: Column(children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('item_price'.tr,
-                                              style: robotoRegular),
-                                          PriceConverter.convertAnimationPrice(
-                                              cartController.itemPrice,
-                                              textStyle: robotoRegular),
-                                        ]),
-                                    SizedBox(
-                                        height:
-                                            cartController.variationPrice > 0
-                                                ? Dimensions.paddingSizeSmall
-                                                : 0),
-                                    // cartController.variationPrice > 0
-                                    //     ? Row(
-                                    //         mainAxisAlignment:
-                                    //             MainAxisAlignment.spaceBetween,
-                                    //         children: [
-                                    //           Text('variations'.tr,
-                                    //               style: robotoRegular),
-                                    //           Row(
-                                    //             children: [
-                                    //               Text(
-                                    //           cartController.variationPrice==0? "0": '${PriceConverter.convertPrice(cartController.variationPrice)}',
-                                    //                   style: robotoRegular,
-                                    //                   textDirection:
-                                    //                       TextDirection.rtl),
-                                    //
-                                    //             ],
-                                    //           ),
-                                    //
-                                    //         ],
-                                    //       )
-                                    //     : const SizedBox(),
-                                    const SizedBox(
-                                        height: Dimensions.paddingSizeSmall),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('discount'.tr,
-                                              style: robotoRegular),
-                                          storeController.store != null
-                                              ? Row(children: [
+                                  Container(
+                                    padding: const EdgeInsets.only(
+                                      left: Dimensions.paddingSizeSmall,
+                                      right: Dimensions.paddingSizeSmall,
+                                      top: Dimensions.paddingSizeSmall,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).cardColor,
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(
+                                              Dimensions.radiusDefault),
+                                          topRight: Radius.circular(
+                                              Dimensions.radiusDefault)),
+                                    ),
+                                    child: Column(children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('item_price'.tr,
+                                                style: robotoRegular),
+                                            PriceConverter
+                                                .convertAnimationPrice(
+                                                    cartController.itemPrice,
+                                                    textStyle: robotoRegular),
+                                          ]),
+                                      SizedBox(
+                                          height:
+                                              cartController.variationPrice > 0
+                                                  ? Dimensions.paddingSizeSmall
+                                                  : 0),
+                                      // cartController.variationPrice > 0
+                                      //     ? Row(
+                                      //         mainAxisAlignment:
+                                      //             MainAxisAlignment.spaceBetween,
+                                      //         children: [
+                                      //           Text('variations'.tr,
+                                      //               style: robotoRegular),
+                                      //           Row(
+                                      //             children: [
+                                      //               Text(
+                                      //           cartController.variationPrice==0? "0": '${PriceConverter.convertPrice(cartController.variationPrice)}',
+                                      //                   style: robotoRegular,
+                                      //                   textDirection:
+                                      //                       TextDirection.rtl),
+                                      //
+                                      //             ],
+                                      //           ),
+                                      //
+                                      //         ],
+                                      //       )
+                                      //     : const SizedBox(),
+                                      const SizedBox(
+                                          height: Dimensions.paddingSizeSmall),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('discount'.tr,
+                                                style: robotoRegular),
+                                            storeController.store != null
+                                                ? Row(children: [
+                                                    Text('',
+                                                        style: robotoRegular),
+                                                    PriceConverter
+                                                        .convertAnimationPrice(
+                                                            cartController
+                                                                .itemDiscountPrice,
+                                                            textStyle:
+                                                                robotoRegular),
+                                                  ])
+                                                : Text('calculating'.tr,
+                                                    style: robotoRegular),
+                                          ]),
+                                      SizedBox(
+                                          height: Get.find<SplashController>()
+                                                  .configModel!
+                                                  .moduleConfig!
+                                                  .module!
+                                                  .addOn!
+                                              ? Dimensions.paddingSizeSmall
+                                              : 0),
+                                      Get.find<SplashController>()
+                                              .configModel!
+                                              .moduleConfig!
+                                              .module!
+                                              .addOn!
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('addons'.tr,
+                                                    style: robotoRegular),
+                                                Row(children: [
                                                   Text('',
                                                       style: robotoRegular),
                                                   PriceConverter
                                                       .convertAnimationPrice(
-                                                          cartController
-                                                              .itemDiscountPrice,
+                                                          cartController.addOns,
                                                           textStyle:
                                                               robotoRegular),
-                                                ])
-                                              : Text('calculating'.tr,
-                                                  style: robotoRegular),
-                                        ]),
-                                    SizedBox(
-                                        height: Get.find<SplashController>()
-                                                .configModel!
-                                                .moduleConfig!
-                                                .module!
-                                                .addOn!
-                                            ? Dimensions.paddingSizeSmall
-                                            : 0),
-                                    Get.find<SplashController>()
-                                            .configModel!
-                                            .moduleConfig!
-                                            .module!
-                                            .addOn!
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('addons'.tr,
-                                                  style: robotoRegular),
-                                              Row(children: [
-                                                Text('', style: robotoRegular),
-                                                PriceConverter
-                                                    .convertAnimationPrice(
-                                                        cartController.addOns,
-                                                        textStyle:
-                                                            robotoRegular),
-                                              ]),
-                                            ],
-                                          )
-                                        : const SizedBox(),
-                                  ]),
-                                ),
-                              ]),
-                            ),
+                                                ]),
+                                              ],
+                                            )
+                                          : const SizedBox(),
+                                    ]),
+                                  ),
+                                ]),
+                              ),
+                      ),
                     ),
                   ),
                   ResponsiveHelper.isDesktop(context)

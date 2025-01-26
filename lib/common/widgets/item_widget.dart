@@ -1,15 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:talabatcom/common/models/config_model.dart';
+import 'package:talabatcom/common/models/module_model.dart';
 import 'package:talabatcom/common/widgets/corner_banner/banner.dart';
 import 'package:talabatcom/common/widgets/corner_banner/corner_discount_tag.dart';
 import 'package:talabatcom/common/widgets/custom_asset_image_widget.dart';
+import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:talabatcom/common/widgets/custom_ink_well.dart';
+import 'package:talabatcom/common/widgets/custom_snackbar.dart';
+import 'package:talabatcom/common/widgets/discount_tag.dart';
+import 'package:talabatcom/common/widgets/not_available_widget.dart';
+import 'package:talabatcom/common/widgets/organic_tag.dart';
+import 'package:talabatcom/common/widgets/rating_bar.dart';
+import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
 import 'package:talabatcom/features/item/controllers/item_controller.dart';
+import 'package:talabatcom/features/item/domain/models/item_model.dart';
 import 'package:talabatcom/features/language/controllers/language_controller.dart';
 import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/favourite/controllers/favourite_controller.dart';
-import 'package:talabatcom/common/models/config_model.dart';
-import 'package:talabatcom/features/item/domain/models/item_model.dart';
-import 'package:talabatcom/common/models/module_model.dart';
 import 'package:talabatcom/features/store/domain/models/store_model.dart';
+import 'package:talabatcom/features/store/screens/store_screen.dart';
 import 'package:talabatcom/helper/auth_helper.dart';
 import 'package:talabatcom/helper/date_converter.dart';
 import 'package:talabatcom/helper/price_converter.dart';
@@ -18,15 +27,6 @@ import 'package:talabatcom/helper/route_helper.dart';
 import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/images.dart';
 import 'package:talabatcom/util/styles.dart';
-import 'package:talabatcom/common/widgets/custom_image.dart';
-import 'package:talabatcom/common/widgets/custom_snackbar.dart';
-import 'package:talabatcom/common/widgets/discount_tag.dart';
-import 'package:talabatcom/common/widgets/not_available_widget.dart';
-import 'package:talabatcom/common/widgets/organic_tag.dart';
-import 'package:talabatcom/common/widgets/rating_bar.dart';
-import 'package:talabatcom/features/store/screens/store_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ItemWidget extends StatelessWidget {
   final Item? item;
@@ -146,23 +146,60 @@ class ItemWidget extends StatelessWidget {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Stack(children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  child: CustomImage(
-                    image:
-                        '${isCampaign ? baseUrls!.campaignImageUrl : isStore ? baseUrls!.storeImageUrl : baseUrls!.itemImageUrl}'
-                        '/${isStore ? store != null ? store!.logo : '' : item!.image}',
-                    height: imageHeight ??
-                        (desktop
-                            ? 120
-                            : length == null
-                                ? 100
-                                : 100),
-                    width: imageWidth ??
-                        (desktop ? 120 : MediaQuery.of(context).size.width),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                item!.outOfStock == 0
+                    ? Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: const BorderRadius.only(
+                              topLeft:
+                                  Radius.circular(Dimensions.radiusDefault),
+                              topRight:
+                                  Radius.circular(Dimensions.radiusDefault),
+                            ),
+                            image: DecorationImage(
+                                opacity: 0.250,
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  '${Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl}'
+                                  '/${item!.image}',
+                                ))),
+                        height: imageHeight ??
+                            (desktop
+                                ? 120
+                                : length == null
+                                    ? 100
+                                    : 100),
+                        width: imageWidth ??
+                            (desktop ? 120 : MediaQuery.of(context).size.width),
+                        child: Center(
+                          child: Text(
+                            "not_available".tr,
+                            textAlign: TextAlign.center,
+                            style: robotoMedium.copyWith(
+                                color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusDefault),
+                        child: CustomImage(
+                          image:
+                              '${isCampaign ? baseUrls!.campaignImageUrl : isStore ? baseUrls!.storeImageUrl : baseUrls!.itemImageUrl}'
+                              '/${isStore ? store != null ? store!.logo : '' : item!.image}',
+                          height: imageHeight ??
+                              (desktop
+                                  ? 120
+                                  : length == null
+                                      ? 100
+                                      : 100),
+                          width: imageWidth ??
+                              (desktop
+                                  ? 120
+                                  : MediaQuery.of(context).size.width),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                 Column(
                     mainAxisAlignment: isStore
                         ? MainAxisAlignment.center

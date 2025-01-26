@@ -608,6 +608,7 @@
   "user_deleted": "تم حذف المستخدم",
   "maximum_delivery_time_can_not_be_smaller_then_minimum_delivery_time": "لا يمكن أن يكون الحد الأقصى لوقت التسليم أصغر من الحد الأدنى لوقت التسليم",
   "not_available_module": "وحدة غير متوفرة",
+  "not_available": "غير متوفر",
   "delivery_time_type": "نوع وقت التسليم",
   "your_order_is": "طلبك هو",
   "you_do_not_have_enough_point_to_exchange": "ليس لديك نقطة كافية للتبادل",

@@ -9,12 +9,16 @@ class ItemModel {
   List<Item>? items;
   List<Categories>? categories;
 
-  ItemModel({this.totalSize, this.limit, this.offset, this.items, this.categories});
+  ItemModel(
+      {this.totalSize, this.limit, this.offset, this.items, this.categories});
 
   ItemModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'].toString();
-    offset = (json['offset'] != null && json['offset'].toString().trim().isNotEmpty) ? int.parse(json['offset'].toString()) : null;
+    offset =
+        (json['offset'] != null && json['offset'].toString().trim().isNotEmpty)
+            ? int.parse(json['offset'].toString())
+            : null;
     if (json['products'] != null) {
       items = [];
       json['products'].forEach((v) {
@@ -32,7 +36,9 @@ class ItemModel {
       items = [];
       json['items'].forEach((v) {
         if (v['module_type'] == null ||
-            !Get.find<SplashController>().getModuleConfig(v['module_type']).newVariation! ||
+            !Get.find<SplashController>()
+                .getModuleConfig(v['module_type'])
+                .newVariation! ||
             v['variations'] == null ||
             v['variations'].isEmpty ||
             (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
@@ -94,6 +100,7 @@ class Item {
   String? moduleType;
   String? unitType;
   int? stock;
+  int? outOfStock;
   String? availableDateStarts;
   int? organic;
   int? quantityLimit;
@@ -133,6 +140,7 @@ class Item {
     this.moduleType,
     this.unitType,
     this.stock,
+    this.outOfStock,
     this.organic,
     this.quantityLimit,
     this.flashSale,
@@ -190,14 +198,16 @@ class Item {
     if (foodVariations != null && foodVariations!.isNotEmpty) {
       for (var variation in foodVariations!) {
         for (var variationValue in variation.variationValues!) {
-          if (variationValue.isSelected == true && variationValue.optionPrice != 0) {
+          if (variationValue.isSelected == true &&
+              variationValue.optionPrice != 0) {
             price = variationValue.optionPrice; // تعيين سعر الفيرشن
             break; // الخروج بعد العثور على السعر
           }
         }
       }
     }
-    price ??= json['price']?.toDouble(); // تعيين السعر الأساسي إذا لم يكن هناك اختيار
+    price ??=
+        json['price']?.toDouble(); // تعيين السعر الأساسي إذا لم يكن هناك اختيار
     tax = json['tax']?.toDouble();
     discount = json['discount']?.toDouble();
     discountType = json['discount_type'];
@@ -214,6 +224,7 @@ class Item {
     moduleType = json['module_type'];
     veg = json['veg'] != null ? int.parse(json['veg'].toString()) : 0;
     stock = json['stock'];
+    outOfStock = json['in_stock'];
     unitType = json['unit_type'];
     availableDateStarts = json['available_date_starts'];
     organic = json['organic'];
@@ -267,6 +278,7 @@ class Item {
     data['module_id'] = moduleId;
     data['module_type'] = moduleType;
     data['stock'] = stock;
+    data['in_stock'] = outOfStock;
     data['unit_type'] = unitType;
     data['available_date_starts'] = availableDateStarts;
     data['organic'] = organic;
@@ -278,8 +290,6 @@ class Item {
     return data;
   }
 }
-
-
 
 class CategoryIds {
   String? id;
@@ -375,7 +385,13 @@ class FoodVariation {
   bool? required;
   List<VariationValue>? variationValues;
 
-  FoodVariation({this.name, this.multiSelect, this.min, this.max, this.required, this.variationValues});
+  FoodVariation(
+      {this.name,
+      this.multiSelect,
+      this.min,
+      this.max,
+      this.required,
+      this.variationValues});
 
   FoodVariation.fromJson(Map<String, dynamic> json) {
     if (json['max'] != null) {
@@ -392,7 +408,8 @@ class FoodVariation {
       }
 
       // تعديل أول قيمة في القائمة لتكون optionPrice = 0
-      variationValues = VariationValue.modifyFirstOptionPriceToZero(variationValues!);
+      variationValues =
+          VariationValue.modifyFirstOptionPriceToZero(variationValues!);
     }
   }
 
@@ -432,14 +449,14 @@ class VariationValue {
   }
 
   // دالة لتعديل ذأول قيمة في القائمة
-  static List<VariationValue> modifyFirstOptionPriceToZero(List<VariationValue> variations) {
+  static List<VariationValue> modifyFirstOptionPriceToZero(
+      List<VariationValue> variations) {
     if (variations.isNotEmpty) {
-      variations[0].optionPrice = 0;  // تعيين القيمة 0 لأول عنصر فقط
+      variations[0].optionPrice = 0; // تعيين القيمة 0 لأول عنصر فقط
     }
     return variations;
   }
 }
-
 
 //import 'package:get/get.dart';
 // import 'package:talabatcom/features/splash/controllers/splash_controller.dart';

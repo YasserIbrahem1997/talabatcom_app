@@ -6,7 +6,6 @@ import 'package:talabatcom/common/widgets/custom_button.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
 import 'package:talabatcom/common/widgets/custom_snackbar.dart';
 import 'package:talabatcom/common/widgets/footer_view.dart';
-import 'package:talabatcom/common/widgets/item_view.dart';
 import 'package:talabatcom/common/widgets/item_widget.dart';
 import 'package:talabatcom/common/widgets/menu_drawer.dart';
 import 'package:talabatcom/common/widgets/paginated_list_view.dart';
@@ -40,6 +39,7 @@ import 'package:talabatcom/util/dimensions.dart';
 import 'package:talabatcom/util/images.dart';
 import 'package:talabatcom/util/styles.dart';
 
+import '../../../common/widgets/item_view.dart';
 import '../widgets/bottom_cart_widget.dart';
 
 class StoreScreen extends StatefulWidget {

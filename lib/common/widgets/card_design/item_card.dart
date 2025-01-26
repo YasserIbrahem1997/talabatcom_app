@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:talabatcom/common/widgets/custom_asset_image_widget.dart';
-import 'package:talabatcom/common/widgets/custom_ink_well.dart';
-import 'package:talabatcom/features/item/controllers/item_controller.dart';
-import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
-import 'package:talabatcom/features/item/domain/models/item_model.dart';
-import 'package:talabatcom/helper/price_converter.dart';
-import 'package:talabatcom/util/dimensions.dart';
-import 'package:talabatcom/util/images.dart';
-import 'package:talabatcom/util/styles.dart';
 import 'package:talabatcom/common/widgets/add_favourite_view.dart';
 import 'package:talabatcom/common/widgets/cart_count_view.dart';
+import 'package:talabatcom/common/widgets/custom_asset_image_widget.dart';
 import 'package:talabatcom/common/widgets/custom_image.dart';
+import 'package:talabatcom/common/widgets/custom_ink_well.dart';
 import 'package:talabatcom/common/widgets/discount_tag.dart';
 import 'package:talabatcom/common/widgets/hover/on_hover.dart';
 import 'package:talabatcom/common/widgets/not_available_widget.dart';
 import 'package:talabatcom/common/widgets/organic_tag.dart';
+import 'package:talabatcom/features/item/controllers/item_controller.dart';
+import 'package:talabatcom/features/item/domain/models/item_model.dart';
+import 'package:talabatcom/features/splash/controllers/splash_controller.dart';
+import 'package:talabatcom/helper/price_converter.dart';
+import 'package:talabatcom/util/dimensions.dart';
+import 'package:talabatcom/util/images.dart';
+import 'package:talabatcom/util/styles.dart';
 
 class ItemCard extends StatelessWidget {
   final Item item;
@@ -57,37 +57,65 @@ class ItemCard extends StatelessWidget {
               Expanded(
                 flex: 5,
                 child: Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: isPopularItem
-                            ? Dimensions.paddingSizeExtraSmall
-                            : 0,
-                        left: isPopularItem
-                            ? Dimensions.paddingSizeExtraSmall
-                            : 0,
-                        right: isPopularItem
-                            ? Dimensions.paddingSizeExtraSmall
-                            : 0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(Dimensions.radiusLarge),
-                        topRight: const Radius.circular(Dimensions.radiusLarge),
-                        bottomLeft: Radius.circular(
-                            isPopularItem ? Dimensions.radiusLarge : 0),
-                        bottomRight: Radius.circular(
-                            isPopularItem ? Dimensions.radiusLarge : 0),
-                      ),
-                      child: CustomImage(
-                        placeholder: Images.placeholder,
-                        image:
-                            '${Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl}'
-                            '/${item.image}',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                      ),
-                    ),
-                  ),
+                  item!.outOfStock == 0
+                      ? Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6),
+                              borderRadius: const BorderRadius.only(
+                                topLeft:
+                                    Radius.circular(Dimensions.radiusDefault),
+                                topRight:
+                                    Radius.circular(Dimensions.radiusDefault),
+                              ),
+                              image: DecorationImage(
+                                  opacity: 0.250,
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    '${Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl}'
+                                    '/${item!.image}',
+                                  ))),
+                          child: Center(
+                            child: Text(
+                              "not_available".tr,
+                              textAlign: TextAlign.center,
+                              style: robotoMedium.copyWith(
+                                  color: Colors.white, fontSize: 12),
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.only(
+                              top: isPopularItem
+                                  ? Dimensions.paddingSizeExtraSmall
+                                  : 0,
+                              left: isPopularItem
+                                  ? Dimensions.paddingSizeExtraSmall
+                                  : 0,
+                              right: isPopularItem
+                                  ? Dimensions.paddingSizeExtraSmall
+                                  : 0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft:
+                                  const Radius.circular(Dimensions.radiusLarge),
+                              topRight:
+                                  const Radius.circular(Dimensions.radiusLarge),
+                              bottomLeft: Radius.circular(
+                                  isPopularItem ? Dimensions.radiusLarge : 0),
+                              bottomRight: Radius.circular(
+                                  isPopularItem ? Dimensions.radiusLarge : 0),
+                            ),
+                            child: CustomImage(
+                              placeholder: Images.placeholder,
+                              image:
+                                  '${Get.find<SplashController>().configModel!.baseUrls!.itemImageUrl}'
+                                  '/${item.image}',
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            ),
+                          ),
+                        ),
                   AddFavouriteView(
                     item: item,
                   ),
