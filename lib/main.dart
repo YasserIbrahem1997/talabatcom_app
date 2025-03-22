@@ -183,7 +183,7 @@ class _MyAppState extends State<MyApp> {
                       PointerDeviceKind.touch
                     },
                   ),
-                  theme: themeController!.darkTheme ? dark() : light(),
+                  theme: themeController.darkTheme ? dark() : light(),
                   locale: localizeController.locale,
                   translations: Messages(languages: widget.languages),
                   fallbackLocale: Locale(
