@@ -357,6 +357,139 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                         ]);
                                                   },
                                                 ),
+                                                // Column(
+                                                //   crossAxisAlignment:
+                                                //       CrossAxisAlignment.start,
+                                                //   children: [
+                                                //     ListView.builder(
+                                                //       shrinkWrap: true,
+                                                //       physics:
+                                                //           NeverScrollableScrollPhysics(),
+                                                //       itemCount: widget
+                                                //           .item!
+                                                //           .foodVariations!
+                                                //           .length,
+                                                //       itemBuilder:
+                                                //           (context, index) {
+                                                //         return Column(
+                                                //           crossAxisAlignment:
+                                                //               CrossAxisAlignment
+                                                //                   .start,
+                                                //           children: [
+                                                //             Text(
+                                                //               widget
+                                                //                       .item!
+                                                //                       .foodVariations![
+                                                //                           index]
+                                                //                       .name ??
+                                                //                   '',
+                                                //               style: TextStyle(
+                                                //                   fontWeight:
+                                                //                       FontWeight
+                                                //                           .bold),
+                                                //             ),
+                                                //             ListView.builder(
+                                                //               shrinkWrap: true,
+                                                //               physics:
+                                                //                   NeverScrollableScrollPhysics(),
+                                                //               itemCount: widget
+                                                //                   .item!
+                                                //                   .foodVariations![
+                                                //                       index]
+                                                //                   .variationValues!
+                                                //                   .length,
+                                                //               itemBuilder:
+                                                //                   (context, i) {
+                                                //                 final variation = widget
+                                                //                     .item!
+                                                //                     .foodVariations![
+                                                //                         index]
+                                                //                     .variationValues![i];
+                                                //                 return ListTile(
+                                                //                   onTap: () {
+                                                //                     itemController.setNewCartVariationIndex(
+                                                //                         index,
+                                                //                         i,
+                                                //                         widget
+                                                //                             .item!);
+                                                //                     setState(
+                                                //                         () {}); // لتحديث السعر النهائي
+                                                //                   },
+                                                //                   leading: widget
+                                                //                               .item!
+                                                //                               .foodVariations![
+                                                //                                   index]
+                                                //                               .multiSelect ==
+                                                //                           true
+                                                //                       ? Checkbox(
+                                                //                           value:
+                                                //                               itemController.selectedVariations[index][i],
+                                                //                           onChanged:
+                                                //                               (newValue) {
+                                                //                             itemController.setNewCartVariationIndex(
+                                                //                                 index,
+                                                //                                 i,
+                                                //                                 widget.item!);
+                                                //                             setState(() {});
+                                                //                           },
+                                                //                         )
+                                                //                       : Radio<
+                                                //                           int>(
+                                                //                           value:
+                                                //                               i,
+                                                //                           groupValue: (itemController.selectedVariations.length > index)
+                                                //                               ? itemController.selectedVariations[index].indexOf(true)
+                                                //                               : -1,
+                                                //                           onChanged:
+                                                //                               (newValue) {
+                                                //                             itemController.setNewCartVariationIndex(
+                                                //                                 index,
+                                                //                                 i,
+                                                //                                 widget.item!);
+                                                //                             setState(() {});
+                                                //                           },
+                                                //                         ),
+                                                //                   title: Text(
+                                                //                       variation
+                                                //                               .level ??
+                                                //                           ''),
+                                                //                   trailing:
+                                                //                       variation.optionPrice !=
+                                                //                               0
+                                                //                           ? Text(
+                                                //                               '+${PriceConverter.convertPrice(variation.optionPrice)}',
+                                                //                               style: TextStyle(color: Colors.grey[700]),
+                                                //                             )
+                                                //                           : null,
+                                                //                 );
+                                                //               },
+                                                //             ),
+                                                //             const SizedBox(
+                                                //                 height: 12),
+                                                //           ],
+                                                //         );
+                                                //       },
+                                                //     ),
+                                                //     Divider(thickness: 1),
+                                                //     const SizedBox(height: 10),
+                                                //     Row(
+                                                //       mainAxisAlignment:
+                                                //           MainAxisAlignment
+                                                //               .spaceBetween,
+                                                //       children: [
+                                                //         // Text(
+                                                //         //   '${'total_price'.tr}: ${PriceConverter.convertPrice(itemController.getTotalPrice(widget.item!))}',
+                                                //         //   style: TextStyle(
+                                                //         //       fontSize: 16,
+                                                //         //       fontWeight:
+                                                //         //           FontWeight
+                                                //         //               .bold),
+                                                //         // ),
+                                                //       ],
+                                                //     )
+                                                //   ],
+                                                // ),
+
                                                 itemController
                                                         .item!
                                                         .choiceOptions!
