@@ -39,6 +39,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   final Size size = Get.size;
   final GlobalKey<ScaffoldMessengerState> _globalKey = GlobalKey();
   final GlobalKey<DetailsAppBarWidgetState> _key = GlobalKey();
+  var nameVariations;
+  var priceVariations;
 
   @override
   void initState() {
@@ -357,139 +359,6 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                         ]);
                                                   },
                                                 ),
-                                                // Column(
-                                                //   crossAxisAlignment:
-                                                //       CrossAxisAlignment.start,
-                                                //   children: [
-                                                //     ListView.builder(
-                                                //       shrinkWrap: true,
-                                                //       physics:
-                                                //           NeverScrollableScrollPhysics(),
-                                                //       itemCount: widget
-                                                //           .item!
-                                                //           .foodVariations!
-                                                //           .length,
-                                                //       itemBuilder:
-                                                //           (context, index) {
-                                                //         return Column(
-                                                //           crossAxisAlignment:
-                                                //               CrossAxisAlignment
-                                                //                   .start,
-                                                //           children: [
-                                                //             Text(
-                                                //               widget
-                                                //                       .item!
-                                                //                       .foodVariations![
-                                                //                           index]
-                                                //                       .name ??
-                                                //                   '',
-                                                //               style: TextStyle(
-                                                //                   fontWeight:
-                                                //                       FontWeight
-                                                //                           .bold),
-                                                //             ),
-                                                //             ListView.builder(
-                                                //               shrinkWrap: true,
-                                                //               physics:
-                                                //                   NeverScrollableScrollPhysics(),
-                                                //               itemCount: widget
-                                                //                   .item!
-                                                //                   .foodVariations![
-                                                //                       index]
-                                                //                   .variationValues!
-                                                //                   .length,
-                                                //               itemBuilder:
-                                                //                   (context, i) {
-                                                //                 final variation = widget
-                                                //                     .item!
-                                                //                     .foodVariations![
-                                                //                         index]
-                                                //                     .variationValues![i];
-                                                //                 return ListTile(
-                                                //                   onTap: () {
-                                                //                     itemController.setNewCartVariationIndex(
-                                                //                         index,
-                                                //                         i,
-                                                //                         widget
-                                                //                             .item!);
-                                                //                     setState(
-                                                //                         () {}); // لتحديث السعر النهائي
-                                                //                   },
-                                                //                   leading: widget
-                                                //                               .item!
-                                                //                               .foodVariations![
-                                                //                                   index]
-                                                //                               .multiSelect ==
-                                                //                           true
-                                                //                       ? Checkbox(
-                                                //                           value:
-                                                //                               itemController.selectedVariations[index][i],
-                                                //                           onChanged:
-                                                //                               (newValue) {
-                                                //                             itemController.setNewCartVariationIndex(
-                                                //                                 index,
-                                                //                                 i,
-                                                //                                 widget.item!);
-                                                //                             setState(() {});
-                                                //                           },
-                                                //                         )
-                                                //                       : Radio<
-                                                //                           int>(
-                                                //                           value:
-                                                //                               i,
-                                                //                           groupValue: (itemController.selectedVariations.length > index)
-                                                //                               ? itemController.selectedVariations[index].indexOf(true)
-                                                //                               : -1,
-                                                //                           onChanged:
-                                                //                               (newValue) {
-                                                //                             itemController.setNewCartVariationIndex(
-                                                //                                 index,
-                                                //                                 i,
-                                                //                                 widget.item!);
-                                                //                             setState(() {});
-                                                //                           },
-                                                //                         ),
-                                                //                   title: Text(
-                                                //                       variation
-                                                //                               .level ??
-                                                //                           ''),
-                                                //                   trailing:
-                                                //                       variation.optionPrice !=
-                                                //                               0
-                                                //                           ? Text(
-                                                //                               '+${PriceConverter.convertPrice(variation.optionPrice)}',
-                                                //                               style: TextStyle(color: Colors.grey[700]),
-                                                //                             )
-                                                //                           : null,
-                                                //                 );
-                                                //               },
-                                                //             ),
-                                                //             const SizedBox(
-                                                //                 height: 12),
-                                                //           ],
-                                                //         );
-                                                //       },
-                                                //     ),
-                                                //     Divider(thickness: 1),
-                                                //     const SizedBox(height: 10),
-                                                //     Row(
-                                                //       mainAxisAlignment:
-                                                //           MainAxisAlignment
-                                                //               .spaceBetween,
-                                                //       children: [
-                                                //         // Text(
-                                                //         //   '${'total_price'.tr}: ${PriceConverter.convertPrice(itemController.getTotalPrice(widget.item!))}',
-                                                //         //   style: TextStyle(
-                                                //         //       fontSize: 16,
-                                                //         //       fontWeight:
-                                                //         //           FontWeight
-                                                //         //               .bold),
-                                                //         // ),
-                                                //       ],
-                                                //     )
-                                                //   ],
-                                                // ),
-
                                                 itemController
                                                         .item!
                                                         .choiceOptions!
@@ -621,7 +490,208 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                 const SizedBox(
                                                     height: Dimensions
                                                         .paddingSizeLarge),
+                                                ListView.builder(
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  itemCount: itemController
+                                                          .item
+                                                          ?.foodVariations
+                                                          ?.length ??
+                                                      0,
+                                                  padding: EdgeInsets.only(
+                                                    bottom: (itemController
+                                                                .item
+                                                                ?.foodVariations
+                                                                ?.isNotEmpty ??
+                                                            false)
+                                                        ? Dimensions
+                                                            .paddingSizeLarge
+                                                        : 0,
+                                                  ),
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    var variation =
+                                                        itemController.item!
+                                                                .foodVariations![
+                                                            index];
 
+                                                    return Container(
+                                                      margin: EdgeInsets.only(
+                                                        bottom: index !=
+                                                                itemController
+                                                                        .item!
+                                                                        .foodVariations!
+                                                                        .length -
+                                                                    1
+                                                            ? Dimensions
+                                                                .paddingSizeLarge
+                                                            : 0,
+                                                      ),
+                                                      padding: const EdgeInsets
+                                                          .all(Dimensions
+                                                              .paddingSizeSmall),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            width: 1),
+                                                        color: Theme.of(context)
+                                                            .cardColor,
+                                                      ),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          // 🔹 اسم الفئة (مثل الحجم)
+                                                          Text(
+                                                            variation.name ??
+                                                                '',
+                                                            style: robotoMedium
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        Dimensions
+                                                                            .fontSizeLarge),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: Dimensions
+                                                                  .paddingSizeSmall),
+
+                                                          // 🔹 قائمة الخيارات (Single OR Multiple Selection)
+                                                          ListView.builder(
+                                                            shrinkWrap: true,
+                                                            physics:
+                                                                const NeverScrollableScrollPhysics(),
+                                                            itemCount: variation
+                                                                    .variationValues
+                                                                    ?.length ??
+                                                                0,
+                                                            itemBuilder:
+                                                                (context, i) {
+                                                              var option = variation
+                                                                  .variationValues![i];
+                                                              bool
+                                                                  isSingleSelection =
+                                                                  variation
+                                                                          .multiSelect ==
+                                                                      false;
+
+                                                              // التأكد من تهيئة selectedVariations بشكل صحيح
+                                                              /* if (!selectedVariations
+                                                                  .containsKey(
+                                                                      variation
+                                                                          .name)) {
+                                                                selectedVariations[variation
+                                                                            .name
+                                                                            ?.toString() ??
+                                                                        ''] =
+                                                                    isSingleSelection
+                                                                        ? null
+                                                                        : [];
+                                                              }
+
+                                                              */
+
+                                                              return isSingleSelection
+                                                                  ? SizedBox(
+                                                                      width: 50,
+                                                                      height:
+                                                                          50,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Radio(
+                                                                            value:
+                                                                                nameVariations ?? '',
+                                                                            groupValue:
+                                                                                option.level,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              setState(() {
+                                                                                nameVariations = option.level;
+                                                                                priceVariations = option.optionPrice;
+                                                                              });
+                                                                              print(variation.name);
+                                                                              print(nameVariations);
+                                                                              print(priceVariations);
+                                                                            },
+                                                                          ),
+                                                                          Text(option.level ??
+                                                                              ''),
+                                                                          Spacer(),
+                                                                          Text(
+                                                                            PriceConverter.convertPrice(option.optionPrice! == 0
+                                                                                ? priceWithAddons
+                                                                                : option.optionPrice),
+
+                                                                            // "+${PriceConverter.convertPrice(option.optionPrice)}",
+                                                                            style:
+                                                                                robotoMedium.copyWith(
+                                                                              fontSize: Dimensions.fontSizeSmall,
+                                                                              color: Theme.of(context).primaryColor,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )
+                                                                  : CheckboxListTile(
+                                                                      title: Text(
+                                                                          option.level ??
+                                                                              ''),
+                                                                      subtitle:
+                                                                          Text(
+                                                                        "+${PriceConverter.convertPrice(option.optionPrice)}",
+                                                                        style: robotoMedium
+                                                                            .copyWith(
+                                                                          fontSize:
+                                                                              Dimensions.fontSizeSmall,
+                                                                          color:
+                                                                              Theme.of(context).primaryColor,
+                                                                        ),
+                                                                      ),
+                                                                      value: (variation.multiSelect as List?)
+                                                                              ?.any(
+                                                                            (element) =>
+                                                                                element["level"] ==
+                                                                                option.level,
+                                                                          ) ??
+                                                                          false,
+                                                                      onChanged:
+                                                                          (bool?
+                                                                              selected) {
+                                                                        setState(
+                                                                            () {
+                                                                          // if (selected ==
+                                                                          //     true) {
+                                                                          //   (selectedVariations[variation.name] as List).add({
+                                                                          //     "level": option.level,
+                                                                          //     "optionPrice": option.optionPrice,
+                                                                          //   });
+                                                                          // } else {
+                                                                          //   (selectedVariations[variation.name] as List).removeWhere(
+                                                                          //     (element) => element["level"] == option.level,
+                                                                          //   );
+                                                                          // }
+                                                                        });
+                                                                        print(option
+                                                                            .level);
+                                                                      },
+                                                                      controlAffinity:
+                                                                          ListTileControlAffinity
+                                                                              .leading,
+                                                                    );
+                                                            },
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
                                                 Row(children: [
                                                   Text('${'total_amount'.tr}:',
                                                       style: robotoMedium.copyWith(
@@ -630,23 +700,36 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                   const SizedBox(
                                                       width: Dimensions
                                                           .paddingSizeExtraSmall),
-                                                  Text(
-                                                    PriceConverter.convertPrice(itemController
-                                                                .cartIndex !=
-                                                            -1
-                                                        ? _getItemDetailsDiscountPrice(
-                                                            cart: Get.find<
-                                                                        CartController>()
-                                                                    .cartList[
-                                                                itemController
-                                                                    .cartIndex])
-                                                        : priceWithAddons),
-                                                    style: robotoBold.copyWith(
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        fontSize: Dimensions
-                                                            .fontSizeLarge),
-                                                  ),
+                                                  priceVariations == 0
+                                                      ? Text(
+                                                          PriceConverter.convertPrice(itemController
+                                                                      .cartIndex !=
+                                                                  -1
+                                                              ? _getItemDetailsDiscountPrice(
+                                                                  cart: Get.find<
+                                                                              CartController>()
+                                                                          .cartList[
+                                                                      itemController
+                                                                          .cartIndex])
+                                                              : priceWithAddons),
+                                                          style: robotoBold.copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                              fontSize: Dimensions
+                                                                  .fontSizeLarge),
+                                                        )
+                                                      : Text(
+                                                          PriceConverter
+                                                              .convertPrice(
+                                                                  priceVariations),
+                                                          style: robotoBold.copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                              fontSize: Dimensions
+                                                                  .fontSizeLarge),
+                                                        ),
                                                 ]),
                                                 const SizedBox(
                                                     height: Dimensions
